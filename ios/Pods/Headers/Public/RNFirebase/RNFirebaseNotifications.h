@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-firebase/iOS/RNFirebase/notifications/RNFirebaseNotifications.h

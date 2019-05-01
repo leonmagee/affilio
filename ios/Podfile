@@ -1,0 +1,54 @@
+platform :ios, '9.0'
+
+target 'Affilio' do
+  pod "yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    # 'BatchedBridge', # Required For React Native 0.45.0+
+    'Core',
+    # Add any other subspecs you want to use in your project
+  ]
+
+  # Required by RNFirebase
+  pod 'Firebase/Core'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/iOS'
+
+  # [OPTIONAL PODS] - comment out pods for firebase products you won't be using.
+  # pod 'Firebase/AdMob'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+
+  # For Crashlytics:
+  # pod 'Fabric', '~> 1.7.2'
+  # pod 'Crashlytics', '~> 3.9.3'
+
+  # pod 'Firebase/Crash'
+  # pod 'Firebase/Database'
+  # pod 'Firebase/DynamicLinks'
+  # pod 'Firebase/Messaging'
+  # pod 'Firebase/RemoteConfig'
+  # pod 'Firebase/Storage'
+
+  # pod 'GoogleMaps'
+
+  # pod 'RNBackgroundGeolocation', :path => '../node_modules/react-native-background-geolocation'
+
+  # pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  # pod 'RNBackgroundFetch', :path => '../node_modules/react-native-background-fetch'
+
+  # pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
+  # pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == "React"
+      target.remove_from_project
+    end
+  end
+end
