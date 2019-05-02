@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from './variables';
 
 const styles = StyleSheet.create({
   promotionWrap: {
-    paddingVertical: 20,
+    marginBottom: 50,
   },
   companyName: {
-    fontSize: 20,
+    fontSize: 27,
     color: '#444',
     fontFamily: 'Assistant-Bold',
-    marginVertical: 3,
+    marginVertical: 10,
+  },
+  promoWrap: {
+    flexDirection: 'row',
   },
   promoText: {
-    color: '#888',
+    color: colors.lightGray,
+    paddingLeft: 10,
+    fontSize: 18,
+    flex: 1,
   },
   promoImage: {
     height: 100,
@@ -34,7 +42,10 @@ class Promotion extends Component {
           source={{ uri: 'https://picsum.photos/600/200' }}
         />
         <Text style={styles.companyName}>{company}</Text>
-        <Text style={styles.promoText}>{promo}</Text>
+        <View style={styles.promoWrap}>
+          <Icon name="tag" size={27} color={colors.lightGray} />
+          <Text style={styles.promoText}>{promo}</Text>
+        </View>
       </View>
     );
   }
