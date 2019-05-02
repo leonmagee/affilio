@@ -9,6 +9,9 @@ import {
   View,
 } from 'react-native';
 import RNFirebase from 'react-native-firebase';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import Promotion from './App/Promotion';
 // import LinearGradient from 'react-native-linear-gradient';
 import { getDocAndId } from './App/utils';
@@ -64,6 +67,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontFamily: 'Assistant-Bold',
+  },
+  buttonTestWrap: {
+    padding: 5,
+    backgroundColor: 'tomato',
+    height: 100,
+    width: 100,
   },
   // thumbnailImage: {
   //   width: 200,
@@ -127,13 +136,20 @@ class App extends Component {
       <View style={styles.mainWrap}>
         <ScrollView style={styles.scrollViewWrap}>
           <View style={styles.titleWrap}>
-            <Text style={styles.title}>Affilio</Text>
+            <Text style={styles.title}>Affilios</Text>
           </View>
+
           <View style={styles.subSectionWrap}>
+            <View style={styles.buttonTestWrap}>
+              <Button
+                icon={<Icon name="arrow-right" size={15} color="white" />}
+                title="Button with icon component"
+              />
+            </View>
             <Text style={styles.subTitle}>Current Promotions</Text>
             <FlatList
               data={promotions}
-              renderItem={({ item, index }) => (
+              renderItem={({ item }) => (
                 <Promotion
                   company={item.data.company}
                   promo={item.data.promotion}
