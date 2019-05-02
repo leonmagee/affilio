@@ -1,4 +1,5 @@
+// rename to get doc and key?
 export const getDocAndId = doc => ({
-  id: doc.id,
+  key: doc.id,
   data: doc.data(),
 });

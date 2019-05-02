@@ -1,42 +1,75 @@
 import React, { Component } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import RNFirebase from 'react-native-firebase';
-import LinearGradient from 'react-native-linear-gradient';
-import { getDocAndId } from './App/utils';
+import Promotion from './App/Promotion';
 // import LinearGradient from 'react-native-linear-gradient';
-// import firebase from './App/firebase';
-// import firebase, { firestore } from './App/firebase';
+import { getDocAndId } from './App/utils';
 
 const firestore = RNFirebase.firestore();
 
 const styles = StyleSheet.create({
   mainWrap: {
-    backgroundColor: 'tomato',
+    // backgroundColor: 'tomato',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingTop: 50,
   },
   scrollViewWrap: {
     flex: 1,
+    // paddingHorizontal: 30,
+  },
+  subSectionWrap: {
+    marginVertical: 15,
     paddingHorizontal: 30,
   },
+  titleWrap: {
+    borderBottomWidth: 1,
+    // borderBottomColor: 'rgba(255,255,255,0.4)',
+    borderBottomColor: '#EEE',
+  },
   title: {
-    color: '#fff',
+    color: '#200',
     fontSize: 30,
-    // fontFamily: 'Assistant-Bold',
+    textAlign: 'center',
+    padding: 15,
+    fontFamily: 'Assistant-Bold',
   },
-  redditPost: {
-    padding: 20,
+  subTitle: {
+    color: '#222',
+    fontSize: 23,
+    textAlign: 'center',
+    padding: 13,
+    fontFamily: 'Assistant-Bold',
   },
-  redditTitle: {
-    color: '#fff',
+  textInput: {
+    backgroundColor: 'white',
+    padding: 7,
+    fontSize: 21,
+    marginBottom: 20,
   },
-  thumbnailImage: {
-    width: 200,
-    height: 200,
-    marginTop: 20,
+  textSubmit: {
+    backgroundColor: '#333',
+    alignItems: 'center',
+    padding: 15,
   },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'Assistant-Bold',
+  },
+  // thumbnailImage: {
+  //   width: 200,
+  //   height: 200,
+  //   marginTop: 20,
+  // },
 });
 
 class App extends Component {
@@ -48,76 +81,97 @@ class App extends Component {
     super();
     this.state = {
       promotions: [],
+      companyName: '',
+      newPromo: '',
     };
   }
 
-  componentDidMount = async () => {
-    // this.unsubscribeFromFirestore = firestore
-    //   .collection("posts")
-    //   .onSnapshot(snapshot => {
-    //     const posts = snapshot.docs.map(collectIdsAndDocs);
-    //     this.setState({ posts });
-    //   });
-
+  componentDidMount = () => {
     this.unsubscribeFromFirestore = firestore
       .collection('promos')
       .onSnapshot(snapshot => {
         const promotions = snapshot.docs.map(getDocAndId);
         this.setState({ promotions });
       });
-
-    // const data = await firestore.collection('promos').get();
-    // const promos = await data.docs.map(getDocAndId);
-    // this.setState({
-    //   promotions: promos,
-    // });
   };
 
   componentWillUnmount = () => {
     this.unsubscribeFromFirestore();
   };
 
-  render() {
-    const { promotions } = this.state;
-    const promos = promotions.map((promo, key) => {
-      const { company, promotion } = promo.data;
-
-      return (
-        <View key={key}>
-          <Text>Company: {company}</Text>
-          <Text>Promotion: {promotion}</Text>
-        </View>
-      );
+  updateTextInput = (value, name) => {
+    this.setState({
+      [name]: value,
     });
+  };
+
+  addNewPromotion = () => {
+    const { companyName, newPromo } = this.state;
+    if (companyName !== '' && newPromo !== '') {
+      const promotion = {
+        company: companyName,
+        promotion: newPromo,
+      };
+      firestore.collection('promos').add(promotion);
+      this.setState({
+        companyName: '',
+        newPromo: '',
+      });
+    }
+  };
+
+  render() {
+    const { promotions, companyName, newPromo } = this.state;
 
     return (
-      <LinearGradient colors={['#cb2d3e', '#ef473a']} style={styles.mainWrap}>
+      <View style={styles.mainWrap}>
         <ScrollView style={styles.scrollViewWrap}>
-          <Text style={styles.title}>Affilio</Text>
-          <View>{promos}</View>
+          <View style={styles.titleWrap}>
+            <Text style={styles.title}>Affilio</Text>
+          </View>
+          <View style={styles.subSectionWrap}>
+            <Text style={styles.subTitle}>Current Promotions</Text>
+            <FlatList
+              data={promotions}
+              renderItem={({ item, index }) => (
+                <Promotion
+                  company={item.data.company}
+                  promo={item.data.promotion}
+                />
+              )}
+            />
+          </View>
+          <View style={styles.subSectionWrap}>
+            <Text style={styles.subTitle}>Add New Promotion</Text>
+            <View style={styles.formWrap}>
+              <TextInput
+                style={styles.textInput}
+                value={companyName}
+                onChangeText={e => {
+                  this.updateTextInput(e, 'companyName');
+                }}
+                placeholder="company name"
+              />
+              <TextInput
+                style={styles.textInput}
+                value={newPromo}
+                onChangeText={e => {
+                  this.updateTextInput(e, 'newPromo');
+                }}
+                placeholder="promotions"
+              />
+              <TouchableHighlight
+                style={styles.textSubmit}
+                onPress={this.addNewPromotion}
+              >
+                <Text style={styles.buttonText}>Add Promotion</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
         </ScrollView>
-      </LinearGradient>
+      </View>
     );
   }
 }
 
 module.exports = App;
-
-// this.state = {
-//   promotions: [
-//     {
-//       id: 'xxxx',
-//       data: {
-//         company: 'starbucks',
-//         promotion: 'free latte',
-//       },
-//     },
-//     {
-//       id: 'yyy',
-//       data: {
-//         company: 'coffee hub',
-//         promotion: 'donuts',
-//       },
-//     },
-//   ],
-// };
