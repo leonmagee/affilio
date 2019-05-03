@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PropTypes from 'prop-types';
 import { colors } from './variables';
 
 const styles = StyleSheet.create({
@@ -40,10 +41,6 @@ const styles = StyleSheet.create({
 });
 
 class Promotion extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   render() {
     const { company, promo } = this.props;
     return (
@@ -68,5 +65,10 @@ class Promotion extends Component {
     );
   }
 }
+
+Promotion.propTypes = {
+  company: PropTypes.string,
+  promo: PropTypes.string,
+};
 
 module.exports = Promotion;

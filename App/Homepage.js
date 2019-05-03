@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from './variables';
 import HomeImage from './HomeImage';
 import AddPromotion from './AddPromotion';
-
-// import Promotions from './Promotions';
-
-// let { width, height } = Dimensions.get('window');
-// height -= 80;
+import Promotions from './Promotions';
 
 const styles = StyleSheet.create({
   mainWrap: {
@@ -21,6 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    backgroundColor: '#222',
   },
 });
 
@@ -44,18 +41,25 @@ class Homepage extends Component {
     });
   };
 
+  goToPromos = () => {
+    this.setState({
+      currentPage: 'promos',
+    });
+  };
+
   goToSettings = () => {};
 
   render() {
     let visiblePage = <HomeImage />;
+    // let visiblePage = <AddPromotion />;
+
     const { currentPage } = this.state;
 
     if (currentPage === 'addPromo') {
-      visiblePage = (
-        <View>
-          <Text>xxx</Text>
-        </View>
-      );
+      visiblePage = <AddPromotion />;
+    }
+    if (currentPage === 'promos') {
+      visiblePage = <Promotions />;
     }
     return (
       <View style={styles.mainWrap}>
@@ -67,9 +71,7 @@ class Homepage extends Component {
             icon={<Icon name="home" size={35} color={colors.lighterGray} />}
           />
           <Button
-            onPress={() => {
-              console.log('clickz');
-            }}
+            onPress={this.goToPromos}
             buttonStyle={{ backgroundColor: 'transparent' }}
             icon={<Icon name="tag" size={35} color={colors.lighterGray} />}
           />

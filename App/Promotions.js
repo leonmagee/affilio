@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import RNFirebase from 'react-native-firebase';
 
 import Promotion from './Promotion';
@@ -19,12 +11,10 @@ const styles = StyleSheet.create({
   mainWrap: {
     flex: 1,
     paddingTop: 50,
+    backgroundColor: '#fff',
   },
   scrollViewWrap: {
     flex: 1,
-  },
-  subSectionWrap: {
-    marginVertical: 15,
   },
   titleWrap: {
     borderBottomWidth: 1,
@@ -44,22 +34,6 @@ const styles = StyleSheet.create({
     padding: 13,
     fontFamily: 'Assistant-Bold',
   },
-  textInput: {
-    backgroundColor: 'white',
-    padding: 7,
-    fontSize: 21,
-    marginBottom: 20,
-  },
-  textSubmit: {
-    backgroundColor: '#333',
-    alignItems: 'center',
-    padding: 15,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    fontFamily: 'Assistant-Bold',
-  },
 });
 
 class Promotions extends Component {
@@ -71,8 +45,6 @@ class Promotions extends Component {
     super();
     this.state = {
       promotions: [],
-      companyName: '',
-      newPromo: '',
     };
   }
 
@@ -89,77 +61,23 @@ class Promotions extends Component {
     this.unsubscribeFromFirestore();
   };
 
-  updateTextInput = (value, name) => {
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  addNewPromotion = () => {
-    const { companyName, newPromo } = this.state;
-    if (companyName !== '' && newPromo !== '') {
-      const promotion = {
-        company: companyName,
-        promotion: newPromo,
-      };
-      firestore.collection('promos').add(promotion);
-      this.setState({
-        companyName: '',
-        newPromo: '',
-      });
-    }
-  };
-
   render() {
-    const { promotions, companyName, newPromo } = this.state;
+    const { promotions } = this.state;
 
     return (
       <View style={styles.mainWrap}>
-        <ScrollView style={styles.scrollViewWrap}>
-          <View style={styles.titleWrap}>
-            <Text style={styles.title}>Affilios</Text>
-          </View>
-
-          <View style={styles.subSectionWrap}>
-            <Text style={styles.subTitle}>Current Promotions</Text>
-            <FlatList
-              data={promotions}
-              renderItem={({ item }) => (
-                <Promotion
-                  company={item.data.company}
-                  promo={item.data.promotion}
-                />
-              )}
-            />
-          </View>
-          <View style={styles.subSectionWrap}>
-            <Text style={styles.subTitle}>Add New Promotion</Text>
-            <View style={styles.formWrap}>
-              <TextInput
-                style={styles.textInput}
-                value={companyName}
-                onChangeText={e => {
-                  this.updateTextInput(e, 'companyName');
-                }}
-                placeholder="company name"
+        <View style={styles.subSectionWrap}>
+          <Text style={styles.subTitle}>Current Promotions</Text>
+          <FlatList
+            data={promotions}
+            renderItem={({ item }) => (
+              <Promotion
+                company={item.data.company}
+                promo={item.data.promotion}
               />
-              <TextInput
-                style={styles.textInput}
-                value={newPromo}
-                onChangeText={e => {
-                  this.updateTextInput(e, 'newPromo');
-                }}
-                placeholder="promotions"
-              />
-              <TouchableHighlight
-                style={styles.textSubmit}
-                onPress={this.addNewPromotion}
-              >
-                <Text style={styles.buttonText}>Add Promotion</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </ScrollView>
+            )}
+          />
+        </View>
       </View>
     );
   }
