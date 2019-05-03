@@ -74,6 +74,8 @@ class Promotions extends Component {
               <Promotion
                 company={item.data.company}
                 promo={item.data.promotion}
+                start={item.data.start}
+                end={item.data.end}
               />
             )}
           />

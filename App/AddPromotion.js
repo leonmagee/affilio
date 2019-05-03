@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import RNFirebase from 'react-native-firebase';
 import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 // import { colors } from './variables';
 
 const firestore = RNFirebase.firestore();
@@ -65,6 +66,10 @@ class AddPromotion extends Component {
     this.state = {
       companyName: '',
       newPromo: '',
+      startingDate: '',
+      endingDate: '',
+      startDateSubmit: '',
+      endDateSubmit: '',
     };
   }
 
@@ -74,12 +79,39 @@ class AddPromotion extends Component {
     });
   };
 
+  setStartingDate = startingDate => {
+    const newStartDate = RNFirebase.firestore.Timestamp.fromDate(
+      new Date(startingDate)
+    );
+    this.setState({
+      startingDate,
+      startDateSubmit: newStartDate,
+    });
+  };
+
+  setEndingDate = endingDate => {
+    const newEndDate = RNFirebase.firestore.Timestamp.fromDate(
+      new Date(endingDate)
+    );
+    this.setState({
+      endingDate,
+      endDateSubmit: newEndDate,
+    });
+  };
+
   addNewPromotion = () => {
-    const { companyName, newPromo } = this.state;
+    const {
+      companyName,
+      newPromo,
+      startDateSubmit,
+      endDateSubmit,
+    } = this.state;
     if (companyName !== '' && newPromo !== '') {
       const promotion = {
         company: companyName,
         promotion: newPromo,
+        start: startDateSubmit,
+        end: endDateSubmit,
       };
       firestore.collection('promos').add(promotion);
       this.setState({
@@ -124,15 +156,14 @@ class AddPromotion extends Component {
               format="YYYY-MM-DD"
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
+              minDate={new Date()}
               showIcon={false}
               customStyles={{
                 placeholderText: {
                   fontSize: 21,
                 },
               }}
-              onDateChange={date => {
-                this.setState({ startingDate: date });
-              }}
+              onDateChange={this.setStartingDate}
             />
             <DatePicker
               style={styles.datePicker}
@@ -142,15 +173,14 @@ class AddPromotion extends Component {
               format="YYYY-MM-DD"
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
+              minDate={new Date()}
               showIcon={false}
               customStyles={{
                 placeholderText: {
                   fontSize: 21,
                 },
               }}
-              onDateChange={date => {
-                this.setState({ endingDate: date });
-              }}
+              onDateChange={this.setEndingDate}
             />
           </View>
           <TouchableHighlight
