@@ -2,8 +2,12 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
-import App from './AppMain';
+import { AppRegistry, YellowBox } from 'react-native';
+import Homepage from './App/Homepage';
+// import Router from './App/Router';
+// import AppMain from './AppMain';
 import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => App);
+YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle:']);
+
+AppRegistry.registerComponent(appName, () => Homepage);
