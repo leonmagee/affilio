@@ -76,6 +76,7 @@ class Promotions extends Component {
                 promo={item.data.promotion}
                 start={item.data.start}
                 end={item.data.end}
+                image={item.data.image}
               />
             )}
           />

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
+  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -8,8 +10,19 @@ import {
 } from 'react-native';
 import RNFirebase from 'react-native-firebase';
 import DatePicker from 'react-native-datepicker';
-import moment from 'moment';
-// import { colors } from './variables';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+import { colors } from './variables';
+
+const { Blob } = RNFetchBlob.polyfill;
+const { fs } = RNFetchBlob;
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+window.Blob = Blob;
+const uid = '12345'; // different folder for different users?
+const imageRef = RNFirebase.storage()
+  .ref(uid)
+  .child('dbx.jpg'); // name of the file - this will need to be dynamic?
+const mime = 'image/jpeg';
 
 const firestore = RNFirebase.firestore();
 
@@ -41,11 +54,6 @@ const styles = StyleSheet.create({
   textArea: {
     height: 120,
   },
-  textSubmit: {
-    backgroundColor: '#333',
-    alignItems: 'center',
-    padding: 15,
-  },
   datePickerWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -53,10 +61,37 @@ const styles = StyleSheet.create({
   datePicker: {
     marginBottom: 20,
   },
+  imageUploadButton: {
+    backgroundColor: colors.brandPrimary,
+    padding: 10,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  imageUploadText: {
+    color: '#FFF',
+    fontSize: 18,
+    fontFamily: 'Assistant-Bold',
+  },
+  textSubmit: {
+    backgroundColor: '#333',
+    alignItems: 'center',
+    padding: 15,
+  },
   buttonText: {
     color: 'white',
     fontSize: 20,
     fontFamily: 'Assistant-Bold',
+  },
+  imagePreviewWrap: {
+    marginTop: 20,
+    paddingHorizontal: 50,
+  },
+  imagePreview: {
+    height: 100,
+  },
+  processingWrap: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 
@@ -70,6 +105,8 @@ class AddPromotion extends Component {
       endingDate: '',
       startDateSubmit: '',
       endDateSubmit: '',
+      imageSource: false,
+      processing: false,
     };
   }
 
@@ -99,97 +136,216 @@ class AddPromotion extends Component {
     });
   };
 
+  imageSelect = () => {
+    // console.log('button clicked');
+    // More info on all the options is below in the API Reference... just some common use cases shown here
+    const options = {
+      title: 'Choose Promotion Image',
+      // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      mediaType: 'photo',
+    };
+
+    /**
+     * The first arg is the options object for customization (it can also be null or omitted for default options),
+     * The second arg is the callback which sends object: response (more info in the API Reference)
+     */
+    ImagePicker.showImagePicker(options, response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        // const source = { uri: response.uri };
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        // ios only - check platform?
+        // const arr = response.uri.split('/');
+        // const { dirs } = RNFetchBlob.fs;
+        // const filePath = `${dirs.DocumentDir}/${arr[arr.length - 1]}`;
+
+        this.setState({
+          imageSource: response.uri,
+        });
+      }
+    });
+  };
+
   addNewPromotion = () => {
+    this.setState({
+      processing: true,
+    });
     const {
       companyName,
       newPromo,
       startDateSubmit,
       endDateSubmit,
+      imageSource,
     } = this.state;
-    if (companyName !== '' && newPromo !== '') {
-      const promotion = {
-        company: companyName,
-        promotion: newPromo,
-        start: startDateSubmit,
-        end: endDateSubmit,
-      };
-      firestore.collection('promos').add(promotion);
-      this.setState({
-        companyName: '',
-        newPromo: '',
-        startingDate: '',
-        endingDate: '',
-      });
+    if (companyName !== '' && newPromo !== '' && imageSource) {
+      const filePath = imageSource.replace('file:', '');
+      // ios only conditional
+
+      // const filePath =
+      //   'file:///Users/leonmagee/Library/Developer/CoreSimulator/Devices/FFD720EE-343C-4374-8857-00E7982D6B4B/data/Containers/Data/Application/80DDCA59-0750-4518-94BB-87F16415B900/Documents/images/4ACD1C53-3E13-4156-B518-A1E0FAB41A69.jpg';
+
+      let uploadBlob = false;
+      // upload image to Firebase
+      fs.readFile(filePath, 'base64')
+        .then(data => {
+          console.log('step 1');
+          return Blob.build(data, { type: `${mime};BASE64` });
+        })
+        .then(blob => {
+          console.log('step 2');
+          uploadBlob = blob;
+          return imageRef.put(blob._ref, { contentType: mime });
+        })
+        .then(() => {
+          console.log('step 3');
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(firebaseUrl => {
+          console.log('step 3 - upload worked', firebaseUrl);
+
+          const promotion = {
+            company: companyName,
+            promotion: newPromo,
+            start: startDateSubmit,
+            end: endDateSubmit,
+            image: firebaseUrl,
+          };
+          firestore.collection('promos').add(promotion);
+          this.setState({
+            companyName: '',
+            newPromo: '',
+            startingDate: '',
+            endingDate: '',
+            imageSource: false,
+            processing: false,
+          });
+        })
+        .catch(error => {
+          console.log('HERE IS THE ERROR!', error);
+        });
     }
   };
 
   render() {
-    const { companyName, newPromo, startingDate, endingDate } = this.state;
+    const {
+      companyName,
+      imageSource,
+      newPromo,
+      startingDate,
+      endingDate,
+      processing,
+    } = this.state;
+
+    let imagePreview = <View />;
+    if (imageSource) {
+      imagePreview = (
+        <View style={styles.imagePreviewWrap}>
+          <Image style={styles.imagePreview} source={{ uri: imageSource }} />
+        </View>
+      );
+    }
+
+    let formWrap = <View />;
+
+    if (processing) {
+      formWrap = (
+        <View style={styles.processingWrap}>
+          <ActivityIndicator size="large" color={colors.brandPrimary} />
+        </View>
+      );
+    } else {
+      formWrap = (
+        <View>
+          <View style={styles.formWrap}>
+            <TextInput
+              style={styles.textInput}
+              value={companyName}
+              onChangeText={e => {
+                this.updateTextInput(e, 'companyName');
+              }}
+              placeholder="company name"
+            />
+            <TextInput
+              style={[styles.textInput, styles.textArea]}
+              value={newPromo}
+              multiline
+              onChangeText={e => {
+                this.updateTextInput(e, 'newPromo');
+              }}
+              placeholder="promotion details"
+            />
+            <View style={styles.datePickerWrap}>
+              <DatePicker
+                style={styles.datePicker}
+                date={startingDate}
+                mode="date"
+                placeholder="starting date"
+                format="MM-DD-YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                minDate={new Date()}
+                showIcon={false}
+                customStyles={{
+                  placeholderText: {
+                    fontSize: 21,
+                  },
+                }}
+                onDateChange={this.setStartingDate}
+              />
+              <DatePicker
+                style={styles.datePicker}
+                date={endingDate}
+                mode="date"
+                placeholder="ending date"
+                format="MM-DD-YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                minDate={new Date()}
+                showIcon={false}
+                customStyles={{
+                  placeholderText: {
+                    fontSize: 21,
+                  },
+                }}
+                onDateChange={this.setEndingDate}
+              />
+            </View>
+            <TouchableHighlight
+              style={styles.imageUploadButton}
+              onPress={this.imageSelect}
+            >
+              <Text style={styles.imageUploadText}>Choose Image</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.textSubmit}
+              onPress={this.addNewPromotion}
+            >
+              <Text style={styles.buttonText}>Add Promotion</Text>
+            </TouchableHighlight>
+          </View>
+          {imagePreview}
+        </View>
+      );
+    }
 
     return (
       <View style={styles.mainWrap}>
         <Text style={styles.subTitle}>Add New Promotion</Text>
-        <View style={styles.formWrap}>
-          <TextInput
-            style={styles.textInput}
-            value={companyName}
-            onChangeText={e => {
-              this.updateTextInput(e, 'companyName');
-            }}
-            placeholder="company name"
-          />
-          <TextInput
-            style={[styles.textInput, styles.textArea]}
-            value={newPromo}
-            multiline
-            onChangeText={e => {
-              this.updateTextInput(e, 'newPromo');
-            }}
-            placeholder="promotion details"
-          />
-          <View style={styles.datePickerWrap}>
-            <DatePicker
-              style={styles.datePicker}
-              date={startingDate}
-              mode="date"
-              placeholder="starting date"
-              format="YYYY-MM-DD"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              minDate={new Date()}
-              showIcon={false}
-              customStyles={{
-                placeholderText: {
-                  fontSize: 21,
-                },
-              }}
-              onDateChange={this.setStartingDate}
-            />
-            <DatePicker
-              style={styles.datePicker}
-              date={endingDate}
-              mode="date"
-              placeholder="ending date"
-              format="YYYY-MM-DD"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              minDate={new Date()}
-              showIcon={false}
-              customStyles={{
-                placeholderText: {
-                  fontSize: 21,
-                },
-              }}
-              onDateChange={this.setEndingDate}
-            />
-          </View>
-          <TouchableHighlight
-            style={styles.textSubmit}
-            onPress={this.addNewPromotion}
-          >
-            <Text style={styles.buttonText}>Add Promotion</Text>
-          </TouchableHighlight>
-        </View>
+        {formWrap}
       </View>
     );
   }

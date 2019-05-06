@@ -41,7 +41,7 @@
 		43FB6F0EB6D54ADDAFFA822D /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 11FDF62FCFE3406497B1782E /* Feather.ttf */; };
 		47613B5D17B04AB8811AE704 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 790FB69E36BC44DCB118D175 /* EvilIcons.ttf */; };
 		4A60FA2549014028B8795147 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CE149D794DF4DF08B70F932 /* Foundation.ttf */; };
-		50DDC82422796F6100AFA4F6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50DDC82322796F6100AFA4F6 /* GoogleService-Info.plist */; };
+		501A8546227F54BA001385F5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 501A8545227F54BA001385F5 /* GoogleService-Info.plist */; };
 		562648B0E71E4457937F4E0B /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DB4A6661F2543F7B9A911F6 /* libRNFirebase.a */; };
 		5FCFA0AA4225EFD4EA3CC5E5 /* libPods-Affilio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 268017562DF14D666B6BC791 /* libPods-Affilio.a */; };
 		67E0E8964D234220B6452A77 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 044BEAE8829B4E218ABD78BB /* FontAwesome5_Regular.ttf */; };
@@ -376,7 +376,7 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BCE531BE3C645A9B53FDE48 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		4CE149D794DF4DF08B70F932 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		50DDC82322796F6100AFA4F6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/Kevin Semo/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		501A8545227F54BA001385F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Affilio/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5DB4A6661F2543F7B9A911F6 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		662B37645BF6428E811E982F /* Assistant-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Assistant-Bold.ttf"; path = "../App/Assets/Fonts/Assistant/Assistant-Bold.ttf"; sourceTree = "<group>"; };
@@ -560,8 +560,8 @@
 		13B07FAE1A68108700A75B9A /* Affilio */ = {
 			isa = PBXGroup;
 			children = (
-				50DDC82322796F6100AFA4F6 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				501A8545227F54BA001385F5 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -1178,7 +1178,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				50DDC82422796F6100AFA4F6 /* GoogleService-Info.plist in Resources */,
 				26B492EB00E44EEBBBC7742B /* Assistant-Bold.ttf in Resources */,
 				E9A41611EEFF4784AFBBD092 /* AntDesign.ttf in Resources */,
 				E7444C1C9D654CCC9AC54016 /* Entypo.ttf in Resources */,
@@ -1188,6 +1187,7 @@
 				71CA982A13864B9B906619BC /* FontAwesome5_Brands.ttf in Resources */,
 				67E0E8964D234220B6452A77 /* FontAwesome5_Regular.ttf in Resources */,
 				C10AB40D9FAB42458161E6AD /* FontAwesome5_Solid.ttf in Resources */,
+				501A8546227F54BA001385F5 /* GoogleService-Info.plist in Resources */,
 				4A60FA2549014028B8795147 /* Foundation.ttf in Resources */,
 				F6BFF81A8E48430BBB79F77F /* Ionicons.ttf in Resources */,
 				776319DC648040119441AC0E /* MaterialCommunityIcons.ttf in Resources */,
@@ -1431,6 +1431,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = affilio.reactjs.native;
 				PRODUCT_NAME = Affilio;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1455,6 +1456,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = affilio.reactjs.native;
 				PRODUCT_NAME = Affilio;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

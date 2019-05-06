@@ -7,12 +7,19 @@ import { colors } from './variables';
 
 const styles = StyleSheet.create({
   promotionWrap: {
-    marginBottom: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: '#dfdfdf',
+    // marginBottom: 50,
+    borderWidth: 2,
+    // borderColor: '#dfdfdf',
+    borderColor: 'rgba(0,0,0,0.08)',
+    marginHorizontal: 20,
+    marginVertical: 15,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
   },
   promoImage: {
-    height: 120,
+    height: 150,
   },
   detailsWrap: {
     paddingVertical: 15,
@@ -45,7 +52,8 @@ const styles = StyleSheet.create({
   shareWrap: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 20,
+    // marginTop: 20,
+    marginBottom: 5,
   },
   dateRangeWrap: {
     flexDirection: 'row',
@@ -59,16 +67,13 @@ const styles = StyleSheet.create({
 
 class Promotion extends Component {
   render() {
-    const { company, promo, start, end } = this.props;
-    console.log(start);
+    const { company, promo, start, end, image } = this.props;
     const startDate = moment(start.toDate()).format('MMMM Do YYYY');
     const endDate = moment(end.toDate()).format('MMMM Do YYYY');
+    const imageUrl = image || 'https://picsum.photos/600/200';
     return (
       <View style={styles.promotionWrap}>
-        <Image
-          style={styles.promoImage}
-          source={{ uri: 'https://picsum.photos/600/200' }}
-        />
+        <Image style={styles.promoImage} source={{ uri: imageUrl }} />
         <View style={styles.detailsWrap}>
           <View style={styles.companyNameWrap}>
             <Text style={styles.companyName}>{company}</Text>
@@ -111,6 +116,7 @@ Promotion.propTypes = {
   promo: PropTypes.string,
   start: PropTypes.object,
   end: PropTypes.object,
+  image: PropTypes.string,
 };
 
 module.exports = Promotion;
