@@ -2,14 +2,40 @@ import React from 'react';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeImage from './HomeImage';
+// import Promotions from './Promotions';
 import Promotions from './Promotions';
+import PromotionsExclusive from './PromotionsExclusive';
 import AddPromotion from './AddPromotion';
 import { colors } from './variables';
+
+const PromoStack = createBottomTabNavigator(
+  {
+    Exclusive: PromotionsExclusive,
+    New: Promotions,
+    Featured: Promotions,
+    Expired: Promotions,
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: colors.brandPrimary,
+      inactiveTintColor: '#AAA',
+      style: {
+        backgroundColor: '#FFF',
+        paddingBottom: 18,
+        height: 60,
+      },
+      labelStyle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+      },
+    },
+  }
+);
 
 const TabNavigator = createBottomTabNavigator(
   {
     HomeImage,
-    Promotions,
+    PromoStack,
     AddPromotion,
   },
   {
@@ -19,7 +45,7 @@ const TabNavigator = createBottomTabNavigator(
         let iconName;
         if (routeName === 'HomeImage') {
           iconName = 'home';
-        } else if (routeName === 'Promotions') {
+        } else if (routeName === 'PromoStack') {
           iconName = 'tag';
         } else if (routeName === 'AddPromotion') {
           iconName = 'tag-plus';
@@ -34,7 +60,8 @@ const TabNavigator = createBottomTabNavigator(
       showLabel: false,
       style: {
         backgroundColor: '#222',
-        paddingTop: 15,
+        // paddingTop: 15,
+        height: 75,
       },
     },
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
   },
   datePickerWrap: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
   datePicker: {
     marginBottom: 20,
@@ -241,7 +241,7 @@ class AddPromotion extends Component {
       );
     } else {
       formWrap = (
-        <View>
+        <ScrollView>
           <View style={styles.formWrap}>
             <TextInput
               style={styles.textInput}
@@ -293,7 +293,7 @@ class AddPromotion extends Component {
             </TouchableHighlight>
           </View>
           {imagePreview}
-        </View>
+        </ScrollView>
       );
     }
 

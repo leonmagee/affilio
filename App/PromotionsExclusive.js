@@ -30,7 +30,7 @@ class Promotions extends Component {
   componentDidMount = () => {
     this.unsubscribeFromFirestore = firestore
       .collection('promos')
-      // .where('exclusive', '==', true)
+      .where('exclusive', '==', true)
       .onSnapshot(snapshot => {
         const promotions = snapshot.docs.map(getDocAndId);
         this.setState({ promotions });
