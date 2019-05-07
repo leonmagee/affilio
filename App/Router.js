@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import React from 'react';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeImage from './HomeImage';

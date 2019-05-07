@@ -14,16 +14,6 @@ import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { colors } from './variables';
 
-const { Blob } = RNFetchBlob.polyfill;
-const { fs } = RNFetchBlob;
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-window.Blob = Blob;
-const uid = '12345'; // different folder for different users?
-const imageRef = RNFirebase.storage()
-  .ref(uid)
-  .child('dbx.jpg'); // name of the file - this will need to be dynamic?
-const mime = 'image/jpeg';
-
 const firestore = RNFirebase.firestore();
 
 const styles = StyleSheet.create({
@@ -44,8 +34,9 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: 'white',
-    padding: 7,
-    fontSize: 21,
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    fontSize: 19,
     marginBottom: 20,
     borderColor: 'rgba(0,0,0,0.25)',
     borderWidth: 1,
@@ -56,10 +47,11 @@ const styles = StyleSheet.create({
   },
   datePickerWrap: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   datePicker: {
     marginBottom: 20,
+    flex: 1,
   },
   imageUploadButton: {
     backgroundColor: colors.brandPrimary,
@@ -101,10 +93,8 @@ class AddPromotion extends Component {
     this.state = {
       companyName: '',
       newPromo: '',
-      startingDate: '',
       endingDate: '',
-      startDateSubmit: '',
-      endDateSubmit: '',
+      endDateSubmit: false,
       imageSource: false,
       processing: false,
     };
@@ -113,16 +103,6 @@ class AddPromotion extends Component {
   updateTextInput = (value, name) => {
     this.setState({
       [name]: value,
-    });
-  };
-
-  setStartingDate = startingDate => {
-    const newStartDate = RNFirebase.firestore.Timestamp.fromDate(
-      new Date(startingDate)
-    );
-    this.setState({
-      startingDate,
-      startDateSubmit: newStartDate,
     });
   };
 
@@ -137,32 +117,23 @@ class AddPromotion extends Component {
   };
 
   imageSelect = () => {
-    // console.log('button clicked');
-    // More info on all the options is below in the API Reference... just some common use cases shown here
     const options = {
       title: 'Choose Promotion Image',
-      // customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
       storageOptions: {
         skipBackup: true,
         path: 'images',
       },
-      maxWidth: 750,
+      maxWidth: 550,
       mediaType: 'photo',
     };
 
-    /**
-     * The first arg is the options object for customization (it can also be null or omitted for default options),
-     * The second arg is the callback which sends object: response (more info in the API Reference)
-     */
     ImagePicker.showImagePicker(options, response => {
-      console.log('Response = ', response);
+      // console.log('Response = ', response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        console.error('ImagePicker Error: ', response.error);
       } else {
         this.setState({
           imageSource: response.uri,
@@ -175,58 +146,69 @@ class AddPromotion extends Component {
     this.setState({
       processing: true,
     });
-    const {
-      companyName,
-      newPromo,
-      startDateSubmit,
-      endDateSubmit,
-      imageSource,
-    } = this.state;
-    if (companyName !== '' && newPromo !== '' && imageSource) {
-      const filePath = imageSource.replace('file:', '');
-      let uploadBlob = false;
-      fs.readFile(filePath, 'base64')
-        .then(data =>
-          // console.log('step 1');
-          Blob.build(data, { type: `${mime};BASE64` })
-        )
-        .then(blob => {
-          // console.log('step 2');
-          uploadBlob = blob;
-          return imageRef.put(blob._ref, { contentType: mime });
-        })
-        .then(() => {
-          // console.log('step 3');
-          uploadBlob.close();
-          return imageRef.getDownloadURL();
-        })
-        .then(firebaseUrl => {
-          console.log('step 3 - upload worked', firebaseUrl);
+    const { companyName, newPromo, endDateSubmit, imageSource } = this.state;
+    if (companyName !== '' && newPromo !== '' && endDateSubmit && imageSource) {
+      const promotion = {
+        company: companyName,
+        promotion: newPromo,
+        end: endDateSubmit,
+      };
+      firestore
+        .collection('promos')
+        .add(promotion)
+        .then(result => {
+          const firestoreId = result.id;
+          const postRef = firestore.doc(`promos/${firestoreId}`);
 
-          const promotion = {
-            company: companyName,
-            promotion: newPromo,
-            start: startDateSubmit,
-            end: endDateSubmit,
-            image: firebaseUrl,
-          };
-          firestore
-            .collection('promos')
-            .add(promotion)
-            .then(result => {
-              console.log('xxxxxx', result.id);
+          const { Blob } = RNFetchBlob.polyfill;
+          const { fs } = RNFetchBlob;
+          window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+          window.Blob = Blob;
+          const uid = '12345'; // different folder for different users?
+          const imageRef = RNFirebase.storage()
+            .ref(uid)
+            .child(`image-${firestoreId}.jpg`);
+          const mime = 'image/jpeg';
+
+          const filePath = imageSource.replace('file:', '');
+          let uploadBlob = false;
+          fs.readFile(filePath, 'base64')
+            .then(data =>
+              // console.log('step 1');
+              Blob.build(data, { type: `${mime};BASE64` })
+            )
+            .then(blob => {
+              // console.log('step 2');
+              uploadBlob = blob;
+              return imageRef.put(blob._ref, { contentType: mime });
+            })
+            .then(() => {
+              // console.log('step 3');
+              uploadBlob.close();
+              return imageRef.getDownloadURL();
+            })
+            .then(firebaseUrl => {
+              console.log('step 3 - upload worked', firebaseUrl);
+
+              postRef.update({ image: firebaseUrl });
+
+              // finalize by restting state
+              // this should redirect instead - use nav method?
+              this.setState({
+                companyName: '',
+                newPromo: '',
+                endingDate: '',
+                imageSource: false,
+                processing: false,
+              });
+            })
+            .catch(error => {
+              console.error(error);
             });
-          this.setState({
-            companyName: '',
-            newPromo: '',
-            startingDate: '',
-            endingDate: '',
-            imageSource: false,
-            processing: false,
-          });
-        })
-        .catch(error => {
-          console.log('HERE IS THE ERROR!', error);
+
+          // image should show activity indicator first?
+          // the images should be in directories per each user?
+          // validation for missing fields - all will be required for now - except for image...
         });
     }
   };
@@ -236,7 +218,6 @@ class AddPromotion extends Component {
       companyName,
       imageSource,
       newPromo,
-      startingDate,
       endingDate,
       processing,
     } = this.state;
@@ -268,7 +249,7 @@ class AddPromotion extends Component {
               onChangeText={e => {
                 this.updateTextInput(e, 'companyName');
               }}
-              placeholder="company name"
+              placeholder="Company Name"
             />
             <TextInput
               style={[styles.textInput, styles.textArea]}
@@ -277,31 +258,14 @@ class AddPromotion extends Component {
               onChangeText={e => {
                 this.updateTextInput(e, 'newPromo');
               }}
-              placeholder="promotion details"
+              placeholder="Promotion Details"
             />
             <View style={styles.datePickerWrap}>
               <DatePicker
                 style={styles.datePicker}
-                date={startingDate}
-                mode="date"
-                placeholder="starting date"
-                format="MM-DD-YYYY"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                minDate={new Date()}
-                showIcon={false}
-                customStyles={{
-                  placeholderText: {
-                    fontSize: 21,
-                  },
-                }}
-                onDateChange={this.setStartingDate}
-              />
-              <DatePicker
-                style={styles.datePicker}
                 date={endingDate}
                 mode="date"
-                placeholder="ending date"
+                placeholder="Expiration Date"
                 format="MM-DD-YYYY"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
@@ -309,7 +273,7 @@ class AddPromotion extends Component {
                 showIcon={false}
                 customStyles={{
                   placeholderText: {
-                    fontSize: 21,
+                    fontSize: 19,
                   },
                 }}
                 onDateChange={this.setEndingDate}

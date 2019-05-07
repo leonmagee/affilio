@@ -75,7 +75,6 @@ class Promotion extends Component {
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
 
     const placeholderUrl = require('./Assets/Images/placeholder.jpg');
-    console.log('placeholder', placeholderUrl);
     // const imageUrl = image || 'https://picsum.photos/600/200';
     const imageUrl = image ? { uri: image } : placeholderUrl;
     // const imageUrl = image || require('./Assets/Images/placeholder.jpg');
@@ -98,14 +97,7 @@ class Promotion extends Component {
               <Icon name="calendar" size={30} color={colors.lightGray} />
             </View>
             <View style={styles.dateRangeWrap}>
-              <Text style={styles.dateItem}>{startDate}</Text>
-              <Icon
-                name="arrow-right"
-                size={20}
-                color={colors.lightGray}
-                style={{ marginRight: 8 }}
-              />
-              <Text style={styles.dateItem}>{endDate}</Text>
+              <Text style={styles.dateItem}>Expires: {endDate}</Text>
             </View>
           </View>
 
