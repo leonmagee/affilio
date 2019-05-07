@@ -123,6 +123,8 @@ PODS:
   - RNFirebase (5.3.1):
     - Firebase/Core
     - React
+  - RNGestureHandler (1.2.1):
+    - React
   - yoga (0.59.5.React)
 
 DEPENDENCIES:
@@ -136,6 +138,7 @@ DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNFirebase (from `../node_modules/react-native-firebase/iOS`)
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -169,6 +172,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/iOS"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -195,8 +200,9 @@ SPEC CHECKSUMS:
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNFirebase: f20e5e4ceaa632aebb1a29a9a91022ae0469c633
+  RNGestureHandler: aea90f0ad8e35fec23438db6fc3ad79be58bb734
   yoga: 2e571f113e8cbeb0eb752aeebc86c1bfe7a8200c
 
-PODFILE CHECKSUM: 6a19408013a8123e62b8e3488242574d3b36f853
+PODFILE CHECKSUM: 0b2b29b2cc421c483d1f4bc1d25535fb58f29418
 
 COCOAPODS: 1.6.1
