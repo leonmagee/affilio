@@ -146,6 +146,7 @@ class AddPromotion extends Component {
         skipBackup: true,
         path: 'images',
       },
+      maxWidth: 750,
       mediaType: 'photo',
     };
 
@@ -163,15 +164,6 @@ class AddPromotion extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        // const source = { uri: response.uri };
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        // ios only - check platform?
-        // const arr = response.uri.split('/');
-        // const { dirs } = RNFetchBlob.fs;
-        // const filePath = `${dirs.DocumentDir}/${arr[arr.length - 1]}`;
-
         this.setState({
           imageSource: response.uri,
         });
@@ -192,25 +184,19 @@ class AddPromotion extends Component {
     } = this.state;
     if (companyName !== '' && newPromo !== '' && imageSource) {
       const filePath = imageSource.replace('file:', '');
-      // ios only conditional
-
-      // const filePath =
-      //   'file:///Users/leonmagee/Library/Developer/CoreSimulator/Devices/FFD720EE-343C-4374-8857-00E7982D6B4B/data/Containers/Data/Application/80DDCA59-0750-4518-94BB-87F16415B900/Documents/images/4ACD1C53-3E13-4156-B518-A1E0FAB41A69.jpg';
-
       let uploadBlob = false;
-      // upload image to Firebase
       fs.readFile(filePath, 'base64')
-        .then(data => {
-          console.log('step 1');
-          return Blob.build(data, { type: `${mime};BASE64` });
-        })
+        .then(data =>
+          // console.log('step 1');
+          Blob.build(data, { type: `${mime};BASE64` })
+        )
         .then(blob => {
-          console.log('step 2');
+          // console.log('step 2');
           uploadBlob = blob;
           return imageRef.put(blob._ref, { contentType: mime });
         })
         .then(() => {
-          console.log('step 3');
+          // console.log('step 3');
           uploadBlob.close();
           return imageRef.getDownloadURL();
         })
@@ -224,7 +210,12 @@ class AddPromotion extends Component {
             end: endDateSubmit,
             image: firebaseUrl,
           };
-          firestore.collection('promos').add(promotion);
+          firestore
+            .collection('promos')
+            .add(promotion)
+            .then(result => {
+              console.log('xxxxxx', result.id);
+            });
           this.setState({
             companyName: '',
             newPromo: '',

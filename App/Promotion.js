@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   },
   promoImage: {
     height: 150,
+    width: null,
   },
   detailsWrap: {
     paddingVertical: 15,
@@ -68,12 +69,20 @@ const styles = StyleSheet.create({
 class Promotion extends Component {
   render() {
     const { company, promo, start, end, image } = this.props;
-    const startDate = moment(start.toDate()).format('MMMM Do YYYY');
-    const endDate = moment(end.toDate()).format('MMMM Do YYYY');
-    const imageUrl = image || 'https://picsum.photos/600/200';
+    const startDate = start
+      ? moment(start.toDate()).format('MMMM Do YYYY')
+      : '';
+    const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
+
+    const placeholderUrl = require('./Assets/Images/placeholder.jpg');
+    console.log('placeholder', placeholderUrl);
+    // const imageUrl = image || 'https://picsum.photos/600/200';
+    const imageUrl = image ? { uri: image } : placeholderUrl;
+    // const imageUrl = image || require('./Assets/Images/placeholder.jpg');
+
     return (
       <View style={styles.promotionWrap}>
-        <Image style={styles.promoImage} source={{ uri: imageUrl }} />
+        <Image style={styles.promoImage} source={imageUrl} />
         <View style={styles.detailsWrap}>
           <View style={styles.companyNameWrap}>
             <Text style={styles.companyName}>{company}</Text>
