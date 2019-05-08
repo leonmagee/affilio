@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import { colors } from './variables';
+import { defaults } from './defaultStyles';
 
 const placeholderUrl = require('./Assets/Images/placeholder.jpg');
 
@@ -134,55 +135,61 @@ class Promotion extends Component {
         </View>
 
         <Modal
+          sytle={{ flex: 1 }}
           animationType="slide"
-          transparent={false}
+          transparent
           visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-          }}
         >
-          <View style={{ marginTop: 22 }}>
-            <View>
-              <View style={styles.formWrap}>
-                <TextInput
-                  style={styles.textInput}
-                  value={company}
-                  onChangeText={e => {
-                    this.updateTextInput(e, 'companyName');
-                  }}
-                  placeholder="Company Name"
-                />
-                <TextInput
-                  style={[styles.textInput, styles.textArea]}
-                  value={promo}
-                  multiline
-                  onChangeText={e => {
-                    this.updateTextInput(e, 'newPromo');
-                  }}
-                  placeholder="Promotion Details"
-                />
-                <View style={styles.datePickerWrap} />
+          <View style={defaults.modalWrapInner}>
+            <Text style={defaults.subTitle}>Update Promotion</Text>
+            <View style={defaults.formWrap}>
+              <TextInput
+                style={defaults.textInput}
+                value={company}
+                onChangeText={e => {
+                  this.updateTextInput(e, 'companyName');
+                }}
+                placeholder="Company Name"
+              />
+              <TextInput
+                style={[defaults.textInput, defaults.textArea]}
+                value={promo}
+                multiline
+                onChangeText={e => {
+                  this.updateTextInput(e, 'newPromo');
+                }}
+                placeholder="Promotion Details"
+              />
+              <View style={defaults.datePickerWrap} />
+              <View style={defaults.imagePreviewModal}>
+                <Image style={defaults.imagePreview} source={imageUrl} />
+              </View>
+              <TouchableHighlight
+                style={defaults.imageUploadButton}
+                onPress={this.imageSelect}
+              >
+                <Text style={defaults.imageUploadText}>Change Image</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={defaults.textSubmit}
+                onPress={this.addNewPromotion}
+              >
+                <Text style={defaults.buttonText}>Update</Text>
+              </TouchableHighlight>
+              <View style={defaults.closeIconWrap}>
                 <TouchableHighlight
-                  style={styles.imageUploadButton}
-                  onPress={this.imageSelect}
+                  onPress={() => {
+                    this.setModalVisible(!this.state.modalVisible);
+                  }}
                 >
-                  <Text style={styles.imageUploadText}>Choose Image</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={styles.textSubmit}
-                  onPress={this.addNewPromotion}
-                >
-                  <Text style={styles.buttonText}>Add Promotion</Text>
+                  <Icon
+                    name="close-circle"
+                    size={40}
+                    color={colors.brandSecond}
+                    style={defaults.closeIcon}
+                  />
                 </TouchableHighlight>
               </View>
-
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}
-              >
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
             </View>
           </View>
         </Modal>

@@ -14,6 +14,7 @@ import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { colors } from './variables';
+import { defaults } from './defaultStyles';
 
 const firestore = RNFirebase.firestore();
 
@@ -22,69 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 80,
     backgroundColor: '#fff',
-  },
-  formWrap: {
-    marginHorizontal: 30,
-    padding: 20,
-  },
-  subTitle: {
-    color: '#111',
-    fontSize: 23,
-    textAlign: 'center',
-    fontFamily: 'Lato-Bold',
-  },
-  textInput: {
-    backgroundColor: 'white',
-    paddingVertical: 7,
-    paddingHorizontal: 14,
-    fontSize: 19,
-    fontFamily: 'Lato-Regular',
-    marginBottom: 20,
-    borderColor: 'rgba(0,0,0,0.25)',
-    borderWidth: 1,
-    color: '#676867',
-  },
-  textArea: {
-    height: 120,
-  },
-  datePickerWrap: {
-    flexDirection: 'row',
-  },
-  datePicker: {
-    marginBottom: 20,
-    flex: 1,
-  },
-  imageUploadButton: {
-    backgroundColor: colors.brandSecond,
-    padding: 10,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  imageUploadText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontFamily: 'Lato-Bold',
-  },
-  textSubmit: {
-    backgroundColor: colors.brandPrimary,
-    alignItems: 'center',
-    padding: 15,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    fontFamily: 'Lato-Bold',
-  },
-  imagePreviewWrap: {
-    marginTop: 20,
-    paddingHorizontal: 50,
-  },
-  imagePreview: {
-    height: 100,
-  },
-  processingWrap: {
-    flex: 1,
-    justifyContent: 'center',
   },
 });
 
@@ -229,8 +167,8 @@ class AddPromotion extends Component {
     let imagePreview = <View />;
     if (imageSource) {
       imagePreview = (
-        <View style={styles.imagePreviewWrap}>
-          <Image style={styles.imagePreview} source={{ uri: imageSource }} />
+        <View style={defaults.imagePreviewWrap}>
+          <Image style={defaults.imagePreview} source={{ uri: imageSource }} />
         </View>
       );
     }
@@ -239,16 +177,16 @@ class AddPromotion extends Component {
 
     if (processing) {
       formWrap = (
-        <View style={styles.processingWrap}>
+        <View style={defaults.processingWrap}>
           <ActivityIndicator size="large" color={colors.brandPrimary} />
         </View>
       );
     } else {
       formWrap = (
         <ScrollView>
-          <View style={styles.formWrap}>
+          <View style={defaults.formWrap}>
             <TextInput
-              style={styles.textInput}
+              style={defaults.textInput}
               value={companyName}
               onChangeText={e => {
                 this.updateTextInput(e, 'companyName');
@@ -256,7 +194,7 @@ class AddPromotion extends Component {
               placeholder="Company Name"
             />
             <TextInput
-              style={[styles.textInput, styles.textArea]}
+              style={[defaults.textInput, defaults.textArea]}
               value={newPromo}
               multiline
               onChangeText={e => {
@@ -264,9 +202,9 @@ class AddPromotion extends Component {
               }}
               placeholder="Promotion Details"
             />
-            <View style={styles.datePickerWrap}>
+            <View style={defaults.datePickerWrap}>
               <DatePicker
-                style={styles.datePicker}
+                style={defaults.datePicker}
                 date={endingDate}
                 mode="date"
                 placeholder="Expiration Date"
@@ -285,16 +223,16 @@ class AddPromotion extends Component {
               />
             </View>
             <TouchableHighlight
-              style={styles.imageUploadButton}
+              style={defaults.imageUploadButton}
               onPress={this.imageSelect}
             >
-              <Text style={styles.imageUploadText}>Choose Image</Text>
+              <Text style={defaults.imageUploadText}>Choose Image</Text>
             </TouchableHighlight>
             <TouchableHighlight
-              style={styles.textSubmit}
+              style={defaults.textSubmit}
               onPress={this.addNewPromotion}
             >
-              <Text style={styles.buttonText}>Add Promotion</Text>
+              <Text style={defaults.buttonText}>Add Promotion</Text>
             </TouchableHighlight>
           </View>
           {imagePreview}
@@ -304,7 +242,7 @@ class AddPromotion extends Component {
 
     return (
       <View style={styles.mainWrap}>
-        <Text style={styles.subTitle}>Add New Promotion</Text>
+        <Text style={defaults.subTitle}>Add New Promotion</Text>
         {formWrap}
       </View>
     );
