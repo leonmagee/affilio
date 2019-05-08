@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
   },
   appTitle: {
     color: '#fff',
-    fontSize: 80,
-    fontFamily: 'Assistant-Bold',
+    fontSize: 75,
+    fontFamily: 'Lato-Bold',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,

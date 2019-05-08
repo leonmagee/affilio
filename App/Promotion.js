@@ -34,8 +34,11 @@ const styles = StyleSheet.create({
   },
   companyName: {
     fontSize: 27,
-    color: '#444',
-    fontFamily: 'Assistant-Bold',
+    color: '#111',
+    // fontFamily: 'Assistant-Bold',
+    // fontFamily: 'Lato-Regular',
+    fontFamily: 'Lato-Bold',
+    // fontFamily: 'Lato-Black',
   },
   sectionWrap: {
     flexDirection: 'row',
@@ -47,8 +50,9 @@ const styles = StyleSheet.create({
   },
   promoText: {
     color: colors.lightGray,
-    fontSize: 18,
+    fontSize: 19,
     flex: 1,
+    fontFamily: 'Lato-Regular',
   },
   shareWrap: {
     flexDirection: 'row',
@@ -60,9 +64,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dateItem: {
-    fontSize: 18,
+    fontSize: 19,
     color: colors.lightGray,
     marginRight: 8,
+    fontFamily: 'Lato-Regular',
   },
 });
 

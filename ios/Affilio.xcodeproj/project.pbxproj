@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -59,6 +58,9 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		F6BFF81A8E48430BBB79F77F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED604B0CFB8044999BA65749 /* Ionicons.ttf */; };
+		B4184AFE38CA4312B2317569 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A079373C5DE408DB8EA9AB8 /* Lato-Black.ttf */; };
+		92DF0DE6F90F46B5BA7940AD /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B05C758F59B473F9E6B128A /* Lato-Bold.ttf */; };
+		28242C5AF04E4421827CC02C /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B7147A8F2C04C5C9EC8C2FF /* Lato-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -395,6 +397,9 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		ED604B0CFB8044999BA65749 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		1A079373C5DE408DB8EA9AB8 /* Lato-Black.ttf */ = {isa = PBXFileReference; name = "Lato-Black.ttf"; path = "../App/Assets/Fonts/Lato/Lato-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4B05C758F59B473F9E6B128A /* Lato-Bold.ttf */ = {isa = PBXFileReference; name = "Lato-Bold.ttf"; path = "../App/Assets/Fonts/Lato/Lato-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0B7147A8F2C04C5C9EC8C2FF /* Lato-Regular.ttf */ = {isa = PBXFileReference; name = "Lato-Regular.ttf"; path = "../App/Assets/Fonts/Lato/Lato-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -533,6 +538,9 @@
 				C9DD8FE4BF3C4CA8978F8EA4 /* Octicons.ttf */,
 				CCE333901810483CA1FF9874 /* SimpleLineIcons.ttf */,
 				3BCE531BE3C645A9B53FDE48 /* Zocial.ttf */,
+				1A079373C5DE408DB8EA9AB8 /* Lato-Black.ttf */,
+				4B05C758F59B473F9E6B128A /* Lato-Bold.ttf */,
+				0B7147A8F2C04C5C9EC8C2FF /* Lato-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1195,6 +1203,9 @@
 				E576DA7081A744EDB838D369 /* Octicons.ttf in Resources */,
 				C61626109115488AAE1B969D /* SimpleLineIcons.ttf in Resources */,
 				E0BCB74C02324460ABAB026D /* Zocial.ttf in Resources */,
+				B4184AFE38CA4312B2317569 /* Lato-Black.ttf in Resources */,
+				92DF0DE6F90F46B5BA7940AD /* Lato-Bold.ttf in Resources */,
+				28242C5AF04E4421827CC02C /* Lato-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

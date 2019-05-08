@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     paddingHorizontal: 14,
     fontSize: 19,
+    fontFamily: 'Lato-Regular',
     marginBottom: 20,
     borderColor: 'rgba(0,0,0,0.25)',
     borderWidth: 1,
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageUploadButton: {
-    backgroundColor: colors.brandPrimary,
+    backgroundColor: colors.brandSecond,
     padding: 10,
     marginBottom: 20,
     alignItems: 'center',
@@ -62,17 +63,17 @@ const styles = StyleSheet.create({
   imageUploadText: {
     color: '#FFF',
     fontSize: 18,
-    fontFamily: 'Assistant-Bold',
+    fontFamily: 'Lato-Bold',
   },
   textSubmit: {
-    backgroundColor: '#333',
+    backgroundColor: colors.brandPrimary,
     alignItems: 'center',
     padding: 15,
   },
   buttonText: {
     color: 'white',
     fontSize: 20,
-    fontFamily: 'Assistant-Bold',
+    fontFamily: 'Lato-Bold',
   },
   imagePreviewWrap: {
     marginTop: 20,
@@ -107,12 +108,14 @@ class AddPromotion extends Component {
   };
 
   setEndingDate = endingDate => {
-    const newEndDate = RNFirebase.firestore.Timestamp.fromDate(
-      new Date(endingDate)
-    );
+    // regular new Date() seems to work for this...
+    // const newEndDate = RNFirebase.firestore.Timestamp.fromDate(
+    //   new Date(endingDate)
+    // );
+    const endDateSubmit = new Date(endingDate);
     this.setState({
       endingDate,
-      endDateSubmit: newEndDate,
+      endDateSubmit,
     });
   };
 
@@ -152,6 +155,7 @@ class AddPromotion extends Component {
         company: companyName,
         promotion: newPromo,
         end: endDateSubmit,
+        createdAt: new Date(),
       };
       firestore
         .collection('promos')
@@ -274,6 +278,7 @@ class AddPromotion extends Component {
                 customStyles={{
                   placeholderText: {
                     fontSize: 19,
+                    fontFamily: 'Lato-Regular',
                   },
                 }}
                 onDateChange={this.setEndingDate}
