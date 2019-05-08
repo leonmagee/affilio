@@ -59,7 +59,6 @@ const TabNavigator = createBottomTabNavigator(
       showLabel: false,
       style: {
         backgroundColor: '#000',
-        // paddingTop: 15,
         height: 75,
       },
     },

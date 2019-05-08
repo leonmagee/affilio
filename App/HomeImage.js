@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 
+const imageURL = require('./Assets/Images/blurry-buses.png');
+
 let { width, height } = Dimensions.get('window');
 height -= 80;
 
@@ -39,10 +41,7 @@ class HomeImage extends Component {
   render() {
     return (
       <View style={styles.mainWrap}>
-        <Image
-          source={require('./Assets/Images/blurry-buses.png')}
-          style={styles.imageContainer}
-        />
+        <Image source={imageURL} style={styles.imageContainer} />
         <View style={styles.appTitleWrap}>
           <Text style={styles.appTitle}>AFFILIO</Text>
         </View>

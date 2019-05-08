@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   subTitle: {
-    color: '#222',
+    color: '#111',
     fontSize: 23,
     textAlign: 'center',
-    fontFamily: 'Assistant-Bold',
+    fontFamily: 'Lato-Bold',
   },
   textInput: {
     backgroundColor: 'white',

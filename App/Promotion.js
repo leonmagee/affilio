@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+  DatePicker,
+  Image,
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import { colors } from './variables';
 
+const placeholderUrl = require('./Assets/Images/placeholder.jpg');
+
 const styles = StyleSheet.create({
   promotionWrap: {
-    // marginBottom: 50,
     borderWidth: 2,
-    // borderColor: '#dfdfdf',
     borderColor: 'rgba(0,0,0,0.08)',
     marginHorizontal: 20,
     marginVertical: 15,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
   },
   promoImage: {
     height: 150,
@@ -27,17 +31,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   companyNameWrap: {
-    paddingBottom: 5,
+    paddingBottom: 10,
     marginBottom: 10,
     borderBottomColor: 'rgba(0,0,0,0.07)',
     borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   companyName: {
     fontSize: 27,
     color: '#111',
-    // fontFamily: 'Assistant-Bold',
-    // fontFamily: 'Lato-Regular',
     fontFamily: 'Lato-Bold',
+    // fontFamily: 'Lato-Regular',
     // fontFamily: 'Lato-Black',
   },
   sectionWrap: {
@@ -57,7 +62,6 @@ const styles = StyleSheet.create({
   shareWrap: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    // marginTop: 20,
     marginBottom: 5,
   },
   dateRangeWrap: {
@@ -72,17 +76,30 @@ const styles = StyleSheet.create({
 });
 
 class Promotion extends Component {
-  render() {
-    const { company, promo, start, end, image } = this.props;
-    const startDate = start
-      ? moment(start.toDate()).format('MMMM Do YYYY')
-      : '';
-    const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
+  constructor() {
+    super();
+    this.state = {
+      modalVisible: false,
+    };
+  }
 
-    const placeholderUrl = require('./Assets/Images/placeholder.jpg');
-    // const imageUrl = image || 'https://picsum.photos/600/200';
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
+  editPromo = () => {
+    console.log('click');
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  render() {
+    const { company, promo, end, image } = this.props;
+    const { modalVisible } = this.state;
+    const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
-    // const imageUrl = image || require('./Assets/Images/placeholder.jpg');
+    const endingDate = '3-3-2019';
 
     return (
       <View style={styles.promotionWrap}>
@@ -90,6 +107,9 @@ class Promotion extends Component {
         <View style={styles.detailsWrap}>
           <View style={styles.companyNameWrap}>
             <Text style={styles.companyName}>{company}</Text>
+            <TouchableHighlight onPress={this.editPromo}>
+              <Icon name="pencil" size={25} color={colors.brandPrimary} />
+            </TouchableHighlight>
           </View>
           <View style={styles.sectionWrap}>
             <View style={styles.iconWrap}>
@@ -112,17 +132,63 @@ class Promotion extends Component {
             <Icon name="share" size={33} color={colors.brandPrimary} />
           </View>
         </View>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}
+        >
+          <View style={{ marginTop: 22 }}>
+            <View>
+              <View style={styles.formWrap}>
+                <TextInput
+                  style={styles.textInput}
+                  value={company}
+                  onChangeText={e => {
+                    this.updateTextInput(e, 'companyName');
+                  }}
+                  placeholder="Company Name"
+                />
+                <TextInput
+                  style={[styles.textInput, styles.textArea]}
+                  value={promo}
+                  multiline
+                  onChangeText={e => {
+                    this.updateTextInput(e, 'newPromo');
+                  }}
+                  placeholder="Promotion Details"
+                />
+                <View style={styles.datePickerWrap} />
+                <TouchableHighlight
+                  style={styles.imageUploadButton}
+                  onPress={this.imageSelect}
+                >
+                  <Text style={styles.imageUploadText}>Choose Image</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={styles.textSubmit}
+                  onPress={this.addNewPromotion}
+                >
+                  <Text style={styles.buttonText}>Add Promotion</Text>
+                </TouchableHighlight>
+              </View>
+
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}
+              >
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
-
-Promotion.propTypes = {
-  company: PropTypes.string,
-  promo: PropTypes.string,
-  start: PropTypes.object,
-  end: PropTypes.object,
-  image: PropTypes.string,
-};
 
 module.exports = Promotion;

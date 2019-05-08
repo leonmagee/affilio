@@ -34,7 +34,6 @@
   },
   "rnpm": {
     "assets": [
-      "./App/Assets/Fonts/Assistant",
       "./App/Assets/Fonts/Lato"
     ]
   }
