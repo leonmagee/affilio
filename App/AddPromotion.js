@@ -21,7 +21,7 @@ const firestore = RNFirebase.firestore();
 const styles = StyleSheet.create({
   mainWrap: {
     flex: 1,
-    paddingTop: 80,
+    paddingTop: 45,
     backgroundColor: '#fff',
   },
 });
@@ -167,9 +167,7 @@ class AddPromotion extends Component {
     let imagePreview = <View />;
     if (imageSource) {
       imagePreview = (
-        <View style={defaults.imagePreviewWrap}>
-          <Image style={defaults.imagePreview} source={{ uri: imageSource }} />
-        </View>
+        <Image style={defaults.imagePreview} source={{ uri: imageSource }} />
       );
     }
 
@@ -222,22 +220,24 @@ class AddPromotion extends Component {
                 onDateChange={this.setEndingDate}
               />
             </View>
-            <TouchableHighlight
-              style={defaults.imageUploadButton}
-              onPress={this.imageSelect}
-              underlayColor={colors.brandSecond}
-            >
-              <Text style={defaults.imageUploadText}>Choose Image</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={defaults.textSubmit}
-              onPress={this.addNewPromotion}
-              underlayColor={colors.brandPrimary}
-            >
-              <Text style={defaults.buttonText}>Add Promotion</Text>
-            </TouchableHighlight>
+            <View style={defaults.bigButtonWrap}>
+              <TouchableHighlight
+                style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                onPress={this.imageSelect}
+                underlayColor={colors.brandSecond}
+              >
+                <Text style={defaults.buttonText}>Choose Image</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[defaults.buttonStyle, defaults.updateSubmitButton]}
+                onPress={this.addNewPromotion}
+                underlayColor={colors.brandPrimary}
+              >
+                <Text style={defaults.buttonText}>Add Promotion</Text>
+              </TouchableHighlight>
+            </View>
+            {imagePreview}
           </View>
-          {imagePreview}
         </ScrollView>
       );
     }

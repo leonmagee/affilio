@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  ActivityIndicator,
   Image,
   Modal,
   StyleSheet,
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
+import RNFirebase from 'react-native-firebase';
 import RNFetchBlob from 'rn-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
@@ -67,6 +69,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginBottom: 5,
   },
+  iconGroup: {
+    flexDirection: 'row',
+  },
+  iconGroupIcon: {
+    marginLeft: 20,
+  },
   dateRangeWrap: {
     flexDirection: 'row',
   },
@@ -84,30 +92,21 @@ class Promotion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // copy props into state for update form
       modalVisible: false,
       id: props.id,
       companyName: props.company,
       newPromo: props.promo,
-      // endingDate: '',
       endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
       endDateSubmit: props.end,
       imageSource: props.image,
+      imageUpdated: false,
       processing: false,
     };
-    console.log('props end?', props.end);
   }
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-
-  editPromo = () => {
-    console.log('click');
-    this.setState({
-      modalVisible: true,
-    });
-  };
 
   updateTextInput = (value, name) => {
     this.setState({
@@ -123,6 +122,12 @@ class Promotion extends Component {
     });
   };
 
+  viewSingle = () => {
+    const { id } = this.state;
+    const { filterId } = this.props;
+    filterId(id);
+  };
+
   imageSelect = () => {
     const options = {
       title: 'Choose Promotion Image',
@@ -135,66 +140,98 @@ class Promotion extends Component {
     };
 
     ImagePicker.showImagePicker(options, response => {
-      // console.log('Response = ', response);
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.error) {
-        console.error('ImagePicker Error: ', response.error);
+        // console.error('ImagePicker Error: ', response.error);
       } else {
         this.setState({
           imageSource: response.uri,
+          imageUpdated: true,
         });
       }
     });
   };
 
   updateCurrentPromotion = () => {
-    const { id, companyName, endDateSubmit, newPromo } = this.state;
+    this.setState({
+      processing: true,
+    });
+    const {
+      id,
+      companyName,
+      endDateSubmit,
+      newPromo,
+      imageSource,
+      imageUpdated,
+    } = this.state;
     const { firestore } = this.props;
-    console.log('this was clickecccccc', companyName, id);
 
     const promoRef = firestore.doc(`promos/${id}`);
-    promoRef
-      .update({
-        company: companyName,
-        promotion: newPromo,
-        end: endDateSubmit,
-      })
-      .then(() => {
-        console.log('updated?');
-      });
-    this.setState({
-      modalVisible: false,
-    });
 
-    // const postRef = firestore.doc(`posts/${id}`);
-    // const remove = () => postRef.delete();
-    // const star = () => postRef.update({ stars: stars + 1 });
-  };
+    if (companyName !== '' && newPromo !== '' && endDateSubmit && imageSource) {
+      if (imageUpdated) {
+        const { Blob } = RNFetchBlob.polyfill;
+        const { fs } = RNFetchBlob;
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+        window.Blob = Blob;
+        const uid = '12345'; // different folder for different users?
+        const imageRef = RNFirebase.storage()
+          .ref(uid)
+          .child(`image-${id}.jpg`);
+        const mime = 'image/jpeg';
 
-  imageSelect = () => {
-    const options = {
-      title: 'Choose Promotion Image',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-      maxWidth: 550,
-      mediaType: 'photo',
-    };
-
-    ImagePicker.showImagePicker(options, response => {
-      // console.log('Response = ', response);
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.error('ImagePicker Error: ', response.error);
+        const filePath = imageSource.replace('file:', '');
+        let uploadBlob = false;
+        fs.readFile(filePath, 'base64')
+          .then(data => Blob.build(data, { type: `${mime};BASE64` }))
+          .then(blob => {
+            uploadBlob = blob;
+            return imageRef.put(blob._ref, { contentType: mime });
+          })
+          .then(() => {
+            uploadBlob.close();
+            return imageRef.getDownloadURL();
+          })
+          .then(firebaseUrl => {
+            promoRef
+              .update({
+                company: companyName,
+                promotion: newPromo,
+                end: endDateSubmit,
+                updatedAt: new Date(),
+                image: firebaseUrl,
+              })
+              .then(() => {
+                this.setState({
+                  modalVisible: false,
+                  processing: false,
+                  imageUpdated: false,
+                });
+                this.viewSingle();
+              });
+          })
+          .catch(error => {
+            console.error(error);
+          });
       } else {
-        this.setState({
-          imageSource: response.uri,
-        });
+        promoRef
+          .update({
+            company: companyName,
+            promotion: newPromo,
+            end: endDateSubmit,
+            updatedAt: new Date(),
+          })
+          .then(() => {
+            this.setState({
+              modalVisible: false,
+              processing: false,
+              imageUpdated: false,
+            });
+            this.viewSingle();
+          });
       }
-    });
+    }
   };
 
   render() {
@@ -205,10 +242,20 @@ class Promotion extends Component {
       modalVisible,
       newPromo,
       imageSource,
+      processing,
     } = this.state;
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
     // const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
+
+    let processIndicator = <></>;
+    if (processing) {
+      processIndicator = (
+        <View style={defaults.indicatorWrap}>
+          <ActivityIndicator size="large" color="#222" />
+        </View>
+      );
+    }
 
     return (
       <View style={styles.promotionWrap}>
@@ -216,9 +263,26 @@ class Promotion extends Component {
         <View style={styles.detailsWrap}>
           <View style={styles.companyNameWrap}>
             <Text style={styles.companyName}>{company}</Text>
-            <TouchableHighlight onPress={this.editPromo}>
-              <Icon name="pencil" size={25} color={colors.brandPrimary} />
-            </TouchableHighlight>
+            <View style={styles.iconGroup}>
+              <TouchableHighlight
+                style={styles.iconGroupIcon}
+                onPress={this.viewSingle}
+                underlayColor="transparent"
+              >
+                <Icon
+                  name="plus-circle"
+                  size={25}
+                  color={colors.brandPrimary}
+                />
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.iconGroupIcon}
+                onPress={() => this.setModalVisible(!modalVisible)}
+                underlayColor="transparent"
+              >
+                <Icon name="pencil" size={25} color={colors.brandPrimary} />
+              </TouchableHighlight>
+            </View>
           </View>
           <View style={styles.sectionWrap}>
             <View style={styles.iconWrap}>
@@ -288,26 +352,28 @@ class Promotion extends Component {
                   onDateChange={this.setEndingDate}
                 />
               </View>
-              <View style={defaults.imagePreviewModal}>
-                <Image
-                  style={defaults.imagePreview}
-                  source={{ uri: imageSource }}
-                />
+              <View style={defaults.bigButtonWrap}>
+                <TouchableHighlight
+                  // style={defaults.imageUploadButton}
+                  style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                  onPress={this.imageSelect}
+                  underlayColor={colors.brandSecond}
+                >
+                  <Text style={defaults.buttonText}>Change Image</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={[defaults.buttonStyle, defaults.updateSubmitButton]}
+                  onPress={this.updateCurrentPromotion}
+                  underlayColor={colors.brandPrimary}
+                >
+                  <Text style={defaults.buttonText}>Update</Text>
+                </TouchableHighlight>
               </View>
-              <TouchableHighlight
-                style={defaults.imageUploadButton}
-                onPress={this.imageSelect}
-                underlayColor={colors.brandSecond}
-              >
-                <Text style={defaults.imageUploadText}>Change Image</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={defaults.textSubmit}
-                onPress={this.updateCurrentPromotion}
-                underlayColor={colors.brandPrimary}
-              >
-                <Text style={defaults.buttonText}>Update</Text>
-              </TouchableHighlight>
+              <Image
+                style={defaults.imagePreview}
+                source={{ uri: imageSource }}
+              />
+              {processIndicator}
               <View style={defaults.closeIconWrap}>
                 <TouchableHighlight
                   onPress={() => {

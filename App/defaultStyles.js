@@ -8,11 +8,11 @@ export const defaults = {
     fontFamily: 'Lato-Bold',
   },
   formWrap: {
-    marginHorizontal: 30,
+    marginHorizontal: 20,
     padding: 20,
   },
   formWrapModal: {
-    marginHorizontal: 5,
+    // marginHorizontal: 5,
     padding: 20,
     flex: 1,
   },
@@ -20,7 +20,7 @@ export const defaults = {
     backgroundColor: 'white',
     paddingVertical: 7,
     paddingHorizontal: 14,
-    fontSize: 19,
+    fontSize: 17,
     fontFamily: 'Lato-Regular',
     marginBottom: 20,
     borderColor: 'rgba(0,0,0,0.25)',
@@ -37,30 +37,29 @@ export const defaults = {
     marginBottom: 20,
     flex: 1,
   },
-  imageUploadButton: {
-    backgroundColor: colors.brandSecond,
-    padding: 10,
+  bigButtonWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buttonStyle: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     marginBottom: 20,
     alignItems: 'center',
+    flex: 1,
   },
-  imageUploadText: {
+  buttonText: {
     color: '#FFF',
     fontSize: 18,
     fontFamily: 'Lato-Bold',
   },
-  textSubmit: {
+  imageUploadButton: {
+    backgroundColor: colors.brandSecond,
+    marginRight: 10,
+  },
+  updateSubmitButton: {
     backgroundColor: colors.brandPrimary,
-    alignItems: 'center',
-    padding: 15,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    fontFamily: 'Lato-Bold',
-  },
-  imagePreviewWrap: {
-    marginTop: 20,
-    paddingHorizontal: 50,
+    marginLeft: 10,
   },
   imagePreviewModal: {
     marginBottom: 20,
@@ -76,7 +75,7 @@ export const defaults = {
   modalWrapInner: {
     backgroundColor: '#fff',
     marginHorizontal: 30,
-    marginVertical: 80,
+    marginVertical: 40,
     paddingTop: 25,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.3)',
@@ -88,8 +87,7 @@ export const defaults = {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
-  // closeIcon: {
-  //   backgroundColor: 'red',
-  //   // flex: 1,
-  // },
+  indicatorWrap: {
+    paddingTop: 15,
+  },
 };

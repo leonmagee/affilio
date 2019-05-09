@@ -92,9 +92,21 @@ class Promotions extends Component {
       });
   };
 
+  filterId = id => {
+    this.unsubscribeFromFirestore = firestore
+      .collection('promos')
+      .doc(id)
+      .onSnapshot(snapshot => {
+        const promotions = [getDocAndId(snapshot)];
+        this.setState({
+          promotions,
+          current: '',
+        });
+      });
+  };
+
   render() {
     const { promotions, current } = this.state;
-    console.log('all promotions', promotions);
 
     return (
       <View style={styles.mainWrap}>
@@ -112,6 +124,7 @@ class Promotions extends Component {
               end={item.data.end}
               image={item.data.image}
               firestore={firestore}
+              filterId={this.filterId}
             />
           )}
         />
