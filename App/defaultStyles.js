@@ -1,7 +1,19 @@
 import { colors } from './variables';
 
 export const defaults = {
+  mainWrap: {
+    flex: 1,
+    paddingTop: 45,
+    backgroundColor: '#fff',
+  },
+  title: {
+    color: '#111',
+    fontSize: 23,
+    textAlign: 'center',
+    fontFamily: 'Lato-Bold',
+  },
   subTitle: {
+    // deprecated
     color: '#111',
     fontSize: 23,
     textAlign: 'center',

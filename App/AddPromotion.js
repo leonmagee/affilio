@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
@@ -18,13 +17,13 @@ import { defaults } from './defaultStyles';
 
 const firestore = RNFirebase.firestore();
 
-const styles = StyleSheet.create({
-  mainWrap: {
-    flex: 1,
-    paddingTop: 45,
-    backgroundColor: '#fff',
-  },
-});
+// const styles = StyleSheet.create({
+//   mainWrap: {
+//     flex: 1,
+//     paddingTop: 45,
+//     backgroundColor: '#fff',
+//   },
+// });
 
 class AddPromotion extends Component {
   constructor() {
@@ -44,6 +43,11 @@ class AddPromotion extends Component {
       [name]: value,
     });
   };
+
+  // redirectPromos = () => {
+  //   const { navigation } = this.props;
+  //   navigation.navigate('Promotions');
+  // };
 
   setEndingDate = endingDate => {
     // regular new Date() seems to work for this...
@@ -143,6 +147,9 @@ class AddPromotion extends Component {
                 imageSource: false,
                 processing: false,
               });
+
+              const { navigation } = this.props;
+              navigation.navigate('Promotions');
             })
             .catch(error => {
               console.error(error);
@@ -243,7 +250,7 @@ class AddPromotion extends Component {
     }
 
     return (
-      <View style={styles.mainWrap}>
+      <View style={defaults.mainWrap}>
         <Text style={defaults.subTitle}>Add New Promotion</Text>
         {formWrap}
       </View>
