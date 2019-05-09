@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  DatePicker,
   Image,
   Modal,
   StyleSheet,
@@ -9,6 +8,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import { colors } from './variables';
@@ -77,10 +77,18 @@ const styles = StyleSheet.create({
 });
 
 class Promotion extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      // copy props into state for update form
       modalVisible: false,
+      id: props.id,
+      companyName: props.company,
+      newPromo: props.promo,
+      endingDate: '',
+      endDateSubmit: false,
+      imageSource: false,
+      processing: false,
     };
   }
 
@@ -95,12 +103,46 @@ class Promotion extends Component {
     });
   };
 
+  updateTextInput = (value, name) => {
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  changeImage = () => {
+    console.log('lets change the image');
+  };
+
+  updateCurrentPromotion = () => {
+    const { id, companyName, newPromo } = this.state;
+    const { firestore } = this.props;
+    console.log('this was clickecccccc', companyName, id);
+
+    const promoRef = firestore.doc(`promos/${id}`);
+    promoRef
+      .update({
+        company: companyName,
+        promotion: newPromo,
+      })
+      .then(() => {
+        console.log('updated?');
+      });
+    this.setState({
+      modalVisible: false,
+    });
+
+    // const postRef = firestore.doc(`posts/${id}`);
+    // const remove = () => postRef.delete();
+    // const star = () => postRef.update({ stars: stars + 1 });
+  };
+
   render() {
     const { company, promo, end, image } = this.props;
+    const { companyName, newPromo } = this.state;
     const { modalVisible } = this.state;
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
+    const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
-    const endingDate = '3-3-2019';
 
     return (
       <View style={styles.promotionWrap}>
@@ -142,10 +184,10 @@ class Promotion extends Component {
         >
           <View style={defaults.modalWrapInner}>
             <Text style={defaults.subTitle}>Update Promotion</Text>
-            <View style={defaults.formWrap}>
+            <View style={defaults.formWrapModal}>
               <TextInput
                 style={defaults.textInput}
-                value={company}
+                value={companyName}
                 onChangeText={e => {
                   this.updateTextInput(e, 'companyName');
                 }}
@@ -153,26 +195,47 @@ class Promotion extends Component {
               />
               <TextInput
                 style={[defaults.textInput, defaults.textArea]}
-                value={promo}
+                value={newPromo}
                 multiline
                 onChangeText={e => {
                   this.updateTextInput(e, 'newPromo');
                 }}
                 placeholder="Promotion Details"
               />
-              <View style={defaults.datePickerWrap} />
+              <View style={defaults.datePickerWrap}>
+                <DatePicker
+                  style={defaults.datePicker}
+                  date={endDateModal}
+                  mode="date"
+                  placeholder="Expiration Date"
+                  format="MM-DD-YYYY"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  minDate={new Date()}
+                  showIcon={false}
+                  customStyles={{
+                    placeholderText: {
+                      fontSize: 19,
+                      fontFamily: 'Lato-Regular',
+                    },
+                  }}
+                  onDateChange={this.setEndingDate}
+                />
+              </View>
               <View style={defaults.imagePreviewModal}>
                 <Image style={defaults.imagePreview} source={imageUrl} />
               </View>
               <TouchableHighlight
                 style={defaults.imageUploadButton}
-                onPress={this.imageSelect}
+                onPress={this.changeImage}
+                underlayColor={colors.brandSecond}
               >
                 <Text style={defaults.imageUploadText}>Change Image</Text>
               </TouchableHighlight>
               <TouchableHighlight
                 style={defaults.textSubmit}
-                onPress={this.addNewPromotion}
+                onPress={this.updateCurrentPromotion}
+                underlayColor={colors.brandPrimary}
               >
                 <Text style={defaults.buttonText}>Update</Text>
               </TouchableHighlight>

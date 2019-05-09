@@ -51,6 +51,7 @@ class AddPromotion extends Component {
     //   new Date(endingDate)
     // );
     const endDateSubmit = new Date(endingDate);
+    // console.log('enderz', endingDate);
     this.setState({
       endingDate,
       endDateSubmit,
@@ -70,7 +71,6 @@ class AddPromotion extends Component {
 
     ImagePicker.showImagePicker(options, response => {
       // console.log('Response = ', response);
-
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -225,12 +225,14 @@ class AddPromotion extends Component {
             <TouchableHighlight
               style={defaults.imageUploadButton}
               onPress={this.imageSelect}
+              underlayColor={colors.brandSecond}
             >
               <Text style={defaults.imageUploadText}>Choose Image</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={defaults.textSubmit}
               onPress={this.addNewPromotion}
+              underlayColor={colors.brandPrimary}
             >
               <Text style={defaults.buttonText}>Add Promotion</Text>
             </TouchableHighlight>

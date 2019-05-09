@@ -49,7 +49,6 @@ const TabNavigator = createBottomTabNavigator(
         } else if (routeName === 'AddPromotion') {
           iconName = 'tag-plus';
         }
-
         return <Icon name={iconName} size={35} color={tintColor} />;
       },
     }),

@@ -10,6 +10,10 @@ export const defaults = {
   formWrap: {
     marginHorizontal: 30,
     padding: 20,
+  },
+  formWrapModal: {
+    marginHorizontal: 5,
+    padding: 20,
     flex: 1,
   },
   textInput: {
@@ -73,9 +77,9 @@ export const defaults = {
     backgroundColor: '#fff',
     marginHorizontal: 30,
     marginVertical: 80,
-    paddingVertical: 25,
+    paddingTop: 25,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
+    borderColor: 'rgba(0,0,0,0.3)',
     flex: 1,
   },
   closeIconWrap: {

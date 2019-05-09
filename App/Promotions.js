@@ -94,6 +94,7 @@ class Promotions extends Component {
 
   render() {
     const { promotions, current } = this.state;
+    console.log('all promotions', promotions);
 
     return (
       <View style={styles.mainWrap}>
@@ -104,11 +105,13 @@ class Promotions extends Component {
           data={promotions}
           renderItem={({ item }) => (
             <Promotion
+              id={item.key}
               company={item.data.company}
               promo={item.data.promotion}
               start={item.data.start}
               end={item.data.end}
               image={item.data.image}
+              firestore={firestore}
             />
           )}
         />
