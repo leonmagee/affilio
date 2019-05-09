@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import { colors } from './variables';
@@ -75,7 +77,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Regular',
   },
 });
-
+// start = { item.data.start }
+// end = { item.data.end }
+// image = { item.data.image }
 class Promotion extends Component {
   constructor(props) {
     super(props);
@@ -85,11 +89,13 @@ class Promotion extends Component {
       id: props.id,
       companyName: props.company,
       newPromo: props.promo,
-      endingDate: '',
-      endDateSubmit: false,
-      imageSource: false,
+      // endingDate: '',
+      endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
+      endDateSubmit: props.end,
+      imageSource: props.image,
       processing: false,
     };
+    console.log('props end?', props.end);
   }
 
   setModalVisible(visible) {
@@ -109,12 +115,41 @@ class Promotion extends Component {
     });
   };
 
-  changeImage = () => {
-    console.log('lets change the image');
+  setEndingDate = endingDate => {
+    const endDateSubmit = new Date(endingDate);
+    this.setState({
+      endingDate,
+      endDateSubmit,
+    });
+  };
+
+  imageSelect = () => {
+    const options = {
+      title: 'Choose Promotion Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      maxWidth: 550,
+      mediaType: 'photo',
+    };
+
+    ImagePicker.showImagePicker(options, response => {
+      // console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.error('ImagePicker Error: ', response.error);
+      } else {
+        this.setState({
+          imageSource: response.uri,
+        });
+      }
+    });
   };
 
   updateCurrentPromotion = () => {
-    const { id, companyName, newPromo } = this.state;
+    const { id, companyName, endDateSubmit, newPromo } = this.state;
     const { firestore } = this.props;
     console.log('this was clickecccccc', companyName, id);
 
@@ -123,6 +158,7 @@ class Promotion extends Component {
       .update({
         company: companyName,
         promotion: newPromo,
+        end: endDateSubmit,
       })
       .then(() => {
         console.log('updated?');
@@ -136,12 +172,42 @@ class Promotion extends Component {
     // const star = () => postRef.update({ stars: stars + 1 });
   };
 
+  imageSelect = () => {
+    const options = {
+      title: 'Choose Promotion Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      maxWidth: 550,
+      mediaType: 'photo',
+    };
+
+    ImagePicker.showImagePicker(options, response => {
+      // console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.error('ImagePicker Error: ', response.error);
+      } else {
+        this.setState({
+          imageSource: response.uri,
+        });
+      }
+    });
+  };
+
   render() {
     const { company, promo, end, image } = this.props;
-    const { companyName, newPromo } = this.state;
-    const { modalVisible } = this.state;
+    const {
+      companyName,
+      endingDate,
+      modalVisible,
+      newPromo,
+      imageSource,
+    } = this.state;
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
-    const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
+    // const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
 
     return (
@@ -205,7 +271,7 @@ class Promotion extends Component {
               <View style={defaults.datePickerWrap}>
                 <DatePicker
                   style={defaults.datePicker}
-                  date={endDateModal}
+                  date={endingDate}
                   mode="date"
                   placeholder="Expiration Date"
                   format="MM-DD-YYYY"
@@ -223,11 +289,14 @@ class Promotion extends Component {
                 />
               </View>
               <View style={defaults.imagePreviewModal}>
-                <Image style={defaults.imagePreview} source={imageUrl} />
+                <Image
+                  style={defaults.imagePreview}
+                  source={{ uri: imageSource }}
+                />
               </View>
               <TouchableHighlight
                 style={defaults.imageUploadButton}
-                onPress={this.changeImage}
+                onPress={this.imageSelect}
                 underlayColor={colors.brandSecond}
               >
                 <Text style={defaults.imageUploadText}>Change Image</Text>
@@ -242,7 +311,7 @@ class Promotion extends Component {
               <View style={defaults.closeIconWrap}>
                 <TouchableHighlight
                   onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible);
+                    this.setModalVisible(!modalVisible);
                   }}
                 >
                   <Icon
