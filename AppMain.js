@@ -1,11 +1,36 @@
 import React, { Component } from 'react';
 import { Modal, Switch, StyleSheet, Text, View } from 'react-native';
-import { signInWithGoogle } from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { GoogleSignin } from 'react-native-google-signin';
+import RNFirebase from 'react-native-firebase';
 import Router from './App/Router';
 import { colors } from './App/variables';
 import { defaults } from './App/defaultStyles';
+
+// Calling this function will open Google for login.
+export const googleLogin = async () => {
+  try {
+    // Add any configuration settings here:
+    await GoogleSignin.configure();
+
+    const data = await GoogleSignin.signIn();
+
+    // create a new firebase credential with the token
+    const credential = RNFirebase.auth.GoogleAuthProvider.credential(
+      data.idToken,
+      data.accessToken
+    );
+    // login with credential
+    const currentUser = await RNFirebase.auth().signInWithCredential(
+      credential
+    );
+
+    console.info(JSON.stringify(currentUser.toJSON()));
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 const styles = StyleSheet.create({
   headerBar: {
@@ -77,7 +102,7 @@ class AppMain extends Component {
             <View style={defaults.formWrapModal}>
               <TouchableHighlight
                 underlayColor="transparent"
-                onPress={signInWithGoogle}
+                onPress={googleLogin}
               >
                 <Text style={defaults.redButton}>Sign In With Google</Text>
               </TouchableHighlight>

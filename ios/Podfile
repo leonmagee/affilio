@@ -49,6 +49,8 @@ target 'Affilio' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
 end
 
 post_install do |installer|
