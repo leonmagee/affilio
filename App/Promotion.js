@@ -22,18 +22,26 @@ const placeholderUrl = require('./Assets/Images/placeholder.jpg');
 
 const styles = StyleSheet.create({
   promotionWrap: {
-    borderWidth: 2,
-    borderColor: 'rgba(0,0,0,0.08)',
-    marginHorizontal: 20,
-    marginVertical: 15,
+    // borderWidth: 2,
+    // borderColor: 'rgba(0,0,0,0.08)',
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    marginHorizontal: 15,
+    marginBottom: 15,
   },
   promoImage: {
-    height: 150,
+    height: 200,
+    width: null,
+  },
+  promoImageSingle: {
+    height: 300,
     width: null,
   },
   detailsWrap: {
     paddingVertical: 15,
     paddingHorizontal: 25,
+    backgroundColor: '#FFF',
   },
   companyNameWrap: {
     paddingBottom: 10,
@@ -379,6 +387,7 @@ class Promotion extends Component {
                   onPress={() => {
                     this.setModalVisible(!modalVisible);
                   }}
+                  underlayColor="transparent"
                 >
                   <Icon
                     name="close-circle"

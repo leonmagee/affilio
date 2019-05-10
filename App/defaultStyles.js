@@ -69,6 +69,13 @@ export const defaults = {
     backgroundColor: colors.brandSecond,
     marginRight: 10,
   },
+  redButton: {
+    backgroundColor: colors.brandSecond,
+    padding: 15,
+    color: '#FFF',
+    fontSize: 18,
+    fontFamily: 'Lato-Bold',
+  },
   updateSubmitButton: {
     backgroundColor: colors.brandPrimary,
     marginLeft: 10,
@@ -86,8 +93,8 @@ export const defaults = {
   },
   modalWrapInner: {
     backgroundColor: '#fff',
-    marginHorizontal: 30,
-    marginVertical: 40,
+    marginHorizontal: 20,
+    marginVertical: 20,
     paddingTop: 25,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.3)',

@@ -9,8 +9,7 @@ import { colors } from './variables';
 
 const TabNavigator = createBottomTabNavigator(
   {
-    HomeImage,
-    Promotions,
+    HomeImage: Promotions,
     AddPromotion,
     Profile,
   },
