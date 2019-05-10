@@ -51,6 +51,10 @@ target 'Affilio' do
 
   pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
 
+  pod 'GoogleSignIn', '~> 4.4.0'
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
 end
 
 post_install do |installer|

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 
-const imageURL = require('./Assets/Images/blurry-buses.png');
+const imageURL = require('../Assets/Images/blurry-buses.png');
 
 let { width, height } = Dimensions.get('window');
 height -= 80;

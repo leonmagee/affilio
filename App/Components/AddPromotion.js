@@ -12,8 +12,8 @@ import RNFirebase from 'react-native-firebase';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-import { colors } from './variables';
-import { defaults } from './defaultStyles';
+import { colors } from '../Styles/variables';
+import { defaults } from '../Styles/defaultStyles';
 
 const firestore = RNFirebase.firestore();
 

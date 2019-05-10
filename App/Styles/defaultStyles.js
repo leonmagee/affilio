@@ -75,6 +75,7 @@ export const defaults = {
     color: '#FFF',
     fontSize: 18,
     fontFamily: 'Lato-Bold',
+    textAlign: 'center',
   },
   updateSubmitButton: {
     backgroundColor: colors.brandPrimary,
@@ -108,5 +109,20 @@ export const defaults = {
   },
   indicatorWrap: {
     paddingTop: 15,
+  },
+  formSubTitle: {
+    paddingBottom: 15,
+    fontSize: 18,
+    fontFamily: 'Lato-Bold',
+  },
+  radioButtonWrap: {
+    marginTop: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderTopColor: colors.borderColor,
+    borderTopWidth: 1,
+  },
+  radioButtonInner: {
+    paddingBottom: 7,
   },
 };

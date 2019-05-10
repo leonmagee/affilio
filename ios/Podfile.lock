@@ -132,6 +132,8 @@ PODS:
     - yoga (= 0.59.5.React)
   - rn-fetch-blob (0.10.6):
     - React/Core
+  - RNCAsyncStorage (1.4.0):
+    - React
   - RNFirebase (5.3.1):
     - Firebase/Core
     - React
@@ -149,9 +151,11 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Firestore
   - Firebase/Storage
+  - GoogleSignIn (~> 4.4.0)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - React/Core (from `../node_modules/react-native`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNFirebase (from `../node_modules/react-native-firebase/iOS`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleSignin (from `../node_modules/react-native-google-signin`)
@@ -188,6 +192,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/iOS"
   RNGestureHandler:
@@ -221,11 +227,12 @@ SPEC CHECKSUMS:
   React: 90adac468c7b72bf1fa6c64bf230650f851a8388
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
+  RNCAsyncStorage: 0c3ef98facf3fecf455b518d6f52e10fc964c523
   RNFirebase: f20e5e4ceaa632aebb1a29a9a91022ae0469c633
   RNGestureHandler: aea90f0ad8e35fec23438db6fc3ad79be58bb734
   RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
   yoga: 2e571f113e8cbeb0eb752aeebc86c1bfe7a8200c
 
-PODFILE CHECKSUM: 7d1b0c72abc8d1e6ab305240043ed81adccef172
+PODFILE CHECKSUM: 55adb06a1630d14e50c91be9208d0818d35108a6
 
 COCOAPODS: 1.6.1

@@ -15,10 +15,10 @@ import RNFirebase from 'react-native-firebase';
 import RNFetchBlob from 'rn-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
-import { colors } from './variables';
-import { defaults } from './defaultStyles';
+import { colors } from '../Styles/variables';
+import { defaults } from '../Styles/defaultStyles';
 
-const placeholderUrl = require('./Assets/Images/placeholder.jpg');
+const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
 const styles = StyleSheet.create({
   promotionWrap: {

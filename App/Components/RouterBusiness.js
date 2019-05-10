@@ -1,11 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeImage from './HomeImage';
 import Promotions from './Promotions';
 import AddPromotion from './AddPromotion';
 import Profile from './Profile';
-import { colors } from './variables';
+import { colors } from '../Styles/variables';
 
 const TabNavigator = createBottomTabNavigator(
   {

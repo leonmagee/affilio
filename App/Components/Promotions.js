@@ -7,10 +7,10 @@ import {
   View,
 } from 'react-native';
 import RNFirebase from 'react-native-firebase';
-import { colors } from './variables';
+import { colors } from '../Styles/variables';
 
 import Promotion from './Promotion';
-import { getDocAndId } from './utils';
+import { getDocAndId } from '../Utils/utils';
 
 const firestore = RNFirebase.firestore();
 

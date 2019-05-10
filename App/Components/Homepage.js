@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from './variables';
+import { colors } from '../Styles/variables';
 import HomeImage from './HomeImage';
 import AddPromotion from './AddPromotion';
 import Promotions from './Promotions';
