@@ -3,12 +3,14 @@ import {
   ActivityIndicator,
   Image,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import RNFirebase from 'react-native-firebase';
@@ -20,10 +22,12 @@ import { defaults } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
+// const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry?userId=123&companyName=CopaVida&redirectUrl=https://espn.com';
+
+const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
+
 const styles = StyleSheet.create({
   promotionWrap: {
-    // borderWidth: 2,
-    // borderColor: 'rgba(0,0,0,0.08)',
     shadowOffset: { width: 2, height: 2 },
     shadowColor: '#000',
     shadowOpacity: 0.05,
@@ -31,10 +35,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   promoImage: {
-    height: 200,
+    height: 160,
     width: null,
   },
   promoImageSingle: {
+    // not used yet - use redux?
+    // maybe single view should be modal?
     height: 300,
     width: null,
   },
@@ -52,7 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   companyName: {
-    fontSize: 27,
+    fontSize: 24,
     color: '#111',
     fontFamily: 'Lato-Bold',
     // fontFamily: 'Lato-Regular',
@@ -61,14 +67,16 @@ const styles = StyleSheet.create({
   sectionWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginTop: 5,
+    marginBottom: 10,
   },
   iconWrap: {
-    width: 45,
+    width: 42,
   },
   promoText: {
-    color: colors.lightGray,
-    fontSize: 19,
+    // color: colors.lightGray,
+    color: '#444',
+    fontSize: 18,
     flex: 1,
     fontFamily: 'Lato-Regular',
   },
@@ -87,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dateItem: {
-    fontSize: 19,
+    fontSize: 16,
     color: colors.lightGray,
     marginRight: 8,
     fontFamily: 'Lato-Regular',
@@ -104,11 +112,13 @@ class Promotion extends Component {
       id: props.id,
       companyName: props.company,
       newPromo: props.promo,
+      promoUrl: props.url,
       endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
       endDateSubmit: props.end,
       imageSource: props.image,
       imageUpdated: false,
       processing: false,
+      loggedIn: props.loggedIn,
     };
   }
 
@@ -170,6 +180,7 @@ class Promotion extends Component {
       companyName,
       endDateSubmit,
       newPromo,
+      promoUrl,
       imageSource,
       imageUpdated,
     } = this.state;
@@ -206,6 +217,7 @@ class Promotion extends Component {
               .update({
                 company: companyName,
                 promotion: newPromo,
+                url: promoUrl,
                 end: endDateSubmit,
                 updatedAt: new Date(),
                 image: firebaseUrl,
@@ -227,6 +239,7 @@ class Promotion extends Component {
           .update({
             company: companyName,
             promotion: newPromo,
+            url: promoUrl,
             end: endDateSubmit,
             updatedAt: new Date(),
           })
@@ -243,15 +256,18 @@ class Promotion extends Component {
   };
 
   render() {
-    const { company, promo, end, image } = this.props;
+    const { company, promo, url, end, image } = this.props;
     const {
       companyName,
       endingDate,
       modalVisible,
       newPromo,
+      promoUrl,
       imageSource,
       processing,
+      loggedIn,
     } = this.state;
+    console.log('are we logged in?', loggedIn);
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
     // const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
@@ -279,7 +295,7 @@ class Promotion extends Component {
               >
                 <Icon
                   name="plus-circle"
-                  size={25}
+                  size={24}
                   color={colors.brandPrimary}
                 />
               </TouchableHighlight>
@@ -288,22 +304,31 @@ class Promotion extends Component {
                 onPress={() => this.setModalVisible(!modalVisible)}
                 underlayColor="transparent"
               >
-                <Icon name="pencil" size={25} color={colors.brandPrimary} />
+                <Icon name="pencil" size={22} color={colors.brandPrimary} />
               </TouchableHighlight>
             </View>
           </View>
           <View style={styles.sectionWrap}>
             <View style={styles.iconWrap}>
-              <Icon name="tag" size={27} color={colors.lightGray} />
+              <Icon name="tag" size={22} color={colors.lightGray} />
             </View>
             <Text style={styles.promoText}>{promo}</Text>
           </View>
           <View style={styles.sectionWrap}>
             <View style={styles.iconWrap}>
-              <Icon name="calendar" size={30} color={colors.lightGray} />
+              <Icon name="calendar" size={24} color={colors.lightGray} />
             </View>
             <View style={styles.dateRangeWrap}>
               <Text style={styles.dateItem}>Expires: {endDate}</Text>
+            </View>
+          </View>
+
+          <View style={styles.sectionWrap}>
+            <View style={styles.iconWrap}>
+              <Icon name="link" size={28} color={colors.lightGray} />
+            </View>
+            <View style={styles.dateRangeWrap}>
+              <Text style={styles.dateItem}>{url}</Text>
             </View>
           </View>
 
@@ -320,7 +345,7 @@ class Promotion extends Component {
           transparent
           visible={modalVisible}
         >
-          <View style={defaults.modalWrapInner}>
+          <ScrollView style={defaults.modalWrapInner}>
             <Text style={defaults.subTitle}>Update Promotion</Text>
             <View style={defaults.formWrapModal}>
               <TextInput
@@ -339,6 +364,15 @@ class Promotion extends Component {
                   this.updateTextInput(e, 'newPromo');
                 }}
                 placeholder="Promotion Details"
+              />
+              <TextInput
+                style={defaults.textInput}
+                value={promoUrl}
+                autoCapitalize="none"
+                onChangeText={e => {
+                  this.updateTextInput(e, 'promoUrl');
+                }}
+                placeholder="Promotion URL"
               />
               <View style={defaults.datePickerWrap}>
                 <DatePicker
@@ -367,7 +401,7 @@ class Promotion extends Component {
                   onPress={this.imageSelect}
                   underlayColor={colors.brandSecond}
                 >
-                  <Text style={defaults.buttonText}>Change Image</Text>
+                  <Text style={defaults.buttonText}>Image</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                   style={[defaults.buttonStyle, defaults.updateSubmitButton]}
@@ -382,27 +416,33 @@ class Promotion extends Component {
                 source={{ uri: imageSource }}
               />
               {processIndicator}
-              <View style={defaults.closeIconWrap}>
-                <TouchableHighlight
-                  onPress={() => {
-                    this.setModalVisible(!modalVisible);
-                  }}
-                  underlayColor="transparent"
-                >
-                  <Icon
-                    name="close-circle"
-                    size={40}
-                    color={colors.brandSecond}
-                    style={defaults.closeIcon}
-                  />
-                </TouchableHighlight>
-              </View>
             </View>
-          </View>
+            <View style={defaults.closeIconWrap}>
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!modalVisible);
+                }}
+                underlayColor="transparent"
+              >
+                <Icon
+                  name="close-circle"
+                  size={30}
+                  color={colors.brandSecond}
+                  style={defaults.closeIcon}
+                />
+              </TouchableHighlight>
+            </View>
+          </ScrollView>
         </Modal>
       </View>
     );
   }
 }
 
-module.exports = Promotion;
+const mapStateToProps = state => ({
+  loggedIn: state.loggedIn,
+});
+
+// module.exports = Promotion;
+
+module.exports = connect(mapStateToProps)(Promotion);

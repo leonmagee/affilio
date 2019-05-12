@@ -3,7 +3,7 @@ import { colors } from './variables';
 export const defaults = {
   mainWrap: {
     flex: 1,
-    paddingTop: 45,
+    paddingTop: 17,
     backgroundColor: '#fff',
   },
   title: {
@@ -94,18 +94,21 @@ export const defaults = {
   },
   modalWrapInner: {
     backgroundColor: '#fff',
-    marginHorizontal: 20,
-    marginVertical: 20,
-    paddingTop: 25,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.3)',
+    // marginHorizontal: 20,
+    // marginVertical: 50,
+    paddingTop: 35,
+    // borderWidth: 1,
+    // borderColor: 'rgba(0,0,0,0.3)',
     flex: 1,
   },
   closeIconWrap: {
-    textAlign: 'center',
-    flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    position: 'absolute',
+    right: 17,
+    // top: 0,
+    // textAlign: 'center',
+    // flex: 1,
+    // alignItems: 'flex-end',
+    // justifyContent: 'flex-end',
   },
   indicatorWrap: {
     paddingTop: 15,

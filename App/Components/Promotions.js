@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import RNFirebase from 'react-native-firebase';
 import { colors } from '../Styles/variables';
 
@@ -17,7 +18,6 @@ const firestore = RNFirebase.firestore();
 const styles = StyleSheet.create({
   mainWrap: {
     flex: 1,
-    // paddingTop: 50,
     paddingTop: 15,
     backgroundColor: '#ddd',
   },
@@ -27,12 +27,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: 17,
+    paddingHorizontal: 13,
     backgroundColor: '#fff',
   },
   navItem: {
-    fontFamily: 'Lato-Bold',
+    fontFamily: 'Lato-Black',
     fontSize: 14,
-    color: '#aaa',
+    color: '#777',
   },
   navItemSelected: {
     color: colors.brandPrimary,
@@ -53,13 +54,31 @@ class Promotions extends Component {
   }
 
   componentDidMount = () => {
-    this.unsubscribeFromFirestore = firestore
-      .collection('promos')
-      .orderBy('createdAt', 'desc')
-      .onSnapshot(snapshot => {
-        const promotions = snapshot.docs.map(getDocAndId);
-        this.setState({ promotions });
-      });
+    /**
+     * This will vary dependin on the redux state?
+     * Does component did mount change when state updates/
+     */
+    const { promoFilter } = this.props;
+    if (promoFilter === 'all') {
+      this.unsubscribeFromFirestore = firestore
+        .collection('promos')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snapshot => {
+          const promotions = snapshot.docs.map(getDocAndId);
+          this.setState({ promotions });
+        });
+    } else if (promoFilter === 'exclusive') {
+      this.unsubscribeFromFirestore = firestore
+        .collection('promos')
+        .where('exclusive', '==', true)
+        .onSnapshot(snapshot => {
+          const promotions = snapshot.docs.map(getDocAndId);
+          this.setState({
+            promotions,
+            current: 'ex',
+          });
+        });
+    }
   };
 
   componentWillUnmount = () => {
@@ -122,6 +141,7 @@ class Promotions extends Component {
               id={item.key}
               company={item.data.company}
               promo={item.data.promotion}
+              url={item.data.url}
               start={item.data.start}
               end={item.data.end}
               image={item.data.image}
@@ -190,4 +210,8 @@ class Promotions extends Component {
   }
 }
 
-module.exports = Promotions;
+const mapStateToProps = state => ({
+  promoFilter: state.promoFilter,
+});
+
+module.exports = connect(mapStateToProps)(Promotions);

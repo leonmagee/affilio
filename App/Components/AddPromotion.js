@@ -31,6 +31,7 @@ class AddPromotion extends Component {
     this.state = {
       companyName: '',
       newPromo: '',
+      promoUrl: '',
       endingDate: '',
       endDateSubmit: false,
       imageSource: false,
@@ -91,12 +92,22 @@ class AddPromotion extends Component {
     this.setState({
       processing: true,
     });
-    const { companyName, newPromo, endDateSubmit, imageSource } = this.state;
+    /**
+     * @todo validation? required fields? field types?
+     */
+    const {
+      companyName,
+      newPromo,
+      endDateSubmit,
+      imageSource,
+      promoUrl,
+    } = this.state;
     if (companyName !== '' && newPromo !== '' && endDateSubmit && imageSource) {
       const promotion = {
         company: companyName,
         promotion: newPromo,
         end: endDateSubmit,
+        url: promoUrl,
         createdAt: new Date(),
       };
       firestore
@@ -166,7 +177,8 @@ class AddPromotion extends Component {
     const {
       companyName,
       imageSource,
-      newPromo,
+      newPromo, // @todo change this to 'promoText' or something else
+      promoUrl,
       endingDate,
       processing,
     } = this.state;
@@ -207,6 +219,15 @@ class AddPromotion extends Component {
               }}
               placeholder="Promotion Details"
             />
+            <TextInput
+              style={defaults.textInput}
+              value={promoUrl}
+              autoCapitalize="none"
+              onChangeText={e => {
+                this.updateTextInput(e, 'promoUrl');
+              }}
+              placeholder="Promotion URL"
+            />
             <View style={defaults.datePickerWrap}>
               <DatePicker
                 style={defaults.datePicker}
@@ -233,14 +254,14 @@ class AddPromotion extends Component {
                 onPress={this.imageSelect}
                 underlayColor={colors.brandSecond}
               >
-                <Text style={defaults.buttonText}>Choose Image</Text>
+                <Text style={defaults.buttonText}>Image</Text>
               </TouchableHighlight>
               <TouchableHighlight
                 style={[defaults.buttonStyle, defaults.updateSubmitButton]}
                 onPress={this.addNewPromotion}
                 underlayColor={colors.brandPrimary}
               >
-                <Text style={defaults.buttonText}>Add Promotion</Text>
+                <Text style={defaults.buttonText}>Submit</Text>
               </TouchableHighlight>
             </View>
             {imagePreview}

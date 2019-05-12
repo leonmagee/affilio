@@ -14,12 +14,12 @@ import { defaults } from './App/Styles/defaultStyles';
 const styles = StyleSheet.create({
   headerBar: {
     backgroundColor: '#000',
-    height: 50,
-    paddingVertical: 15,
+    height: 85,
+    paddingBottom: 15,
     paddingHorizontal: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   headerText: {
     color: '#FFF',
@@ -36,16 +36,22 @@ const styles = StyleSheet.create({
 });
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { currentUser } = RNFirebase.auth();
+    if (currentUser) {
+      props.userLoggedIn(1);
+    } else {
+      props.userLoggedIn(0);
+    }
+
     this.state = {
       modalVisible: false,
       loading: true,
       signInLoading: false,
-      currentUser: RNFirebase.auth().currentUser,
+      currentUser,
     };
-    // const { currentUser } = RNFirebase.auth();
-    // console.log('xyz', currentUser.displayName);
   }
 
   async componentDidMount() {
@@ -208,6 +214,9 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = dispatch => ({
+  userLoggedIn(type) {
+    dispatch({ type: 'LOGGED_IN', payload: type });
+  },
   changeUserType(type) {
     dispatch({ type: 'USER_TYPE', payload: type });
   },
