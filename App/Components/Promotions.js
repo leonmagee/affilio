@@ -18,11 +18,10 @@ const firestore = RNFirebase.firestore();
 const styles = StyleSheet.create({
   mainWrap: {
     flex: 1,
-    // paddingTop: 15,
-    backgroundColor: '#ddd',
+    // backgroundColor: '#ddd',
   },
   navWrap: {
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#ccc',
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -169,7 +168,7 @@ class Promotions extends Component {
         </View>
         <FlatList
           data={promotions}
-          // style={{ backgroundColor: 'red' }}
+          style={{ backgroundColor: '#ddd' }}
           renderItem={({ item }) => (
             <Promotion
               id={item.key}

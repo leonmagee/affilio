@@ -241,8 +241,17 @@ class AddPromotion extends Component {
                 showIcon={false}
                 customStyles={{
                   placeholderText: {
-                    fontSize: 19,
+                    fontSize: 17,
                     fontFamily: 'Lato-Regular',
+                    alignItems: 'flex-start',
+                  },
+                  dateInput: {
+                    // backgroundColor: 'red',
+                    // textAlign: 'left',
+                    alignItems: 'flex-start',
+                    paddingVertical: 7,
+                    paddingHorizontal: 14,
+                    borderColor: 'rgba(0,0,0,0.25)',
                   },
                 }}
                 onDateChange={this.setEndingDate}

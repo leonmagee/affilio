@@ -119,11 +119,11 @@ export const defaults = {
   indicatorWrap: {
     paddingTop: 15,
   },
-  // formSubTitle: {
-  //   paddingBottom: 15,
-  //   fontSize: 18,
-  //   fontFamily: 'Lato-Bold',
-  // },
+  formSubTitle: {
+    paddingBottom: 15,
+    fontSize: 18,
+    fontFamily: 'Lato-Bold',
+  },
   radioButtonWrap: {
     marginTop: 15,
     paddingVertical: 15,

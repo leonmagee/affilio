@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     marginHorizontal: 15,
     marginBottom: 15,
+    backgroundColor: '#fff',
   },
   promoImage: {
     height: 160,
@@ -268,7 +269,7 @@ class Promotion extends Component {
       processing,
       loggedIn,
     } = this.state;
-    console.log('are we logged in?', loggedIn);
+    // console.log('are we logged in?', loggedIn);
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
     // const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;

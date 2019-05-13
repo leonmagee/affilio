@@ -8,6 +8,8 @@ import store from './App/Redux/store';
 import App from './App';
 import { name as appName } from './app.json';
 
+YellowBox.ignoreWarnings(['Require cycle:', 'Remote debugger']);
+
 class Wrapper extends Component {
   render() {
     return (
@@ -17,7 +19,5 @@ class Wrapper extends Component {
     );
   }
 }
-
-YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle:']);
 
 AppRegistry.registerComponent(appName, () => Wrapper);
