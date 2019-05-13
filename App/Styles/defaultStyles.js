@@ -12,25 +12,9 @@ export const defaults = {
     textAlign: 'center',
     fontFamily: 'Lato-Bold',
   },
-  subTitle: {
-    // deprecated
-    color: '#111',
-    fontSize: 23,
-    textAlign: 'center',
-    fontFamily: 'Lato-Bold',
-  },
-  modalTitle: {
-    marginTop: 30,
-  },
   formWrap: {
     marginHorizontal: 20,
     padding: 20,
-  },
-  formWrapModal: {
-    paddingTop: 80,
-    paddingbottom: 10,
-    paddingHorizontal: 20,
-    flex: 1,
   },
   textInput: {
     backgroundColor: 'white',
@@ -73,13 +57,23 @@ export const defaults = {
     backgroundColor: colors.brandSecond,
     marginRight: 10,
   },
-  redButton: {
-    backgroundColor: colors.brandSecond,
+  button: {
     padding: 15,
     color: '#FFF',
     fontSize: 18,
-    fontFamily: 'Lato-Bold',
+    fontFamily: 'Lato-Black',
     textAlign: 'center',
+    backgroundColor: '#222',
+  },
+  blueButton: {
+    backgroundColor: colors.brandPrimary,
+  },
+  redButton: {
+    backgroundColor: colors.brandSecond,
+  },
+  loginButton: {
+    width: 280,
+    marginBottom: 20,
   },
   updateSubmitButton: {
     backgroundColor: colors.brandPrimary,
@@ -96,24 +90,40 @@ export const defaults = {
     flex: 1,
     justifyContent: 'center',
   },
+  hiddenItem: {
+    padding: 5,
+    opacity: 0,
+  },
   modalWrapInner: {
     backgroundColor: '#fff',
     paddingTop: 35,
     flex: 1,
   },
-  closeIconWrap: {
-    position: 'absolute',
-    top: 60,
-    right: 25,
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 30,
+    paddingBottom: 20,
+  },
+  // modalTitle: {
+  //   marginTop: 30,
+  // },
+  formWrapModal: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    flex: 1,
+  },
+  buttonWrap: {
+    alignItems: 'center',
   },
   indicatorWrap: {
     paddingTop: 15,
   },
-  formSubTitle: {
-    paddingBottom: 15,
-    fontSize: 18,
-    fontFamily: 'Lato-Bold',
-  },
+  // formSubTitle: {
+  //   paddingBottom: 15,
+  //   fontSize: 18,
+  //   fontFamily: 'Lato-Bold',
+  // },
   radioButtonWrap: {
     marginTop: 15,
     paddingVertical: 15,

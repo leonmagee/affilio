@@ -17,6 +17,7 @@ import RNFirebase from 'react-native-firebase';
 import RNFetchBlob from 'rn-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
+import { CloseIcon } from './CloseIcon';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
 
@@ -346,7 +347,15 @@ class Promotion extends Component {
           visible={modalVisible}
         >
           <ScrollView style={defaults.modalWrapInner}>
-            <Text style={defaults.subTitle}>Update Promotion</Text>
+            <View style={defaults.modalHeader}>
+              <Text style={defaults.hiddenItem}>X</Text>
+              <Text style={defaults.title}>Update Promotion</Text>
+              <CloseIcon
+                toggle={() => {
+                  this.setModalVisible(!modalVisible);
+                }}
+              />
+            </View>
             <View style={defaults.formWrapModal}>
               <TextInput
                 style={defaults.textInput}
@@ -416,21 +425,6 @@ class Promotion extends Component {
                 source={{ uri: imageSource }}
               />
               {processIndicator}
-            </View>
-            <View style={defaults.closeIconWrap}>
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!modalVisible);
-                }}
-                underlayColor="transparent"
-              >
-                <Icon
-                  name="close-circle"
-                  size={30}
-                  color={colors.brandSecond}
-                  style={defaults.closeIcon}
-                />
-              </TouchableHighlight>
             </View>
           </ScrollView>
         </Modal>

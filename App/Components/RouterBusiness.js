@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Promotions from './Promotions';
 import AddPromotion from './AddPromotion';
 import Profile from './Profile';
+import About from './About';
 import { colors } from '../Styles/variables';
 
 const TabNavigator = createBottomTabNavigator(
@@ -11,6 +12,7 @@ const TabNavigator = createBottomTabNavigator(
     HomeImage: Promotions,
     AddPromotion,
     Profile,
+    About,
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -25,6 +27,8 @@ const TabNavigator = createBottomTabNavigator(
           iconName = 'tag-plus';
         } else if (routeName === 'Profile') {
           iconName = 'account';
+        } else if (routeName === 'About') {
+          iconName = 'comment-question';
         }
         return <Icon name={iconName} size={35} color={tintColor} />;
       },

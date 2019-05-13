@@ -54,31 +54,13 @@ class Promotions extends Component {
   }
 
   componentDidMount = () => {
-    /**
-     * This will vary dependin on the redux state?
-     * Does component did mount change when state updates/
-     */
-    const { promoFilter } = this.props;
-    if (promoFilter === 'all') {
-      this.unsubscribeFromFirestore = firestore
-        .collection('promos')
-        .orderBy('createdAt', 'desc')
-        .onSnapshot(snapshot => {
-          const promotions = snapshot.docs.map(getDocAndId);
-          this.setState({ promotions });
-        });
-    } else if (promoFilter === 'exclusive') {
-      this.unsubscribeFromFirestore = firestore
-        .collection('promos')
-        .where('exclusive', '==', true)
-        .onSnapshot(snapshot => {
-          const promotions = snapshot.docs.map(getDocAndId);
-          this.setState({
-            promotions,
-            current: 'ex',
-          });
-        });
-    }
+    this.unsubscribeFromFirestore = firestore
+      .collection('promos')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(snapshot => {
+        const promotions = snapshot.docs.map(getDocAndId);
+        this.setState({ promotions });
+      });
   };
 
   componentWillUnmount = () => {
@@ -209,6 +191,7 @@ class Promotions extends Component {
 
 const mapStateToProps = state => ({
   promoFilter: state.promoFilter,
+  promos: state.promos,
 });
 
 module.exports = connect(mapStateToProps)(Promotions);

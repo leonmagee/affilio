@@ -272,7 +272,7 @@ class AddPromotion extends Component {
 
     return (
       <View style={defaults.mainWrap}>
-        <Text style={defaults.subTitle}>Add New Promotion</Text>
+        <Text style={defaults.title}>Add New Promotion</Text>
         {formWrap}
       </View>
     );

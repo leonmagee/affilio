@@ -10,6 +10,7 @@ import RouterUser from './App/Components/RouterUser';
 import RouterBusiness from './App/Components/RouterBusiness';
 import { colors } from './App/Styles/variables';
 import { defaults } from './App/Styles/defaultStyles';
+import { CloseIcon } from './App/Components/CloseIcon';
 
 const styles = StyleSheet.create({
   headerBar: {
@@ -174,32 +175,53 @@ class App extends Component {
             visible={modalVisible}
           >
             <View style={defaults.modalWrapInner}>
-              <Text style={[defaults.subTitle, defaults.modalTitle]}>
-                Login
-              </Text>
-              <View style={defaults.formWrapModal}>
+              <View style={defaults.modalHeader}>
+                <Text style={defaults.hiddenItem}>X</Text>
+                <Text style={defaults.title}>Login</Text>
+                <CloseIcon
+                  toggle={() => {
+                    this.setModalVisible(!modalVisible);
+                  }}
+                />
+              </View>
+              <View style={[defaults.formWrapModal, defaults.buttonWrap]}>
                 <TouchableHighlight
                   underlayColor="transparent"
                   onPress={this.googleLogin}
                 >
-                  <Text style={defaults.redButton}>Sign In With Google</Text>
+                  <Text style={[defaults.button, defaults.loginButton]}>
+                    Sign In With Email
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  underlayColor="transparent"
+                  onPress={this.googleLogin}
+                >
+                  <Text
+                    style={[
+                      defaults.button,
+                      defaults.blueButton,
+                      defaults.loginButton,
+                    ]}
+                  >
+                    Sign In With Facebook
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  underlayColor="transparent"
+                  onPress={this.googleLogin}
+                >
+                  <Text
+                    style={[
+                      defaults.button,
+                      defaults.redButton,
+                      defaults.loginButton,
+                    ]}
+                  >
+                    Sign In With Google
+                  </Text>
                 </TouchableHighlight>
                 {loginActivity}
-              </View>
-              <View style={defaults.closeIconWrap}>
-                <TouchableHighlight
-                  onPress={() => {
-                    this.setModalVisible(!modalVisible);
-                  }}
-                  underlayColor="transparent"
-                >
-                  <Icon
-                    name="close-circle"
-                    size={40}
-                    color={colors.brandSecond}
-                    style={defaults.closeIcon}
-                  />
-                </TouchableHighlight>
               </View>
             </View>
           </Modal>
