@@ -18,12 +18,12 @@ const firestore = RNFirebase.firestore();
 const styles = StyleSheet.create({
   mainWrap: {
     flex: 1,
-    paddingTop: 15,
+    // paddingTop: 15,
     backgroundColor: '#ddd',
   },
   navWrap: {
-    borderTopColor: '#ddd',
-    borderTopWidth: 1,
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: 17,
@@ -130,26 +130,6 @@ class Promotions extends Component {
 
     return (
       <View style={styles.mainWrap}>
-        {/* <View style={styles.titleWrap}>
-          <Text style={styles.title}>Current Promotions</Text>
-        </View> */}
-        <FlatList
-          data={promotions}
-          // style={{ backgroundColor: 'red' }}
-          renderItem={({ item }) => (
-            <Promotion
-              id={item.key}
-              company={item.data.company}
-              promo={item.data.promotion}
-              url={item.data.url}
-              start={item.data.start}
-              end={item.data.end}
-              image={item.data.image}
-              firestore={firestore}
-              filterId={this.filterId}
-            />
-          )}
-        />
         <View style={styles.navWrap}>
           <TouchableHighlight
             underlayColor="transparent"
@@ -205,6 +185,23 @@ class Promotions extends Component {
             </Text>
           </TouchableHighlight>
         </View>
+        <FlatList
+          data={promotions}
+          // style={{ backgroundColor: 'red' }}
+          renderItem={({ item }) => (
+            <Promotion
+              id={item.key}
+              company={item.data.company}
+              promo={item.data.promotion}
+              url={item.data.url}
+              start={item.data.start}
+              end={item.data.end}
+              image={item.data.image}
+              firestore={firestore}
+              filterId={this.filterId}
+            />
+          )}
+        />
       </View>
     );
   }

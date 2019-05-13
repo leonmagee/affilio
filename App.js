@@ -174,7 +174,9 @@ class App extends Component {
             visible={modalVisible}
           >
             <View style={defaults.modalWrapInner}>
-              <Text style={defaults.subTitle}>Login</Text>
+              <Text style={[defaults.subTitle, defaults.modalTitle]}>
+                Login
+              </Text>
               <View style={defaults.formWrapModal}>
                 <TouchableHighlight
                   underlayColor="transparent"
@@ -183,21 +185,21 @@ class App extends Component {
                   <Text style={defaults.redButton}>Sign In With Google</Text>
                 </TouchableHighlight>
                 {loginActivity}
-                <View style={defaults.closeIconWrap}>
-                  <TouchableHighlight
-                    onPress={() => {
-                      this.setModalVisible(!modalVisible);
-                    }}
-                    underlayColor="transparent"
-                  >
-                    <Icon
-                      name="close-circle"
-                      size={40}
-                      color={colors.brandSecond}
-                      style={defaults.closeIcon}
-                    />
-                  </TouchableHighlight>
-                </View>
+              </View>
+              <View style={defaults.closeIconWrap}>
+                <TouchableHighlight
+                  onPress={() => {
+                    this.setModalVisible(!modalVisible);
+                  }}
+                  underlayColor="transparent"
+                >
+                  <Icon
+                    name="close-circle"
+                    size={40}
+                    color={colors.brandSecond}
+                    style={defaults.closeIcon}
+                  />
+                </TouchableHighlight>
               </View>
             </View>
           </Modal>

@@ -19,13 +19,17 @@ export const defaults = {
     textAlign: 'center',
     fontFamily: 'Lato-Bold',
   },
+  modalTitle: {
+    marginTop: 30,
+  },
   formWrap: {
     marginHorizontal: 20,
     padding: 20,
   },
   formWrapModal: {
-    // marginHorizontal: 5,
-    padding: 20,
+    paddingTop: 80,
+    paddingbottom: 10,
+    paddingHorizontal: 20,
     flex: 1,
   },
   textInput: {
@@ -94,21 +98,13 @@ export const defaults = {
   },
   modalWrapInner: {
     backgroundColor: '#fff',
-    // marginHorizontal: 20,
-    // marginVertical: 50,
     paddingTop: 35,
-    // borderWidth: 1,
-    // borderColor: 'rgba(0,0,0,0.3)',
     flex: 1,
   },
   closeIconWrap: {
     position: 'absolute',
-    right: 17,
-    // top: 0,
-    // textAlign: 'center',
-    // flex: 1,
-    // alignItems: 'flex-end',
-    // justifyContent: 'flex-end',
+    top: 60,
+    right: 25,
   },
   indicatorWrap: {
     paddingTop: 15,
