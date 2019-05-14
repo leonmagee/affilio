@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import RNFirebase from 'react-native-firebase';
+import RNFirebase, { auth } from 'react-native-firebase';
 import { colors } from '../Styles/variables';
 
 import Promotion from './Promotion';
@@ -60,6 +60,11 @@ class Promotions extends Component {
         const promotions = snapshot.docs.map(getDocAndId);
         this.setState({ promotions });
       });
+
+    this.unsubscribeFromAuth = RNFirebase.auth().onAuthStateChanged(user => {
+      console.log('login state is changing????', user);
+      this.setState({ user });
+    });
   };
 
   componentWillUnmount = () => {

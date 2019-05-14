@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import RouterUser from './App/Components/RouterUser';
@@ -73,9 +73,13 @@ class App extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  facebookLogin = () =>
-    LoginManager.logInWithReadPermissions(['public_profile', 'email'])
+  facebookLogin = () => {
+    this.setState({
+      signInLoading: true,
+    });
+    return LoginManager.logInWithReadPermissions(['public_profile', 'email'])
       .then(result => {
+        console.log('this is a result?', result);
         if (!result.isCancelled) {
           console.log(
             `Login success with permissions: ${result.grantedPermissions.toString()}`
@@ -83,8 +87,13 @@ class App extends Component {
           // get the access token
           return AccessToken.getCurrentAccessToken();
         }
+        this.setState({
+          // hide spinner when canceled
+          signInLoading: false,
+        });
       })
       .then(data => {
+        console.log('we get some data????', data);
         if (data) {
           // create a new firebase credential with the token
           const credential = RNFirebase.auth.FacebookAuthProvider.credential(
@@ -97,11 +106,17 @@ class App extends Component {
       .then(currentUser => {
         if (currentUser) {
           console.info(JSON.stringify(currentUser.toJSON()));
+          this.setState({
+            modalVisible: false,
+            currentUser,
+            signInLoading: false,
+          });
         }
       })
       .catch(error => {
         console.log(`Login fail with error: ${error}`);
       });
+  };
 
   googleLogin = async () => {
     this.setState({
@@ -109,19 +124,24 @@ class App extends Component {
     });
     try {
       // Add any configuration settings here:
-      await GoogleSignin.configure();
+      await GoogleSignin.configure({ prompt: 'select_account' });
 
       const data = await GoogleSignin.signIn();
 
+      const authProvider = RNFirebase.auth.GoogleAuthProvider;
+
+      // authProvider.setCustomParameters({
+      //   prompt: 'select_account',
+      // });
+
       // create a new firebase credential with the token
-      const credential = RNFirebase.auth.GoogleAuthProvider.credential(
+      const credential = authProvider.credential(
         data.idToken,
         data.accessToken
       );
+
       // login with credential
-      const currentUser = await RNFirebase.auth().signInWithCredential(
-        credential
-      );
+      await RNFirebase.auth().signInWithCredential(credential);
 
       const newCurrentUser = await RNFirebase.auth().currentUser;
 
@@ -133,6 +153,10 @@ class App extends Component {
 
       // console.info(JSON.stringify(currentUser.toJSON()));
     } catch (e) {
+      if (e.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        console.log('xxxxxxxxxxxxxxxxxxxxxxxx');
+      }
       console.error(e);
     }
   };

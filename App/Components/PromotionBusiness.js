@@ -40,10 +40,12 @@ const styles = StyleSheet.create({
     height: 160,
     width: null,
   },
-  // promoImageSingle: {
-  //   height: 300,
-  //   width: null,
-  // },
+  promoImageSingle: {
+    // not used yet - use redux?
+    // maybe single view should be modal?
+    height: 300,
+    width: null,
+  },
   detailsWrap: {
     paddingVertical: 15,
     paddingHorizontal: 25,
@@ -61,6 +63,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#111',
     fontFamily: 'Lato-Bold',
+    // fontFamily: 'Lato-Regular',
+    // fontFamily: 'Lato-Black',
   },
   sectionWrap: {
     flexDirection: 'row',
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
     width: 42,
   },
   promoText: {
+    // color: colors.lightGray,
     color: '#444',
     fontSize: 18,
     flex: 1,
@@ -82,6 +87,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginBottom: 5,
   },
+  iconGroup: {
+    flexDirection: 'row',
+  },
+  iconGroupIcon: {
+    marginLeft: 20,
+  },
   dateRangeWrap: {
     flexDirection: 'row',
   },
@@ -91,17 +102,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
     fontFamily: 'Lato-Regular',
   },
-  url: {
-    fontSize: 12,
-    color: colors.lightGray,
-    paddingRight: 40,
-    fontFamily: 'Lato-Regular',
-  },
 });
 // start = { item.data.start }
 // end = { item.data.end }
 // image = { item.data.image }
-class Promotion extends Component {
+class PromotionBusiness extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -270,7 +275,7 @@ class Promotion extends Component {
       promoUrl,
       imageSource,
       processing,
-      loggedIn, // global state? redux? firebase auth?
+      loggedIn,
       cardOpen,
     } = this.state;
     // console.log('are we logged in?', loggedIn);
@@ -287,29 +292,14 @@ class Promotion extends Component {
       );
     }
 
-    // const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry?userId=123&companyName=CopaVida&redirectUrl=https://espn.com';
-    const userId = 123; // get from auth
-
-    const finalUrl = `${baseUrl}?userId=${userId}companyName=${company}&redirectUrl=${url}`;
-
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
-        <>
-          <View style={styles.sectionWrap}>
-            <View style={styles.iconWrap}>
-              <Icon name="link" size={28} color={colors.lightGray} />
-            </View>
-            <View style={styles.dateRangeWrap}>
-              <Text style={styles.url}>{finalUrl}</Text>
-            </View>
-          </View>
-          <View style={styles.shareWrap}>
-            <Icon name="facebook" size={33} color={colors.brandPrimary} />
-            <Icon name="twitter" size={33} color={colors.brandPrimary} />
-            <Icon name="share" size={33} color={colors.brandPrimary} />
-          </View>
-        </>
+        <View style={styles.shareWrap}>
+          <Icon name="facebook" size={33} color={colors.brandPrimary} />
+          <Icon name="twitter" size={33} color={colors.brandPrimary} />
+          <Icon name="share" size={33} color={colors.brandPrimary} />
+        </View>
       );
     }
 
@@ -320,6 +310,15 @@ class Promotion extends Component {
           <View style={styles.detailsWrap}>
             <View style={styles.companyNameWrap}>
               <Text style={styles.companyName}>{company}</Text>
+              <View style={styles.iconGroup}>
+                <TouchableHighlight
+                  style={styles.iconGroupIcon}
+                  onPress={() => this.setModalVisible(!modalVisible)}
+                  underlayColor="transparent"
+                >
+                  <Icon name="pencil" size={22} color={colors.brandPrimary} />
+                </TouchableHighlight>
+              </View>
             </View>
             <View style={styles.sectionWrap}>
               <View style={styles.iconWrap}>
@@ -336,6 +335,14 @@ class Promotion extends Component {
               </View>
             </View>
 
+            <View style={styles.sectionWrap}>
+              <View style={styles.iconWrap}>
+                <Icon name="link" size={28} color={colors.lightGray} />
+              </View>
+              <View style={styles.dateRangeWrap}>
+                <Text style={styles.dateItem}>{url}</Text>
+              </View>
+            </View>
             {toggleArea}
           </View>
 
@@ -439,4 +446,4 @@ const mapStateToProps = state => ({
 
 // module.exports = Promotion;
 
-module.exports = connect(mapStateToProps)(Promotion);
+module.exports = connect(mapStateToProps)(PromotionBusiness);
