@@ -55,6 +55,12 @@ target 'Affilio' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
+  pod 'FBSDKCoreKit', '~>4.42.0'
+  pod 'FBSDKLoginKit', '~>4.42.0'
+  pod 'FBSDKShareKit', '~>4.42.0'
+
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
 end
 
 post_install do |installer|

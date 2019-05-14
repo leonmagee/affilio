@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { GoogleSignin } from 'react-native-google-signin';
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import RouterUser from './App/Components/RouterUser';
 import RouterBusiness from './App/Components/RouterBusiness';
@@ -71,6 +72,36 @@ class App extends Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
+  facebookLogin = () =>
+    LoginManager.logInWithReadPermissions(['public_profile', 'email'])
+      .then(result => {
+        if (!result.isCancelled) {
+          console.log(
+            `Login success with permissions: ${result.grantedPermissions.toString()}`
+          );
+          // get the access token
+          return AccessToken.getCurrentAccessToken();
+        }
+      })
+      .then(data => {
+        if (data) {
+          // create a new firebase credential with the token
+          const credential = RNFirebase.auth.FacebookAuthProvider.credential(
+            data.accessToken
+          );
+          // login with credential
+          return RNFirebase.auth().signInWithCredential(credential);
+        }
+      })
+      .then(currentUser => {
+        if (currentUser) {
+          console.info(JSON.stringify(currentUser.toJSON()));
+        }
+      })
+      .catch(error => {
+        console.log(`Login fail with error: ${error}`);
+      });
 
   googleLogin = async () => {
     this.setState({
@@ -195,7 +226,7 @@ class App extends Component {
                 </TouchableHighlight>
                 <TouchableHighlight
                   underlayColor="transparent"
-                  onPress={this.googleLogin}
+                  onPress={this.facebookLogin}
                 >
                   <Text
                     style={[

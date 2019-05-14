@@ -246,8 +246,6 @@ class AddPromotion extends Component {
                     alignItems: 'flex-start',
                   },
                   dateInput: {
-                    // backgroundColor: 'red',
-                    // textAlign: 'left',
                     alignItems: 'flex-start',
                     paddingVertical: 7,
                     paddingHorizontal: 14,
