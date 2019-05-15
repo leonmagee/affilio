@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
 });
 
 class App extends Component {
+  unsubscribeFromAuth = null;
+
   constructor(props) {
     super(props);
 
@@ -49,7 +51,7 @@ class App extends Component {
     }
 
     this.state = {
-      modalVisible: false,
+      // modalVisible: props.loginModal,
       loading: true,
       signInLoading: false,
       currentUser,
@@ -57,7 +59,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const { changeUserType } = this.props;
+    const { changeUserType, userLoggedIn } = this.props;
     const value = await AsyncStorage.getItem('@UserType');
     if (value === 'business') {
       changeUserType(1);
@@ -67,11 +69,21 @@ class App extends Component {
     this.setState({
       loading: false,
     });
+    this.unsubscribeFromAuth = RNFirebase.auth().onAuthStateChanged(user => {
+      // console.log('login state is changing????', user);
+      // this.setState({ user });
+      if (user) {
+        userLoggedIn(1);
+      } else {
+        userLoggedIn(0);
+      }
+    });
   }
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
+  // setModalVisible(visible) {
+  //   props.toggleLoginModal(1);
+  //   // this.setState({ modalVisible: visible });
+  // }
 
   facebookLogin = () => {
     this.setState({
@@ -107,10 +119,11 @@ class App extends Component {
         if (currentUser) {
           console.info(JSON.stringify(currentUser.toJSON()));
           this.setState({
-            modalVisible: false,
+            // modalVisible: false,
             currentUser,
             signInLoading: false,
           });
+          this.props.toggleLoginModal(false);
         }
       })
       .catch(error => {
@@ -146,16 +159,17 @@ class App extends Component {
       const newCurrentUser = await RNFirebase.auth().currentUser;
 
       this.setState({
-        modalVisible: false,
+        // modalVisible: false,
         currentUser: newCurrentUser,
         signInLoading: false,
       });
+      this.props.toggleLoginModal(false);
 
       // console.info(JSON.stringify(currentUser.toJSON()));
     } catch (e) {
       if (e.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        console.log('xxxxxxxxxxxxxxxxxxxxxxxx');
+        console.log('sign in was canceled???');
       }
       console.error(e);
     }
@@ -167,8 +181,10 @@ class App extends Component {
   };
 
   render() {
-    const { currentUser, loading, modalVisible, signInLoading } = this.state;
-    const { userType } = this.props;
+    const { currentUser, loading, signInLoading } = this.state;
+    // const modalVisible = this.props.loginModal;
+    const { loginModal } = this.props;
+    const { userType, toggleLoginModal } = this.props;
     let Router = RouterUser;
     if (userType) {
       Router = RouterBusiness;
@@ -182,8 +198,11 @@ class App extends Component {
       let userInfo = (
         <View style={styles.headerBar}>
           <TouchableHighlight
+            // onPress={() => {
+            //   this.setModalVisible(!modalVisible);
+            // }}
             onPress={() => {
-              this.setModalVisible(!modalVisible);
+              toggleLoginModal(!loginModal);
             }}
           >
             <Text style={styles.headerText}>LOGIN</Text>
@@ -227,7 +246,7 @@ class App extends Component {
             sytle={{ flex: 1 }}
             animationType="slide"
             transparent
-            visible={modalVisible}
+            visible={loginModal}
           >
             <View style={defaults.modalWrapInner}>
               <View style={defaults.modalHeader}>
@@ -235,7 +254,8 @@ class App extends Component {
                 <Text style={defaults.title}>Login</Text>
                 <CloseIcon
                   toggle={() => {
-                    this.setModalVisible(!modalVisible);
+                    toggleLoginModal(0);
+                    // this.setModalVisible(!modalVisible);
                   }}
                 />
               </View>
@@ -290,6 +310,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   userType: state.userType,
+  loginModal: state.loginModal,
 });
 
 const mapActionsToProps = dispatch => ({
@@ -298,6 +319,9 @@ const mapActionsToProps = dispatch => ({
   },
   changeUserType(type) {
     dispatch({ type: 'USER_TYPE', payload: type });
+  },
+  toggleLoginModal(open) {
+    dispatch({ type: 'TOGGLE_LOG_IN', payload: open });
   },
 });
 

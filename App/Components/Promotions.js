@@ -43,8 +43,6 @@ const styles = StyleSheet.create({
 class Promotions extends Component {
   unsubscribeFromFirestore = null;
 
-  unsubscribeFromAuth = null;
-
   constructor() {
     super();
     this.state = {
@@ -61,11 +59,6 @@ class Promotions extends Component {
         const promotions = snapshot.docs.map(getDocAndId);
         this.setState({ promotions });
       });
-
-    this.unsubscribeFromAuth = RNFirebase.auth().onAuthStateChanged(user => {
-      console.log('login state is changing????', user);
-      this.setState({ user });
-    });
   };
 
   componentWillUnmount = () => {

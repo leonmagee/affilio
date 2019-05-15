@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
+import LoginButton from './LoginButton';
 
 const iconColor = '#BBB';
 
@@ -56,54 +57,65 @@ class Profile extends Component {
   };
 
   render() {
-    const { userType } = this.props;
+    const { userType, loggedIn } = this.props;
+
+    let settings = <LoginButton />;
+    if (loggedIn) {
+      settings = (
+        <>
+          <View style={styles.titleWrap}>
+            <Text style={defaults.formSubTitle}>Change Account Type</Text>
+          </View>
+          <View style={styles.profileIconsWrap}>
+            <TouchableHighlight onPress={() => this.changeUserType(1)}>
+              <View>
+                <View
+                  style={[
+                    styles.profileIcon,
+                    { borderColor: userType ? colors.brandPrimary : iconColor },
+                  ]}
+                >
+                  <Icon
+                    name="office-building"
+                    size={100}
+                    color={userType ? colors.brandPrimary : iconColor}
+                  />
+                </View>
+                <Text style={[styles.label, userType && styles.labelSelect]}>
+                  Business
+                </Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight onPress={() => this.changeUserType(0)}>
+              <View>
+                <View
+                  style={[
+                    styles.profileIcon,
+                    {
+                      borderColor: !userType ? colors.brandPrimary : iconColor,
+                    },
+                  ]}
+                >
+                  <Icon
+                    name="account"
+                    size={100}
+                    color={!userType ? colors.brandPrimary : iconColor}
+                  />
+                </View>
+                <Text style={[styles.label, !userType && styles.labelSelect]}>
+                  User
+                </Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </>
+      );
+    }
 
     return (
       <View style={defaults.mainWrap}>
         <Text style={defaults.title}>Profile Settings</Text>
-        <View style={styles.titleWrap}>
-          <Text style={defaults.formSubTitle}>Change Account Type</Text>
-        </View>
-        <View style={styles.profileIconsWrap}>
-          <TouchableHighlight onPress={() => this.changeUserType(1)}>
-            <View>
-              <View
-                style={[
-                  styles.profileIcon,
-                  { borderColor: userType ? colors.brandPrimary : iconColor },
-                ]}
-              >
-                <Icon
-                  name="office-building"
-                  size={100}
-                  color={userType ? colors.brandPrimary : iconColor}
-                />
-              </View>
-              <Text style={[styles.label, userType && styles.labelSelect]}>
-                Business
-              </Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={() => this.changeUserType(0)}>
-            <View>
-              <View
-                style={[
-                  styles.profileIcon,
-                  { borderColor: !userType ? colors.brandPrimary : iconColor },
-                ]}
-              >
-                <Icon
-                  name="account"
-                  size={100}
-                  color={!userType ? colors.brandPrimary : iconColor}
-                />
-              </View>
-              <Text style={[styles.label, !userType && styles.labelSelect]}>
-                User
-              </Text>
-            </View>
-          </TouchableHighlight>
-        </View>
+        {settings}
       </View>
     );
   }
@@ -111,6 +123,7 @@ class Profile extends Component {
 
 const mapStateToProps = state => ({
   userType: state.userType,
+  loggedIn: state.loggedIn,
 });
 
 const mapActionsToProps = dispatch => ({
