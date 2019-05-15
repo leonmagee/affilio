@@ -1,27 +1,50 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
 
-class Profile extends Component {
-  // async componentDidMount() {
-  //   const { changeUserType } = this.props;
-  //   const value = await AsyncStorage.getItem('@UserType');
-  //   if (value === 'business') {
-  //     changeUserType(1);
-  //   } else {
-  //     changeUserType(0);
-  //   }
-  // }
+const iconColor = '#BBB';
 
+const styles = StyleSheet.create({
+  titleWrap: {
+    paddingHorizontal: 20,
+    marginTop: 25,
+    paddingTop: 20,
+    paddingBottom: 7,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  profileIconsWrap: {
+    flexDirection: 'row',
+    paddingHorizontal: 40,
+    justifyContent: 'space-around',
+  },
+  profileIcon: {
+    // padding: 2,
+    paddingTop: 11,
+    paddingHorizontal: 4,
+    borderWidth: 10,
+    // borderColor: iconColor,
+  },
+  label: {
+    textAlign: 'center',
+    padding: 7,
+    fontSize: 17,
+    fontFamily: 'Lato-Bold',
+    color: iconColor,
+  },
+  labelSelect: {
+    color: colors.brandPrimary,
+    fontFamily: 'Lato-Black',
+  },
+});
+
+class Profile extends Component {
   changeUserType = type => {
     const { changeUserType } = this.props;
     changeUserType(type);
@@ -34,56 +57,53 @@ class Profile extends Component {
 
   render() {
     const { userType } = this.props;
-    const radioProps = [
-      { label: 'User Account', value: 0 },
-      { label: 'Business Account', value: 1 },
-    ];
-    const radioButtonGroup = (
-      <RadioForm animation>
-        {radioProps.map((obj, i) => (
-          <RadioButton key={i} style={defaults.radioButtonInner}>
-            <RadioButtonInput
-              obj={obj}
-              index={i}
-              isSelected={userType === i}
-              onPress={type => {
-                this.changeUserType(type);
-              }}
-              // borderWidth={1}
-              buttonInnerColor={colors.brandPrimary}
-              buttonOuterColor={colors.brandPrimary}
-              // buttonSize={40}
-              // buttonOuterSize={80}
-              // buttonStyle={{}}
-              // buttonWrapStyle={{ marginLeft: 10 }}
-            />
-            <RadioButtonLabel
-              obj={obj}
-              index={i}
-              labelHorizontal
-              onPress={type => {
-                console.log('my type is???', type);
-                this.changeUserType(type);
-              }}
-              labelStyle={{ fontSize: 18, color: '#111' }}
-              labelWrapStyle={{}}
-            />
-          </RadioButton>
-        ))}
-      </RadioForm>
-    );
-
-    const accountTypeSettings = (
-      <View style={defaults.radioButtonWrap}>
-        <Text style={defaults.formSubTitle}>Change Account Type</Text>
-        {radioButtonGroup}
-      </View>
-    );
 
     return (
       <View style={defaults.mainWrap}>
         <Text style={defaults.title}>Profile Settings</Text>
-        {accountTypeSettings}
+        <View style={styles.titleWrap}>
+          <Text style={defaults.formSubTitle}>Change Account Type</Text>
+        </View>
+        <View style={styles.profileIconsWrap}>
+          <TouchableHighlight onPress={() => this.changeUserType(1)}>
+            <View>
+              <View
+                style={[
+                  styles.profileIcon,
+                  { borderColor: userType ? colors.brandPrimary : iconColor },
+                ]}
+              >
+                <Icon
+                  name="office-building"
+                  size={100}
+                  color={userType ? colors.brandPrimary : iconColor}
+                />
+              </View>
+              <Text style={[styles.label, userType && styles.labelSelect]}>
+                Business
+              </Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this.changeUserType(0)}>
+            <View>
+              <View
+                style={[
+                  styles.profileIcon,
+                  { borderColor: !userType ? colors.brandPrimary : iconColor },
+                ]}
+              >
+                <Icon
+                  name="account"
+                  size={100}
+                  color={!userType ? colors.brandPrimary : iconColor}
+                />
+              </View>
+              <Text style={[styles.label, !userType && styles.labelSelect]}>
+                User
+              </Text>
+            </View>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
