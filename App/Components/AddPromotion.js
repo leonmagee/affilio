@@ -32,7 +32,9 @@ class AddPromotion extends Component {
       companyName: '',
       newPromo: '',
       promoUrl: '',
+      startingDate: '',
       endingDate: '',
+      startDateSubmit: false,
       endDateSubmit: false,
       imageSource: false,
       processing: false,
@@ -45,18 +47,16 @@ class AddPromotion extends Component {
     });
   };
 
-  // redirectPromos = () => {
-  //   const { navigation } = this.props;
-  //   navigation.navigate('Promotions');
-  // };
+  setStartingDate = startingDate => {
+    const startDateSubmit = new Date(startingDate);
+    this.setState({
+      startingDate,
+      startDateSubmit,
+    });
+  };
 
   setEndingDate = endingDate => {
-    // regular new Date() seems to work for this...
-    // const newEndDate = RNFirebase.firestore.Timestamp.fromDate(
-    //   new Date(endingDate)
-    // );
     const endDateSubmit = new Date(endingDate);
-    // console.log('enderz', endingDate);
     this.setState({
       endingDate,
       endDateSubmit,
@@ -98,6 +98,7 @@ class AddPromotion extends Component {
     const {
       companyName,
       newPromo,
+      startDateSubmit,
       endDateSubmit,
       imageSource,
       promoUrl,
@@ -106,6 +107,7 @@ class AddPromotion extends Component {
       const promotion = {
         company: companyName,
         promotion: newPromo,
+        start: startDateSubmit,
         end: endDateSubmit,
         url: promoUrl,
         createdAt: new Date(),
@@ -154,6 +156,7 @@ class AddPromotion extends Component {
               this.setState({
                 companyName: '',
                 newPromo: '',
+                startingDate: '',
                 endingDate: '',
                 imageSource: false,
                 processing: false,
@@ -179,6 +182,7 @@ class AddPromotion extends Component {
       imageSource,
       newPromo, // @todo change this to 'promoText' or something else
       promoUrl,
+      startingDate,
       endingDate,
       processing,
     } = this.state;
@@ -230,7 +234,32 @@ class AddPromotion extends Component {
             />
             <View style={defaults.datePickerWrap}>
               <DatePicker
-                style={defaults.datePicker}
+                style={[defaults.datePicker, { marginRight: 10 }]}
+                date={startingDate}
+                mode="date"
+                placeholder="Starting Date"
+                format="MM-DD-YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                minDate={new Date()}
+                showIcon={false}
+                customStyles={{
+                  placeholderText: {
+                    fontSize: 17,
+                    fontFamily: 'Lato-Regular',
+                    alignItems: 'flex-start',
+                  },
+                  dateInput: {
+                    alignItems: 'flex-start',
+                    paddingVertical: 7,
+                    paddingHorizontal: 14,
+                    borderColor: 'rgba(0,0,0,0.25)',
+                  },
+                }}
+                onDateChange={this.setStartingDate}
+              />
+              <DatePicker
+                style={[defaults.datePicker, { marginLeft: 10 }]}
                 date={endingDate}
                 mode="date"
                 placeholder="Expiration Date"

@@ -4,6 +4,7 @@ import {
   Image,
   Modal,
   ScrollView,
+  Share,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +18,7 @@ import RNFirebase from 'react-native-firebase';
 import RNFetchBlob from 'rn-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
+import RNShare, { ShareSheet, Button } from 'react-native-share';
 import { CloseIcon } from './CloseIcon';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
@@ -93,7 +95,8 @@ const styles = StyleSheet.create({
   },
   url: {
     fontSize: 12,
-    color: colors.lightGray,
+    // color: colors.lightGray,
+    color: colors.brandPrimary,
     paddingRight: 40,
     fontFamily: 'Lato-Regular',
   },
@@ -104,6 +107,10 @@ const styles = StyleSheet.create({
 class Promotion extends Component {
   constructor(props) {
     super(props);
+    const userId = 123; // get from auth
+    const finalUrl = `${baseUrl}?userId=${userId}&companyName=${
+      props.company
+    }&redirectUrl=${props.url}`;
     this.state = {
       modalVisible: false,
       id: props.id,
@@ -111,6 +118,7 @@ class Promotion extends Component {
       companyName: props.company,
       newPromo: props.promo,
       promoUrl: props.url,
+      finalUrl,
       endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
       endDateSubmit: props.end,
       imageSource: props.image,
@@ -123,6 +131,46 @@ class Promotion extends Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
+  shareSocial = () => {
+    const { finalUrl } = this.state;
+    Share.share(
+      {
+        // message: 'Share Promotion',
+        url: finalUrl,
+        title: 'PIEC',
+      },
+      {
+        // Android only:
+        dialogTitle: 'Share Promotion',
+        // iOS only:
+        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+      }
+    );
+  };
+
+  // shareFacebook = () => {
+  //   const shareOptions = {
+  //     title: 'Share via',
+  //     message: 'some message',
+  //     url: 'some share url',
+  //     social: RNShare.Social.FACEBOOK,
+  //   };
+  //   // RNShare.shareSingle(shareOptions);
+  //   Share.shareSingle(
+  //     Object.assign(shareOptions, {
+  //       social: 'facebook',
+  //     })
+  //   );
+
+  //   // RNShare.open(shareOptions)
+  //   //   .then(res => {
+  //   //     console.log(res);
+  //   //   })
+  //   //   .catch(err => {
+  //   //     err && console.log(err);
+  //   //   });
+  // };
 
   updateTextInput = (value, name) => {
     this.setState({
@@ -272,6 +320,7 @@ class Promotion extends Component {
       processing,
       loggedIn, // global state? redux? firebase auth?
       cardOpen,
+      finalUrl,
     } = this.state;
     // console.log('are we logged in?', loggedIn);
     const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
@@ -287,11 +336,6 @@ class Promotion extends Component {
       );
     }
 
-    // const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry?userId=123&companyName=CopaVida&redirectUrl=https://espn.com';
-    const userId = 123; // get from auth
-
-    const finalUrl = `${baseUrl}?userId=${userId}companyName=${company}&redirectUrl=${url}`;
-
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
@@ -301,14 +345,21 @@ class Promotion extends Component {
               <Icon name="link" size={28} color={colors.lightGray} />
             </View>
             <View style={styles.dateRangeWrap}>
-              <Text style={styles.url}>{finalUrl}</Text>
+              <TouchableHighlight
+                onPress={this.shareSocial}
+                underlayColor="transparent"
+              >
+                <Text style={styles.url}>{finalUrl}</Text>
+              </TouchableHighlight>
             </View>
           </View>
-          <View style={styles.shareWrap}>
-            <Icon name="facebook" size={33} color={colors.brandPrimary} />
+          {/* <View style={styles.shareWrap}>
+            <TouchableHighlight onPress={this.shareFacebook}>
+              <Icon name="facebook" size={33} color={colors.brandPrimary} />
+            </TouchableHighlight>
             <Icon name="twitter" size={33} color={colors.brandPrimary} />
             <Icon name="share" size={33} color={colors.brandPrimary} />
-          </View>
+          </View> */}
         </>
       );
     }

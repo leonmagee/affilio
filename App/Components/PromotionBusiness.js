@@ -23,10 +23,6 @@ import { defaults } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
-// const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry?userId=123&companyName=CopaVida&redirectUrl=https://espn.com';
-
-const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
-
 const styles = StyleSheet.create({
   promotionWrap: {
     shadowOffset: { width: 2, height: 2 },
@@ -38,12 +34,6 @@ const styles = StyleSheet.create({
   },
   promoImage: {
     height: 160,
-    width: null,
-  },
-  promoImageSingle: {
-    // not used yet - use redux?
-    // maybe single view should be modal?
-    height: 300,
     width: null,
   },
   detailsWrap: {
@@ -63,8 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#111',
     fontFamily: 'Lato-Bold',
-    // fontFamily: 'Lato-Regular',
-    // fontFamily: 'Lato-Black',
   },
   sectionWrap: {
     flexDirection: 'row',
@@ -76,7 +64,6 @@ const styles = StyleSheet.create({
     width: 42,
   },
   promoText: {
-    // color: colors.lightGray,
     color: '#444',
     fontSize: 18,
     flex: 1,
@@ -97,18 +84,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dateItem: {
+    fontSize: 14,
+    color: colors.lightGray,
+    marginRight: 8,
+    fontFamily: 'Lato-Regular',
+  },
+  linkUrl: {
     fontSize: 16,
     color: colors.lightGray,
     marginRight: 8,
     fontFamily: 'Lato-Regular',
   },
+  businessDetailsWrap: {
+    backgroundColor: '#fdfdfd',
+    borderColor: '#ebebeb',
+    borderWidth: 1,
+    fontSize: 17,
+    paddingHorizontal: 15,
+    paddingVertical: 17,
+  },
 });
-// start = { item.data.start }
-// end = { item.data.end }
-// image = { item.data.image }
+
 class PromotionBusiness extends Component {
   constructor(props) {
     super(props);
+    const startingDate = props.start
+      ? moment(props.start.toDate()).format('MM-DD-YYYY')
+      : '';
     this.state = {
       modalVisible: false,
       id: props.id,
@@ -116,7 +118,9 @@ class PromotionBusiness extends Component {
       companyName: props.company,
       newPromo: props.promo,
       promoUrl: props.url,
+      startingDate,
       endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
+      startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
       imageUpdated: false,
@@ -132,6 +136,14 @@ class PromotionBusiness extends Component {
   updateTextInput = (value, name) => {
     this.setState({
       [name]: value,
+    });
+  };
+
+  setStartingDate = startingDate => {
+    const startDateSubmit = new Date(startingDate);
+    this.setState({
+      startingDate,
+      startDateSubmit,
     });
   };
 
@@ -188,6 +200,7 @@ class PromotionBusiness extends Component {
     const {
       id,
       companyName,
+      startDateSubmit,
       endDateSubmit,
       newPromo,
       promoUrl,
@@ -228,6 +241,7 @@ class PromotionBusiness extends Component {
                 company: companyName,
                 promotion: newPromo,
                 url: promoUrl,
+                start: startDateSubmit,
                 end: endDateSubmit,
                 updatedAt: new Date(),
                 image: firebaseUrl,
@@ -250,6 +264,7 @@ class PromotionBusiness extends Component {
             company: companyName,
             promotion: newPromo,
             url: promoUrl,
+            start: startDateSubmit,
             end: endDateSubmit,
             updatedAt: new Date(),
           })
@@ -266,9 +281,10 @@ class PromotionBusiness extends Component {
   };
 
   render() {
-    const { company, promo, url, end, image } = this.props;
+    const { company, promo, url, start, end, image } = this.props;
     const {
       companyName,
+      startingDate,
       endingDate,
       modalVisible,
       newPromo,
@@ -278,9 +294,11 @@ class PromotionBusiness extends Component {
       loggedIn,
       cardOpen,
     } = this.state;
-    // console.log('are we logged in?', loggedIn);
-    const endDate = end ? moment(end.toDate()).format('MMMM Do YYYY') : '';
-    // const endDateModal = end ? moment(end.toDate()).format('MM-DD-YYYY') : '';
+    const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
+    // const startDate = start
+    //   ? moment(start.toDate()).format('MMMM Do YYYY')
+    //   : '';
+    const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
 
     let processIndicator = <></>;
@@ -295,10 +313,17 @@ class PromotionBusiness extends Component {
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
-        <View style={styles.shareWrap}>
-          <Icon name="facebook" size={33} color={colors.brandPrimary} />
-          <Icon name="twitter" size={33} color={colors.brandPrimary} />
-          <Icon name="share" size={33} color={colors.brandPrimary} />
+        <View style={styles.businessDetailsWrap}>
+          <Text>Business Details here...</Text>
+        </View>
+      );
+    }
+
+    let startingData = <></>;
+    if (startDate) {
+      startingData = (
+        <View style={styles.dateRangeWrap}>
+          <Text style={styles.dateItem}>Starts: {startDate} -</Text>
         </View>
       );
     }
@@ -330,6 +355,7 @@ class PromotionBusiness extends Component {
               <View style={styles.iconWrap}>
                 <Icon name="calendar" size={24} color={colors.lightGray} />
               </View>
+              {startingData}
               <View style={styles.dateRangeWrap}>
                 <Text style={styles.dateItem}>Expires: {endDate}</Text>
               </View>
@@ -340,7 +366,7 @@ class PromotionBusiness extends Component {
                 <Icon name="link" size={28} color={colors.lightGray} />
               </View>
               <View style={styles.dateRangeWrap}>
-                <Text style={styles.dateItem}>{url}</Text>
+                <Text style={styles.linkUrl}>{url}</Text>
               </View>
             </View>
             {toggleArea}
@@ -391,7 +417,25 @@ class PromotionBusiness extends Component {
                 />
                 <View style={defaults.datePickerWrap}>
                   <DatePicker
-                    style={defaults.datePicker}
+                    style={[defaults.datePicker, { marginRight: 10 }]}
+                    date={startingDate}
+                    mode="date"
+                    placeholder="Starting Date"
+                    format="MM-DD-YYYY"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    minDate={new Date()}
+                    showIcon={false}
+                    customStyles={{
+                      placeholderText: {
+                        fontSize: 19,
+                        fontFamily: 'Lato-Regular',
+                      },
+                    }}
+                    onDateChange={this.setStartingDate}
+                  />
+                  <DatePicker
+                    style={[defaults.datePicker, { marginLeft: 10 }]}
                     date={endingDate}
                     mode="date"
                     placeholder="Expiration Date"
@@ -418,18 +462,28 @@ class PromotionBusiness extends Component {
                   >
                     <Text style={defaults.buttonText}>Image</Text>
                   </TouchableHighlight>
-                  <TouchableHighlight
-                    style={[defaults.buttonStyle, defaults.updateSubmitButton]}
-                    onPress={this.updateCurrentPromotion}
-                    underlayColor={colors.brandPrimary}
-                  >
-                    <Text style={defaults.buttonText}>Update</Text>
-                  </TouchableHighlight>
                 </View>
                 <Image
                   style={defaults.imagePreview}
                   source={{ uri: imageSource }}
                 />
+                <View style={defaults.bigButtonWrap}>
+                  <TouchableHighlight
+                    // style={defaults.imageUploadButton}
+                    style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                    onPress={this.imageSelect}
+                    underlayColor={colors.brandSecond}
+                  >
+                    <Text style={defaults.buttonText}>Cancel</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    style={[defaults.buttonStyle, defaults.updateSubmitButton]}
+                    onPress={this.updateCurrentPromotion}
+                    underlayColor={colors.brandPrimary}
+                  >
+                    <Text style={defaults.buttonText}>Submit</Text>
+                  </TouchableHighlight>
+                </View>
                 {processIndicator}
               </View>
             </ScrollView>

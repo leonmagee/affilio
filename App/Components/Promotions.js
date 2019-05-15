@@ -11,6 +11,7 @@ import RNFirebase, { auth } from 'react-native-firebase';
 import { colors } from '../Styles/variables';
 
 import Promotion from './Promotion';
+import PromotionBusiness from './PromotionBusiness';
 import { getDocAndId } from '../Utils/utils';
 
 const firestore = RNFirebase.firestore();
@@ -113,6 +114,7 @@ class Promotions extends Component {
 
   render() {
     const { promotions, current } = this.state;
+    const { userType } = this.props;
 
     return (
       <View style={styles.mainWrap}>
@@ -174,28 +176,49 @@ class Promotions extends Component {
         <FlatList
           data={promotions}
           style={{ backgroundColor: '#ddd' }}
-          renderItem={({ item }) => (
-            <Promotion
-              id={item.key}
-              company={item.data.company}
-              promo={item.data.promotion}
-              url={item.data.url}
-              start={item.data.start}
-              end={item.data.end}
-              image={item.data.image}
-              firestore={firestore}
-              filterId={this.filterId}
-            />
-          )}
+          renderItem={({ item }) => {
+            console.log('what is the user type????', userType);
+            if (userType) {
+              return (
+                <PromotionBusiness
+                  id={item.key}
+                  company={item.data.company}
+                  promo={item.data.promotion}
+                  url={item.data.url}
+                  start={item.data.start}
+                  end={item.data.end}
+                  image={item.data.image}
+                  firestore={firestore}
+                  filterId={this.filterId}
+                />
+              );
+            }
+            return (
+              <Promotion
+                id={item.key}
+                company={item.data.company}
+                promo={item.data.promotion}
+                url={item.data.url}
+                start={item.data.start}
+                end={item.data.end}
+                image={item.data.image}
+                firestore={firestore}
+                filterId={this.filterId}
+              />
+            );
+          }}
         />
       </View>
     );
   }
 }
 
+/**
+ * @todo right now promoFilter this isn't doing anything???
+ */
 const mapStateToProps = state => ({
   promoFilter: state.promoFilter,
-  promos: state.promos,
+  userType: state.userType,
 });
 
 module.exports = connect(mapStateToProps)(Promotions);

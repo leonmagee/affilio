@@ -168,6 +168,8 @@ PODS:
   - RNGoogleSignin (2.0.0):
     - GoogleSignIn (~> 4.4.0)
     - React
+  - RNShare (1.1.3):
+    - React
   - yoga (0.59.5.React)
 
 DEPENDENCIES:
@@ -189,6 +191,7 @@ DEPENDENCIES:
   - RNFirebase (from `../node_modules/react-native-firebase/iOS`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleSignin (from `../node_modules/react-native-google-signin`)
+  - RNShare (from `../node_modules/react-native-share`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -236,6 +239,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/react-native-google-signin"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -272,8 +277,9 @@ SPEC CHECKSUMS:
   RNFirebase: f20e5e4ceaa632aebb1a29a9a91022ae0469c633
   RNGestureHandler: aea90f0ad8e35fec23438db6fc3ad79be58bb734
   RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
+  RNShare: 4f206fa36e384e95a0cbf79f2a92490647e93127
   yoga: 2e571f113e8cbeb0eb752aeebc86c1bfe7a8200c
 
-PODFILE CHECKSUM: a7ed6d54a1634d3c98e4dd141bba6a3cdc4e2ed6
+PODFILE CHECKSUM: 29958dd595bfb458d70889818890999262017e0e
 
 COCOAPODS: 1.6.1

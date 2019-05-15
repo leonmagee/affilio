@@ -61,6 +61,8 @@ target 'Affilio' do
 
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
 end
 
 post_install do |installer|

@@ -85,6 +85,7 @@ export const defaults = {
   },
   imagePreview: {
     height: 100,
+    marginBottom: 20,
   },
   processingWrap: {
     flex: 1,
