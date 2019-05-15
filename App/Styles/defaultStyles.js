@@ -54,6 +54,10 @@ export const defaults = {
     fontFamily: 'Lato-Bold',
   },
   imageUploadButton: {
+    backgroundColor: '#999',
+    marginRight: 10,
+  },
+  cancelButton: {
     backgroundColor: colors.brandSecond,
     marginRight: 10,
   },

@@ -455,10 +455,9 @@ class PromotionBusiness extends Component {
                 </View>
                 <View style={defaults.bigButtonWrap}>
                   <TouchableHighlight
-                    // style={defaults.imageUploadButton}
                     style={[defaults.buttonStyle, defaults.imageUploadButton]}
                     onPress={this.imageSelect}
-                    underlayColor={colors.brandSecond}
+                    underlayColor={colors.lightGray}
                   >
                     <Text style={defaults.buttonText}>Image</Text>
                   </TouchableHighlight>
@@ -470,8 +469,10 @@ class PromotionBusiness extends Component {
                 <View style={defaults.bigButtonWrap}>
                   <TouchableHighlight
                     // style={defaults.imageUploadButton}
-                    style={[defaults.buttonStyle, defaults.imageUploadButton]}
-                    onPress={this.imageSelect}
+                    style={[defaults.buttonStyle, defaults.cancelButton]}
+                    onPress={() => {
+                      this.setModalVisible(!modalVisible);
+                    }}
                     underlayColor={colors.brandSecond}
                   >
                     <Text style={defaults.buttonText}>Cancel</Text>

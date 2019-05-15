@@ -288,7 +288,7 @@ class AddPromotion extends Component {
               <TouchableHighlight
                 style={[defaults.buttonStyle, defaults.imageUploadButton]}
                 onPress={this.imageSelect}
-                underlayColor={colors.brandSecond}
+                underlayColor={colors.lightGray}
               >
                 <Text style={defaults.buttonText}>Image</Text>
               </TouchableHighlight>
