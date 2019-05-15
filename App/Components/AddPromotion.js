@@ -12,8 +12,10 @@ import RNFirebase from 'react-native-firebase';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
+import LoginButton from './LoginButton';
 
 const firestore = RNFirebase.firestore();
 
@@ -186,6 +188,7 @@ class AddPromotion extends Component {
       endingDate,
       processing,
     } = this.state;
+    const { loggedIn } = this.props;
 
     let imagePreview = <View />;
     if (imageSource) {
@@ -194,116 +197,118 @@ class AddPromotion extends Component {
       );
     }
 
-    let formWrap = <View />;
+    let formWrap = <LoginButton />;
 
-    if (processing) {
-      formWrap = (
-        <View style={defaults.processingWrap}>
-          <ActivityIndicator size="large" color={colors.brandPrimary} />
-        </View>
-      );
-    } else {
-      formWrap = (
-        <ScrollView>
-          <View style={defaults.formWrap}>
-            <TextInput
-              style={defaults.textInput}
-              value={companyName}
-              onChangeText={e => {
-                this.updateTextInput(e, 'companyName');
-              }}
-              placeholder="Company Name"
-            />
-            <TextInput
-              style={[defaults.textInput, defaults.textArea]}
-              value={newPromo}
-              multiline
-              onChangeText={e => {
-                this.updateTextInput(e, 'newPromo');
-              }}
-              placeholder="Promotion Details"
-            />
-            <TextInput
-              style={defaults.textInput}
-              value={promoUrl}
-              autoCapitalize="none"
-              onChangeText={e => {
-                this.updateTextInput(e, 'promoUrl');
-              }}
-              placeholder="Promotion URL"
-            />
-            <View style={defaults.datePickerWrap}>
-              <DatePicker
-                style={[defaults.datePicker, { marginRight: 10 }]}
-                date={startingDate}
-                mode="date"
-                placeholder="Starting Date"
-                format="MM-DD-YYYY"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                minDate={new Date()}
-                showIcon={false}
-                customStyles={{
-                  placeholderText: {
-                    fontSize: 17,
-                    fontFamily: 'Lato-Regular',
-                    alignItems: 'flex-start',
-                  },
-                  dateInput: {
-                    alignItems: 'flex-start',
-                    paddingVertical: 7,
-                    paddingHorizontal: 14,
-                    borderColor: 'rgba(0,0,0,0.25)',
-                  },
-                }}
-                onDateChange={this.setStartingDate}
-              />
-              <DatePicker
-                style={[defaults.datePicker, { marginLeft: 10 }]}
-                date={endingDate}
-                mode="date"
-                placeholder="Expiration Date"
-                format="MM-DD-YYYY"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                minDate={new Date()}
-                showIcon={false}
-                customStyles={{
-                  placeholderText: {
-                    fontSize: 17,
-                    fontFamily: 'Lato-Regular',
-                    alignItems: 'flex-start',
-                  },
-                  dateInput: {
-                    alignItems: 'flex-start',
-                    paddingVertical: 7,
-                    paddingHorizontal: 14,
-                    borderColor: 'rgba(0,0,0,0.25)',
-                  },
-                }}
-                onDateChange={this.setEndingDate}
-              />
-            </View>
-            <View style={defaults.bigButtonWrap}>
-              <TouchableHighlight
-                style={[defaults.buttonStyle, defaults.imageUploadButton]}
-                onPress={this.imageSelect}
-                underlayColor={colors.lightGray}
-              >
-                <Text style={defaults.buttonText}>Image</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={[defaults.buttonStyle, defaults.updateSubmitButton]}
-                onPress={this.addNewPromotion}
-                underlayColor={colors.brandPrimary}
-              >
-                <Text style={defaults.buttonText}>Submit</Text>
-              </TouchableHighlight>
-            </View>
-            {imagePreview}
+    if (loggedIn) {
+      if (processing) {
+        formWrap = (
+          <View style={defaults.processingWrap}>
+            <ActivityIndicator size="large" color={colors.brandPrimary} />
           </View>
-        </ScrollView>
-      );
+        );
+      } else {
+        formWrap = (
+          <ScrollView>
+            <View style={defaults.formWrap}>
+              <TextInput
+                style={defaults.textInput}
+                value={companyName}
+                onChangeText={e => {
+                  this.updateTextInput(e, 'companyName');
+                }}
+                placeholder="Company Name"
+              />
+              <TextInput
+                style={[defaults.textInput, defaults.textArea]}
+                value={newPromo}
+                multiline
+                onChangeText={e => {
+                  this.updateTextInput(e, 'newPromo');
+                }}
+                placeholder="Promotion Details"
+              />
+              <TextInput
+                style={defaults.textInput}
+                value={promoUrl}
+                autoCapitalize="none"
+                onChangeText={e => {
+                  this.updateTextInput(e, 'promoUrl');
+                }}
+                placeholder="Promotion URL"
+              />
+              <View style={defaults.datePickerWrap}>
+                <DatePicker
+                  style={[defaults.datePicker, { marginRight: 10 }]}
+                  date={startingDate}
+                  mode="date"
+                  placeholder="Starting Date"
+                  format="MM-DD-YYYY"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  minDate={new Date()}
+                  showIcon={false}
+                  customStyles={{
+                    placeholderText: {
+                      fontSize: 17,
+                      fontFamily: 'Lato-Regular',
+                      alignItems: 'flex-start',
+                    },
+                    dateInput: {
+                      alignItems: 'flex-start',
+                      paddingVertical: 7,
+                      paddingHorizontal: 14,
+                      borderColor: 'rgba(0,0,0,0.25)',
+                    },
+                  }}
+                  onDateChange={this.setStartingDate}
+                />
+                <DatePicker
+                  style={[defaults.datePicker, { marginLeft: 10 }]}
+                  date={endingDate}
+                  mode="date"
+                  placeholder="Expiration Date"
+                  format="MM-DD-YYYY"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  minDate={new Date()}
+                  showIcon={false}
+                  customStyles={{
+                    placeholderText: {
+                      fontSize: 17,
+                      fontFamily: 'Lato-Regular',
+                      alignItems: 'flex-start',
+                    },
+                    dateInput: {
+                      alignItems: 'flex-start',
+                      paddingVertical: 7,
+                      paddingHorizontal: 14,
+                      borderColor: 'rgba(0,0,0,0.25)',
+                    },
+                  }}
+                  onDateChange={this.setEndingDate}
+                />
+              </View>
+              <View style={defaults.bigButtonWrap}>
+                <TouchableHighlight
+                  style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                  onPress={this.imageSelect}
+                  underlayColor={colors.lightGray}
+                >
+                  <Text style={defaults.buttonText}>Image</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={[defaults.buttonStyle, defaults.updateSubmitButton]}
+                  onPress={this.addNewPromotion}
+                  underlayColor={colors.brandPrimary}
+                >
+                  <Text style={defaults.buttonText}>Submit</Text>
+                </TouchableHighlight>
+              </View>
+              {imagePreview}
+            </View>
+          </ScrollView>
+        );
+      }
     }
 
     return (
@@ -314,5 +319,7 @@ class AddPromotion extends Component {
     );
   }
 }
-
-module.exports = AddPromotion;
+const mapStateToProps = state => ({
+  loggedIn: state.loggedIn,
+});
+module.exports = connect(mapStateToProps)(AddPromotion);
