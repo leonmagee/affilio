@@ -9,7 +9,7 @@ import { colors } from '../Styles/variables';
 
 const TabNavigator = createBottomTabNavigator(
   {
-    HomeImage: Promotions,
+    Promotions,
     Profile,
     About,
   },
@@ -18,10 +18,8 @@ const TabNavigator = createBottomTabNavigator(
       tabBarIcon: ({ tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
-        if (routeName === 'HomeImage') {
+        if (routeName === 'Promotions') {
           iconName = 'home';
-        } else if (routeName === 'Promotions') {
-          iconName = 'tag';
         } else if (routeName === 'AddPromotion') {
           iconName = 'tag-plus';
         } else if (routeName === 'Profile') {

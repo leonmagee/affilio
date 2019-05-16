@@ -16,11 +16,13 @@ const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
 class Promotion extends Component {
   constructor(props) {
     super(props);
-    // const userId = 123;
-    const userId = props.currentUser.uid;
-    const finalUrl = `${baseUrl}?userId=${userId}&companyName=${
-      props.company
-    }&redirectUrl=${props.url}`;
+    let finalUrl = false;
+    if (props.currentUser) {
+      const userId = props.currentUser.uid;
+      finalUrl = `${baseUrl}?userId=${userId}&companyName=${
+        props.company
+      }&redirectUrl=${props.url}`;
+    }
     this.state = {
       cardOpen: false,
       finalUrl,
@@ -31,7 +33,7 @@ class Promotion extends Component {
     const { finalUrl } = this.state;
     Share.share(
       {
-        message: 'Share Promotion',
+        // message: 'Share Promotion',
         url: finalUrl,
         title: 'PIEC',
       },

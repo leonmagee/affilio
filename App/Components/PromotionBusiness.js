@@ -71,11 +71,11 @@ class PromotionBusiness extends Component {
     });
   };
 
-  viewSingle = () => {
-    const { id } = this.state;
-    const { filterId } = this.props;
-    filterId(id);
-  };
+  // viewSingle = () => {
+  //   const { id } = this.state;
+  //   const { filterId } = this.props;
+  //   filterId(id);
+  // };
 
   imageSelect = () => {
     const options = {
@@ -123,7 +123,7 @@ class PromotionBusiness extends Component {
       imageSource,
       imageUpdated,
     } = this.state;
-    const { firestore } = this.props;
+    const { firestore, currentUser } = this.props;
 
     const promoRef = firestore.doc(`promos/${id}`);
 
@@ -133,9 +133,9 @@ class PromotionBusiness extends Component {
         const { fs } = RNFetchBlob;
         window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
         window.Blob = Blob;
-        const uid = '12345'; // different folder for different users?
+        const userId = currentUser.uid;
         const imageRef = RNFirebase.storage()
-          .ref(uid)
+          .ref(userId)
           .child(`image-${id}.jpg`);
         const mime = 'image/jpeg';
 
@@ -168,7 +168,7 @@ class PromotionBusiness extends Component {
                   processing: false,
                   imageUpdated: false,
                 });
-                this.viewSingle();
+                // this.viewSingle();
               });
           })
           .catch(error => {
@@ -190,7 +190,7 @@ class PromotionBusiness extends Component {
               processing: false,
               imageUpdated: false,
             });
-            this.viewSingle();
+            // this.viewSingle();
           });
       }
     }
@@ -408,6 +408,7 @@ class PromotionBusiness extends Component {
 
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn,
+  currentUser: state.currentUser,
 });
 
 module.exports = connect(mapStateToProps)(PromotionBusiness);

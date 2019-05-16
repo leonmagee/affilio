@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
 import LoginButton from './LoginButton';
+
+const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
 const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
   titleWrap: {
-    paddingHorizontal: 20,
-    marginTop: 25,
-    paddingTop: 20,
-    paddingBottom: 7,
-    alignItems: 'center',
+    marginTop: 20,
+    paddingTop: 17,
+    paddingHorizontal: 30,
     borderTopWidth: 1,
     borderTopColor: '#eee',
   },
@@ -26,11 +33,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   profileIcon: {
-    // padding: 2,
     paddingTop: 11,
     paddingHorizontal: 4,
     borderWidth: 10,
-    // borderColor: iconColor,
   },
   label: {
     textAlign: 'center',
@@ -43,9 +48,22 @@ const styles = StyleSheet.create({
     color: colors.brandPrimary,
     fontFamily: 'Lato-Black',
   },
+  logo: {
+    width: 100,
+    height: 100,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
 });
 
 class Profile extends Component {
+  constructor() {
+    super();
+    this.state = {
+      imageSource: false,
+    };
+  }
+
   changeUserType = type => {
     const { changeUserType } = this.props;
     changeUserType(type);
@@ -56,8 +74,61 @@ class Profile extends Component {
     }
   };
 
+  imageSelect = () => {
+    const options = {
+      title: 'Choose Promotion Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      maxWidth: 550,
+      mediaType: 'photo',
+    };
+
+    ImagePicker.showImagePicker(options, response => {
+      // console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.error('ImagePicker Error: ', response.error);
+      } else {
+        this.setState({
+          imageSource: response.uri,
+        });
+      }
+    });
+  };
+
   render() {
     const { userType, loggedIn } = this.props;
+    const { imageSource } = this.state;
+    const imageUrl = imageSource ? { uri: imageSource } : placeholderUrl;
+
+    let businessSettings = <></>;
+    if (userType) {
+      businessSettings = (
+        <View>
+          <View style={styles.titleWrap}>
+            <Text style={defaults.formSubTitle}>Business Details</Text>
+          </View>
+          <View style={defaults.formWrap}>
+            <TextInput style={defaults.textInput} placeholder="Business Name" />
+            <View style={defaults.bigButtonWrap}>
+              <TouchableHighlight
+                style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                onPress={this.imageSelect}
+                underlayColor={colors.lightGray}
+              >
+                <Text style={defaults.buttonText}>Set Business Logo</Text>
+              </TouchableHighlight>
+            </View>
+            <View>
+              <Image style={styles.logo} source={imageUrl} />
+            </View>
+          </View>
+        </View>
+      );
+    }
 
     let settings = <LoginButton />;
     if (loggedIn) {
@@ -77,7 +148,7 @@ class Profile extends Component {
                 >
                   <Icon
                     name="office-building"
-                    size={100}
+                    size={80}
                     color={userType ? colors.brandPrimary : iconColor}
                   />
                 </View>
@@ -98,7 +169,7 @@ class Profile extends Component {
                 >
                   <Icon
                     name="account"
-                    size={100}
+                    size={80}
                     color={!userType ? colors.brandPrimary : iconColor}
                   />
                 </View>
@@ -108,6 +179,7 @@ class Profile extends Component {
               </View>
             </TouchableHighlight>
           </View>
+          {businessSettings}
         </>
       );
     }

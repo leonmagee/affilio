@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import RNFirebase, { auth } from 'react-native-firebase';
+import RNFirebase from 'react-native-firebase';
 import { colors } from '../Styles/variables';
 
 import Promotion from './Promotion';
@@ -52,13 +52,25 @@ class Promotions extends Component {
   }
 
   componentDidMount = () => {
-    this.unsubscribeFromFirestore = firestore
-      .collection('promos')
-      .orderBy('createdAt', 'desc')
-      .onSnapshot(snapshot => {
-        const promotions = snapshot.docs.map(getDocAndId);
-        this.setState({ promotions });
-      });
+    const { userType, loggedIn, currentUser } = this.props;
+    if (userType && loggedIn) {
+      this.unsubscribeFromFirestore = firestore
+        .collection('promos')
+        // .where('companyId', '==', currentUser.uid)
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snapshot => {
+          const promotions = snapshot.docs.map(getDocAndId);
+          this.setState({ promotions });
+        });
+    } else {
+      this.unsubscribeFromFirestore = firestore
+        .collection('promos')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snapshot => {
+          const promotions = snapshot.docs.map(getDocAndId);
+          this.setState({ promotions });
+        });
+    }
   };
 
   componentWillUnmount = () => {
@@ -109,8 +121,9 @@ class Promotions extends Component {
     const { promotions, current } = this.state;
     const { userType, loggedIn } = this.props;
 
-    return (
-      <View style={styles.mainWrap}>
+    let navigation = <></>;
+    if (!userType) {
+      navigation = (
         <View style={styles.navWrap}>
           <TouchableHighlight
             underlayColor="transparent"
@@ -166,6 +179,12 @@ class Promotions extends Component {
             </Text>
           </TouchableHighlight>
         </View>
+      );
+    }
+
+    return (
+      <View style={styles.mainWrap}>
+        {navigation}
         <FlatList
           data={promotions}
           style={{ backgroundColor: '#ddd' }}
@@ -212,6 +231,7 @@ const mapStateToProps = state => ({
   promoFilter: state.promoFilter,
   userType: state.userType,
   loggedIn: state.loggedIn,
+  currentUser: state.currentUser,
 });
 
 module.exports = connect(mapStateToProps)(Promotions);

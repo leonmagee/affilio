@@ -14,7 +14,7 @@ export const defaults = {
   },
   formWrap: {
     marginHorizontal: 20,
-    padding: 20,
+    paddingHorizontal: 20,
   },
   textInput: {
     backgroundColor: 'white',
@@ -55,7 +55,6 @@ export const defaults = {
   },
   imageUploadButton: {
     backgroundColor: '#999',
-    marginRight: 10,
   },
   cancelButton: {
     backgroundColor: colors.brandSecond,

@@ -28,12 +28,22 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Lato-Bold',
   },
+  logo: {
+    fontFamily: 'Baumans-Regular',
+    color: '#fff',
+    fontSize: 23,
+  },
+  headerDivider: {
+    color: 'rgba(255,255,255,0.5)',
+    paddingHorizontal: 10,
+  },
   headerUserInfo: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   headerIcon: {
     marginRight: 10,
+    color: 'rgba(255,255,255,0.5)',
   },
 });
 
@@ -213,6 +223,7 @@ class App extends Component {
     if (!loading) {
       let userInfo = (
         <View style={styles.headerBar}>
+          <Text style={styles.logo}>PIEC</Text>
           <TouchableHighlight
             onPress={() => {
               toggleLoginModal(!loginModal);
@@ -225,18 +236,16 @@ class App extends Component {
       if (currentUser) {
         userInfo = (
           <View style={styles.headerBar}>
+            <Text style={styles.logo}>PIEC</Text>
+
             <View style={styles.headerUserInfo}>
-              <Icon
-                name="account"
-                size={25}
-                color="#fff"
-                style={styles.headerIcon}
-              />
+              <Icon name="account" size={25} style={styles.headerIcon} />
               <Text style={styles.headerText}>{currentUser.displayName}</Text>
+              <Text style={styles.headerDivider}>/</Text>
+              <TouchableHighlight onPress={this.firebaseSignOut}>
+                <Text style={styles.headerText}>LOGOUT</Text>
+              </TouchableHighlight>
             </View>
-            <TouchableHighlight onPress={this.firebaseSignOut}>
-              <Text style={styles.headerText}>LOGOUT</Text>
-            </TouchableHighlight>
           </View>
         );
       }

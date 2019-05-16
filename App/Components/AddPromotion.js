@@ -90,6 +90,11 @@ class AddPromotion extends Component {
     });
   };
 
+  // componentDidMount() {
+  //   const { navigation } = this.props;
+  //   navigation.navigate('Promotions');
+  // }
+
   addNewPromotion = () => {
     this.setState({
       processing: true,
@@ -105,7 +110,18 @@ class AddPromotion extends Component {
       imageSource,
       promoUrl,
     } = this.state;
-    if (companyName !== '' && newPromo !== '' && endDateSubmit && imageSource) {
+    const { currentUser } = this.props;
+    let userId = false;
+    if (currentUser) {
+      userId = currentUser.uid;
+    }
+    if (
+      companyName !== '' &&
+      newPromo !== '' &&
+      endDateSubmit &&
+      imageSource &&
+      userId
+    ) {
       const promotion = {
         company: companyName,
         promotion: newPromo,
@@ -113,6 +129,7 @@ class AddPromotion extends Component {
         end: endDateSubmit,
         url: promoUrl,
         createdAt: new Date(),
+        companyId: userId,
       };
       firestore
         .collection('promos')
@@ -125,9 +142,8 @@ class AddPromotion extends Component {
           const { fs } = RNFetchBlob;
           window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
           window.Blob = Blob;
-          const uid = '12345'; // different folder for different users?
           const imageRef = RNFirebase.storage()
-            .ref(uid)
+            .ref(userId)
             .child(`image-${firestoreId}.jpg`);
           const mime = 'image/jpeg';
 
@@ -160,6 +176,7 @@ class AddPromotion extends Component {
                 newPromo: '',
                 startingDate: '',
                 endingDate: '',
+                promoUrl: '',
                 imageSource: false,
                 processing: false,
               });
@@ -175,6 +192,8 @@ class AddPromotion extends Component {
           // the images should be in directories per each user?
           // validation for missing fields - all will be required for now - except for image...
         });
+    } else {
+      console.log("didn't pass validation...");
     }
   };
 
@@ -209,7 +228,7 @@ class AddPromotion extends Component {
       } else {
         formWrap = (
           <ScrollView>
-            <View style={defaults.formWrap}>
+            <View style={[defaults.formWrap, { marginTop: 20 }]}>
               <TextInput
                 style={defaults.textInput}
                 value={companyName}
@@ -290,7 +309,11 @@ class AddPromotion extends Component {
               </View>
               <View style={defaults.bigButtonWrap}>
                 <TouchableHighlight
-                  style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                  style={[
+                    defaults.buttonStyle,
+                    defaults.imageUploadButton,
+                    { marginRight: 10 },
+                  ]}
                   onPress={this.imageSelect}
                   underlayColor={colors.lightGray}
                 >
@@ -321,5 +344,6 @@ class AddPromotion extends Component {
 }
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn,
+  currentUser: state.currentUser,
 });
 module.exports = connect(mapStateToProps)(AddPromotion);

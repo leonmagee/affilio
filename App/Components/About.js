@@ -4,8 +4,14 @@ import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
 
 const styles = StyleSheet.create({
+  logo: {
+    fontFamily: 'Baumans-Regular',
+    color: '#111',
+    fontSize: 60,
+    textAlign: 'center',
+  },
   aboutWrap: {
-    paddingTop: 15,
+    paddingTop: 5,
     paddingBottom: 10,
     paddingHorizontal: 30,
   },
@@ -27,7 +33,7 @@ class About extends Component {
   render() {
     return (
       <View style={defaults.mainWrap}>
-        <Text style={defaults.title}>PIEC</Text>
+        <Text style={styles.logo}>PIEC</Text>
         <View style={styles.aboutWrap}>
           <Text style={styles.aboutTextTitle}>
             Posts Incentivized to Elevate the Clout
