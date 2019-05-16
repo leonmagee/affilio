@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -61,6 +60,7 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		F6BFF81A8E48430BBB79F77F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED604B0CFB8044999BA65749 /* Ionicons.ttf */; };
+		7AA1BE80FE71498594612CFD /* Baumans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB6CAA42A9FA4DD0B950726E /* Baumans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -400,6 +400,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		ED604B0CFB8044999BA65749 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		CB6CAA42A9FA4DD0B950726E /* Baumans-Regular.ttf */ = {isa = PBXFileReference; name = "Baumans-Regular.ttf"; path = "../App/Assets/Fonts/Baumans/Baumans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,6 +542,7 @@
 				1A079373C5DE408DB8EA9AB8 /* Lato-Black.ttf */,
 				4B05C758F59B473F9E6B128A /* Lato-Bold.ttf */,
 				0B7147A8F2C04C5C9EC8C2FF /* Lato-Regular.ttf */,
+				CB6CAA42A9FA4DD0B950726E /* Baumans-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1206,6 +1208,7 @@
 				B4184AFE38CA4312B2317569 /* Lato-Black.ttf in Resources */,
 				92DF0DE6F90F46B5BA7940AD /* Lato-Bold.ttf in Resources */,
 				28242C5AF04E4421827CC02C /* Lato-Regular.ttf in Resources */,
+				7AA1BE80FE71498594612CFD /* Baumans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -110,9 +110,6 @@ export const defaults = {
     paddingTop: 30,
     paddingBottom: 20,
   },
-  // modalTitle: {
-  //   marginTop: 30,
-  // },
   formWrapModal: {
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -138,5 +135,93 @@ export const defaults = {
   },
   radioButtonInner: {
     paddingBottom: 7,
+  },
+};
+
+export const promos = {
+  promotionWrap: {
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    marginHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+  },
+  promoImage: {
+    height: 160,
+    width: null,
+  },
+  detailsWrap: {
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    backgroundColor: '#FFF',
+  },
+  companyNameWrap: {
+    paddingBottom: 10,
+    marginBottom: 10,
+    borderBottomColor: 'rgba(0,0,0,0.07)',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  companyName: {
+    fontSize: 24,
+    color: '#111',
+    fontFamily: 'Lato-Bold',
+  },
+  sectionWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  iconWrap: {
+    width: 42,
+  },
+  promoText: {
+    color: '#444',
+    fontSize: 18,
+    flex: 1,
+    fontFamily: 'Lato-Regular',
+  },
+  shareWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 5,
+  },
+  dateRangeWrap: {
+    flexDirection: 'row',
+  },
+  dateItem: {
+    fontSize: 14,
+    color: colors.lightGray,
+    marginRight: 8,
+    fontFamily: 'Lato-Regular',
+  },
+  url: {
+    fontSize: 12,
+    color: colors.brandPrimary,
+    paddingRight: 40,
+    fontFamily: 'Lato-Regular',
+  },
+  iconGroup: {
+    flexDirection: 'row',
+  },
+  iconGroupIcon: {
+    marginLeft: 20,
+  },
+  linkUrl: {
+    fontSize: 16,
+    color: colors.lightGray,
+    marginRight: 8,
+    fontFamily: 'Lato-Regular',
+  },
+  businessDetailsWrap: {
+    backgroundColor: '#fdfdfd',
+    borderColor: '#ebebeb',
+    borderWidth: 1,
+    fontSize: 17,
+    paddingHorizontal: 15,
+    paddingVertical: 17,
   },
 };

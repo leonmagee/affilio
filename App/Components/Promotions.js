@@ -107,7 +107,7 @@ class Promotions extends Component {
 
   render() {
     const { promotions, current } = this.state;
-    const { userType } = this.props;
+    const { userType, loggedIn } = this.props;
 
     return (
       <View style={styles.mainWrap}>
@@ -170,8 +170,7 @@ class Promotions extends Component {
           data={promotions}
           style={{ backgroundColor: '#ddd' }}
           renderItem={({ item }) => {
-            console.log('what is the user type????', userType);
-            if (userType) {
+            if (userType && loggedIn) {
               return (
                 <PromotionBusiness
                   id={item.key}
@@ -212,6 +211,7 @@ class Promotions extends Component {
 const mapStateToProps = state => ({
   promoFilter: state.promoFilter,
   userType: state.userType,
+  loggedIn: state.loggedIn,
 });
 
 module.exports = connect(mapStateToProps)(Promotions);

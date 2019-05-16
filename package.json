@@ -41,7 +41,8 @@
   },
   "rnpm": {
     "assets": [
-      "./App/Assets/Fonts/Lato"
+      "./App/Assets/Fonts/Lato",
+      "./App/Assets/Fonts/Baumans"
     ]
   }
 }

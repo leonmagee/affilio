@@ -4,7 +4,6 @@ import {
   Image,
   Modal,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
@@ -19,91 +18,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import { CloseIcon } from './CloseIcon';
 import { colors } from '../Styles/variables';
-import { defaults } from '../Styles/defaultStyles';
+import { defaults, promos } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
-
-const styles = StyleSheet.create({
-  promotionWrap: {
-    shadowOffset: { width: 2, height: 2 },
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    marginHorizontal: 15,
-    marginBottom: 15,
-    backgroundColor: '#fff',
-  },
-  promoImage: {
-    height: 160,
-    width: null,
-  },
-  detailsWrap: {
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    backgroundColor: '#FFF',
-  },
-  companyNameWrap: {
-    paddingBottom: 10,
-    marginBottom: 10,
-    borderBottomColor: 'rgba(0,0,0,0.07)',
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  companyName: {
-    fontSize: 24,
-    color: '#111',
-    fontFamily: 'Lato-Bold',
-  },
-  sectionWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  iconWrap: {
-    width: 42,
-  },
-  promoText: {
-    color: '#444',
-    fontSize: 18,
-    flex: 1,
-    fontFamily: 'Lato-Regular',
-  },
-  shareWrap: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 5,
-  },
-  iconGroup: {
-    flexDirection: 'row',
-  },
-  iconGroupIcon: {
-    marginLeft: 20,
-  },
-  dateRangeWrap: {
-    flexDirection: 'row',
-  },
-  dateItem: {
-    fontSize: 14,
-    color: colors.lightGray,
-    marginRight: 8,
-    fontFamily: 'Lato-Regular',
-  },
-  linkUrl: {
-    fontSize: 16,
-    color: colors.lightGray,
-    marginRight: 8,
-    fontFamily: 'Lato-Regular',
-  },
-  businessDetailsWrap: {
-    backgroundColor: '#fdfdfd',
-    borderColor: '#ebebeb',
-    borderWidth: 1,
-    fontSize: 17,
-    paddingHorizontal: 15,
-    paddingVertical: 17,
-  },
-});
 
 class PromotionBusiness extends Component {
   constructor(props) {
@@ -125,7 +42,6 @@ class PromotionBusiness extends Component {
       imageSource: props.image,
       imageUpdated: false,
       processing: false,
-      loggedIn: props.loggedIn,
     };
   }
 
@@ -281,7 +197,7 @@ class PromotionBusiness extends Component {
   };
 
   render() {
-    const { company, promo, url, start, end, image } = this.props;
+    const { company, promo, url, start, end, image, loggedIn } = this.props;
     const {
       companyName,
       startingDate,
@@ -291,13 +207,9 @@ class PromotionBusiness extends Component {
       promoUrl,
       imageSource,
       processing,
-      loggedIn,
       cardOpen,
     } = this.state;
-    const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
-    // const startDate = start
-    //   ? moment(start.toDate()).format('MMMM Do YYYY')
-    //   : '';
+    const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
 
@@ -313,7 +225,7 @@ class PromotionBusiness extends Component {
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
-        <View style={styles.businessDetailsWrap}>
+        <View style={promos.businessDetailsWrap}>
           <Text>Business Details here...</Text>
         </View>
       );
@@ -322,22 +234,22 @@ class PromotionBusiness extends Component {
     let startingData = <></>;
     if (startDate) {
       startingData = (
-        <View style={styles.dateRangeWrap}>
-          <Text style={styles.dateItem}>Starts: {startDate} -</Text>
+        <View style={promos.dateRangeWrap}>
+          <Text style={promos.dateItem}>Starts: {startDate} -</Text>
         </View>
       );
     }
 
     return (
       <TouchableHighlight underlayColor="transparent" onPress={this.toggleCard}>
-        <View style={styles.promotionWrap}>
-          <Image style={styles.promoImage} source={imageUrl} />
-          <View style={styles.detailsWrap}>
-            <View style={styles.companyNameWrap}>
-              <Text style={styles.companyName}>{company}</Text>
-              <View style={styles.iconGroup}>
+        <View style={promos.promotionWrap}>
+          <Image style={promos.promoImage} source={imageUrl} />
+          <View style={promos.detailsWrap}>
+            <View style={promos.companyNameWrap}>
+              <Text style={promos.companyName}>{company}</Text>
+              <View style={promos.iconGroup}>
                 <TouchableHighlight
-                  style={styles.iconGroupIcon}
+                  style={promos.iconGroupIcon}
                   onPress={() => this.setModalVisible(!modalVisible)}
                   underlayColor="transparent"
                 >
@@ -345,28 +257,28 @@ class PromotionBusiness extends Component {
                 </TouchableHighlight>
               </View>
             </View>
-            <View style={styles.sectionWrap}>
-              <View style={styles.iconWrap}>
+            <View style={promos.sectionWrap}>
+              <View style={promos.iconWrap}>
                 <Icon name="tag" size={22} color={colors.lightGray} />
               </View>
-              <Text style={styles.promoText}>{promo}</Text>
+              <Text style={promos.promoText}>{promo}</Text>
             </View>
-            <View style={styles.sectionWrap}>
-              <View style={styles.iconWrap}>
+            <View style={promos.sectionWrap}>
+              <View style={promos.iconWrap}>
                 <Icon name="calendar" size={24} color={colors.lightGray} />
               </View>
               {startingData}
-              <View style={styles.dateRangeWrap}>
-                <Text style={styles.dateItem}>Expires: {endDate}</Text>
+              <View style={promos.dateRangeWrap}>
+                <Text style={promos.dateItem}>Expires: {endDate}</Text>
               </View>
             </View>
 
-            <View style={styles.sectionWrap}>
-              <View style={styles.iconWrap}>
+            <View style={promos.sectionWrap}>
+              <View style={promos.iconWrap}>
                 <Icon name="link" size={28} color={colors.lightGray} />
               </View>
-              <View style={styles.dateRangeWrap}>
-                <Text style={styles.linkUrl}>{url}</Text>
+              <View style={promos.dateRangeWrap}>
+                <Text style={promos.linkUrl}>{url}</Text>
               </View>
             </View>
             {toggleArea}
@@ -468,7 +380,6 @@ class PromotionBusiness extends Component {
                 />
                 <View style={defaults.bigButtonWrap}>
                   <TouchableHighlight
-                    // style={defaults.imageUploadButton}
                     style={[defaults.buttonStyle, defaults.cancelButton]}
                     onPress={() => {
                       this.setModalVisible(!modalVisible);
@@ -498,7 +409,5 @@ class PromotionBusiness extends Component {
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn,
 });
-
-// module.exports = Promotion;
 
 module.exports = connect(mapStateToProps)(PromotionBusiness);

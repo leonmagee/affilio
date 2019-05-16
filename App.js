@@ -50,11 +50,14 @@ class App extends Component {
       props.userLoggedIn(0);
     }
 
+    props.setCurrentUser(currentUser);
+
+    // console.log('UUU', currentUser);
+
     this.state = {
-      // modalVisible: props.loginModal,
       loading: true,
       signInLoading: false,
-      currentUser,
+      // currentUser,
     };
   }
 
@@ -69,6 +72,11 @@ class App extends Component {
     this.setState({
       loading: false,
     });
+    /**
+     * The follow might not be necessary
+     * watch the rest of the tutorial to see how helpful this is
+     * I can prob just use redux for everything
+     */
     this.unsubscribeFromAuth = RNFirebase.auth().onAuthStateChanged(user => {
       // console.log('login state is changing????', user);
       // this.setState({ user });
@@ -120,9 +128,10 @@ class App extends Component {
           console.info(JSON.stringify(currentUser.toJSON()));
           this.setState({
             // modalVisible: false,
-            currentUser,
+            // currentUser,
             signInLoading: false,
           });
+          this.props.setCurrentUser(currentUser);
           this.props.toggleLoginModal(false);
         }
       })
@@ -160,10 +169,11 @@ class App extends Component {
 
       this.setState({
         // modalVisible: false,
-        currentUser: newCurrentUser,
+        // currentUser: newCurrentUser,
         signInLoading: false,
       });
       this.props.toggleLoginModal(false);
+      this.props.setCurrentUser(newCurrentUser);
 
       // console.info(JSON.stringify(currentUser.toJSON()));
     } catch (e) {
@@ -177,16 +187,22 @@ class App extends Component {
 
   firebaseSignOut = () => {
     RNFirebase.auth().signOut();
-    this.setState({ currentUser: false });
+    const { setCurrentUser } = this.props;
+    setCurrentUser(false);
   };
 
   render() {
-    const { currentUser, loading, signInLoading } = this.state;
+    const { loading, signInLoading } = this.state;
     // const modalVisible = this.props.loginModal;
-    const { loginModal } = this.props;
-    const { userType, toggleLoginModal } = this.props;
+    const {
+      currentUser,
+      loginModal,
+      loggedIn,
+      userType,
+      toggleLoginModal,
+    } = this.props;
     let Router = RouterUser;
-    if (userType) {
+    if (userType && loggedIn) {
       Router = RouterBusiness;
     }
     let mainContent = (
@@ -198,9 +214,6 @@ class App extends Component {
       let userInfo = (
         <View style={styles.headerBar}>
           <TouchableHighlight
-            // onPress={() => {
-            //   this.setModalVisible(!modalVisible);
-            // }}
             onPress={() => {
               toggleLoginModal(!loginModal);
             }}
@@ -218,7 +231,6 @@ class App extends Component {
                 size={25}
                 color="#fff"
                 style={styles.headerIcon}
-                // style={defaults.closeIcon}
               />
               <Text style={styles.headerText}>{currentUser.displayName}</Text>
             </View>
@@ -311,6 +323,8 @@ class App extends Component {
 const mapStateToProps = state => ({
   userType: state.userType,
   loginModal: state.loginModal,
+  loggedIn: state.loggedIn,
+  currentUser: state.currentUser,
 });
 
 const mapActionsToProps = dispatch => ({
@@ -319,6 +333,9 @@ const mapActionsToProps = dispatch => ({
   },
   changeUserType(type) {
     dispatch({ type: 'USER_TYPE', payload: type });
+  },
+  setCurrentUser(user) {
+    dispatch({ type: 'CURRENT_USER', payload: user });
   },
   toggleLoginModal(open) {
     dispatch({ type: 'TOGGLE_LOG_IN', payload: open });

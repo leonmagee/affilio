@@ -6,6 +6,7 @@ import { combineReducers } from 'redux';
 import { loggedInReducer } from './loggedInReducer';
 import { userTypeReducer } from './userTypeReducer';
 import { loginModalReducer } from './loginModalReducer';
+import { currentUserReducer } from './currentUserReducer';
 // import { promoFilterReducer } from './promoFilterReducer';
 // import { promosReducer } from './promosReducer';
 
@@ -16,6 +17,7 @@ export const reducer = combineReducers({
   loggedIn: loggedInReducer,
   loginModal: loginModalReducer,
   userType: userTypeReducer,
+  currentUser: currentUserReducer,
   // promoFilter: promoFilterReducer,
   // promos: promosReducer,
 });
