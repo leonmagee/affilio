@@ -108,22 +108,31 @@ class Promotion extends Component {
           <Image style={promos.promoImage} source={imageUrl} />
           <View style={promos.detailsWrap}>
             <View style={promos.companyNameWrap}>
-              <Text style={promos.companyName}>{company}</Text>
+              <View style={promos.titleWrapInner}>
+                <Text style={promos.companyName}>{company}</Text>
+                <View style={promos.iconGroup}>
+                  <TouchableHighlight
+                    style={promos.iconGroupIcon}
+                    onPress={this.shareSocial}
+                    underlayColor="transparent"
+                  >
+                    <Icon name="share" size={28} color={colors.brandPrimary} />
+                  </TouchableHighlight>
+                </View>
+              </View>
+
+              <View style={promos.sectionWrap}>
+                {startingData}
+                <View style={promos.dateRangeWrap}>
+                  <Text style={promos.dateItem}>Expires: {endDate}</Text>
+                </View>
+              </View>
             </View>
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
                 <Icon name="tag" size={22} color={colors.lightGray} />
               </View>
               <Text style={promos.promoText}>{promo}</Text>
-            </View>
-            <View style={promos.sectionWrap}>
-              <View style={promos.iconWrap}>
-                <Icon name="calendar" size={24} color={colors.lightGray} />
-              </View>
-              {startingData}
-              <View style={promos.dateRangeWrap}>
-                <Text style={promos.dateItem}>Expires: {endDate}</Text>
-              </View>
             </View>
             {toggleArea}
           </View>

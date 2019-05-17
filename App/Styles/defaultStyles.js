@@ -156,10 +156,11 @@ export const promos = {
     backgroundColor: '#FFF',
   },
   companyNameWrap: {
-    paddingBottom: 10,
     marginBottom: 10,
     borderBottomColor: 'rgba(0,0,0,0.07)',
     borderBottomWidth: 1,
+  },
+  titleWrapInner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -179,7 +180,7 @@ export const promos = {
   },
   promoText: {
     color: '#444',
-    fontSize: 18,
+    fontSize: 17,
     flex: 1,
     fontFamily: 'Lato-Regular',
   },
@@ -192,7 +193,7 @@ export const promos = {
     flexDirection: 'row',
   },
   dateItem: {
-    fontSize: 14,
+    fontSize: 13,
     color: colors.lightGray,
     marginRight: 8,
     fontFamily: 'Lato-Regular',
@@ -210,7 +211,7 @@ export const promos = {
     marginLeft: 20,
   },
   linkUrl: {
-    fontSize: 16,
+    fontSize: 13,
     color: colors.lightGray,
     marginRight: 8,
     fontFamily: 'Lato-Regular',

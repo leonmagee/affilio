@@ -246,15 +246,23 @@ class PromotionBusiness extends Component {
           <Image style={promos.promoImage} source={imageUrl} />
           <View style={promos.detailsWrap}>
             <View style={promos.companyNameWrap}>
-              <Text style={promos.companyName}>{company}</Text>
-              <View style={promos.iconGroup}>
-                <TouchableHighlight
-                  style={promos.iconGroupIcon}
-                  onPress={() => this.setModalVisible(!modalVisible)}
-                  underlayColor="transparent"
-                >
-                  <Icon name="pencil" size={22} color={colors.brandPrimary} />
-                </TouchableHighlight>
+              <View style={promos.titleWrapInner}>
+                <Text style={promos.companyName}>{company}</Text>
+                <View style={promos.iconGroup}>
+                  <TouchableHighlight
+                    style={promos.iconGroupIcon}
+                    onPress={() => this.setModalVisible(!modalVisible)}
+                    underlayColor="transparent"
+                  >
+                    <Icon name="pencil" size={22} color={colors.brandPrimary} />
+                  </TouchableHighlight>
+                </View>
+              </View>
+              <View style={promos.sectionWrap}>
+                {startingData}
+                <View style={promos.dateRangeWrap}>
+                  <Text style={promos.dateItem}>Expires: {endDate}</Text>
+                </View>
               </View>
             </View>
             <View style={promos.sectionWrap}>
@@ -263,16 +271,6 @@ class PromotionBusiness extends Component {
               </View>
               <Text style={promos.promoText}>{promo}</Text>
             </View>
-            <View style={promos.sectionWrap}>
-              <View style={promos.iconWrap}>
-                <Icon name="calendar" size={24} color={colors.lightGray} />
-              </View>
-              {startingData}
-              <View style={promos.dateRangeWrap}>
-                <Text style={promos.dateItem}>Expires: {endDate}</Text>
-              </View>
-            </View>
-
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
                 <Icon name="link" size={28} color={colors.lightGray} />
@@ -393,7 +391,7 @@ class PromotionBusiness extends Component {
                     onPress={this.updateCurrentPromotion}
                     underlayColor={colors.brandPrimary}
                   >
-                    <Text style={defaults.buttonText}>Submit</Text>
+                    <Text style={defaults.buttonText}>Update</Text>
                   </TouchableHighlight>
                 </View>
                 {processIndicator}
