@@ -7,7 +7,9 @@ import {
 // import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 // import { SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Promotions from './Promotions';
+// import Promotions from './Promotions';
+import PromotionsWrap from './PromotionsWrap';
+
 // import AddPromotion from './AddPromotion';
 import Profile from './Profile';
 import About from './About';
@@ -15,7 +17,7 @@ import { colors } from '../Styles/variables';
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Promotions,
+    Promotions: PromotionsWrap,
     Profile,
     About,
   },
