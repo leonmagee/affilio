@@ -14,6 +14,7 @@ import ImagePicker from 'react-native-image-picker';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
 import LoginButton from './LoginButton';
+import Footer from './Footer';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
@@ -100,7 +101,7 @@ class Profile extends Component {
   };
 
   render() {
-    const { userType, loggedIn } = this.props;
+    const { userType, loggedIn, navigation } = this.props;
     const { imageSource } = this.state;
     const imageUrl = imageSource ? { uri: imageSource } : placeholderUrl;
 
@@ -185,9 +186,12 @@ class Profile extends Component {
     }
 
     return (
-      <View style={defaults.mainWrap}>
-        <Text style={defaults.title}>Profile Settings</Text>
-        {settings}
+      <View style={{ flex: 1 }}>
+        <View style={defaults.mainWrap}>
+          <Text style={defaults.title}>Profile Settings</Text>
+          {settings}
+        </View>
+        <Footer navigation={navigation} />
       </View>
     );
   }

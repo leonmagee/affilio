@@ -13,6 +13,7 @@ import { colors } from '../Styles/variables';
 import Promotion from './Promotion';
 import PromotionBusiness from './PromotionBusiness';
 import { getDocAndId } from '../Utils/utils';
+import Footer from './Footer';
 
 const firestore = RNFirebase.firestore();
 
@@ -117,7 +118,7 @@ class Promotions extends Component {
 
   render() {
     const { promotions, current } = this.state;
-    const { userType, loggedIn } = this.props;
+    const { userType, loggedIn, navigation } = this.props;
 
     return (
       <View style={styles.mainWrap}>
@@ -155,6 +156,7 @@ class Promotions extends Component {
             );
           }}
         />
+        <Footer navigation={navigation} />
       </View>
     );
   }

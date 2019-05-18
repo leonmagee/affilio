@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
   headerBar: {
     // backgroundColor: '#000',
     // height: 85,
-    // paddingTop: 5,
-    paddingBottom: 10,
+    paddingTop: 5,
+    paddingBottom: 15,
     paddingHorizontal: 25,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   // headerText: {
   //   color: '#FFF',
@@ -53,15 +53,15 @@ const styles = StyleSheet.create({
   //   marginRight: 10,
   //   color: 'rgba(255,255,255,0.5)',
   // },
-  // bottomNavWrap: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   paddingTop: 20,
-  // },
-  // navItem: {
-  //   color: '#fff',
-  //   fontSize: 18,
-  // },
+  bottomNavWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 20,
+  },
+  navItem: {
+    color: '#fff',
+    fontSize: 18,
+  },
 });
 
 class App extends Component {
@@ -238,33 +238,34 @@ class App extends Component {
       </View>
     );
     if (!loading) {
-      const userInfo = (
+      let userInfo = (
         <View style={styles.headerBar}>
           <Text style={styles.logo}>PIEC</Text>
-          {/* <TouchableHighlight
+          <TouchableHighlight
             onPress={() => {
               toggleLoginModal(!loginModal);
             }}
           >
             <Text style={styles.headerText}>LOGIN</Text>
-          </TouchableHighlight> */}
+          </TouchableHighlight>
         </View>
       );
-      // if (currentUser) {
-      //   userInfo = (
-      //     <View style={styles.headerBar}>
-      //       <Text style={styles.logo}>PIEC</Text>
-      //       {/* <View style={styles.headerUserInfo}>
-      //         <Icon name="account" size={25} style={styles.headerIcon} />
-      //         <Text style={styles.headerText}>{currentUser.displayName}</Text>
-      //         <Text style={styles.headerDivider}>/</Text>
-      //         <TouchableHighlight onPress={this.firebaseSignOut}>
-      //           <Text style={styles.headerText}>LOGOUT</Text>
-      //         </TouchableHighlight>
-      //       </View> */}
-      //     </View>
-      //   );
-      // }
+      if (currentUser) {
+        userInfo = (
+          <View style={styles.headerBar}>
+            <Text style={styles.logo}>PIEC</Text>
+
+            <View style={styles.headerUserInfo}>
+              <Icon name="account" size={25} style={styles.headerIcon} />
+              <Text style={styles.headerText}>{currentUser.displayName}</Text>
+              <Text style={styles.headerDivider}>/</Text>
+              <TouchableHighlight onPress={this.firebaseSignOut}>
+                <Text style={styles.headerText}>LOGOUT</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        );
+      }
 
       let loginActivity = <View />;
       if (signInLoading) {
@@ -275,16 +276,16 @@ class App extends Component {
         );
       }
 
-      // const bottomNav = (
-      //   <View style={styles.bottomNavWrap}>
-      //     <TouchableHighlight>
-      //       <Text style={styles.navItem}>Home</Text>
-      //     </TouchableHighlight>
-      //     <TouchableHighlight>
-      //       <Text style={styles.navItem}>Settings</Text>
-      //     </TouchableHighlight>
-      //   </View>
-      // );
+      const bottomNav = (
+        <View style={styles.bottomNavWrap}>
+          <TouchableHighlight>
+            <Text style={styles.navItem}>Home</Text>
+          </TouchableHighlight>
+          <TouchableHighlight>
+            <Text style={styles.navItem}>Settings</Text>
+          </TouchableHighlight>
+        </View>
+      );
 
       mainContent = (
         <View style={{ flex: 1 }}>
@@ -348,6 +349,7 @@ class App extends Component {
               </View>
             </View>
           </Modal>
+          {bottomNav}
         </View>
       );
     }

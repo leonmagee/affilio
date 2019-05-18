@@ -3,7 +3,8 @@ import Promotions from './Promotions';
 
 class PromotionsExpiring extends Component {
   render() {
-    return <Promotions filter="expiring" />;
+    const { navigation } = this.props;
+    return <Promotions navigation={navigation} filter="expiring" />;
   }
 }
 

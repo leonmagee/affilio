@@ -3,7 +3,8 @@ import Promotions from './Promotions';
 
 class PromotionsNew extends Component {
   render() {
-    return <Promotions filter="new" />;
+    const { navigation } = this.props;
+    return <Promotions navigation={navigation} filter="new" />;
   }
 }
 

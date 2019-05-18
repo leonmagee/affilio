@@ -6,8 +6,9 @@ import { AppRegistry, YellowBox, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './App/Redux/store';
 import App from './App';
+import Router from './App/Components/RouterUser';
 import { name as appName } from './app.json';
-import SwipeTester from './App/Components/SwipeTester';
+// import SwipeTester from './App/Components/SwipeTester';
 
 StatusBar.setBarStyle('light-content', true);
 

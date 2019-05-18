@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
 import {
   createAppContainer,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
-// import Promotions from './Promotions';
 import PromotionsFeatured from './PromotionsFeatured';
 import PromotionsNew from './PromotionsNew';
 import PromotionsExclusive from './PromotionsExclusive';
 import PromotionsExpiring from './PromotionsExpiring';
 import { colors } from '../Styles/variables';
-// exclusive - new - featured - expiring
 
 const SlideNavigator = createMaterialTopTabNavigator(
   {
@@ -39,7 +35,6 @@ const SlideNavigator = createMaterialTopTabNavigator(
         backgroundColor: colors.brandPrimary,
         height: 3,
       },
-      // animationEnabled: true,
       labelStyle: {
         fontSize: 12,
       },

@@ -3,7 +3,8 @@ import Promotions from './Promotions';
 
 class PromotionsExclusive extends Component {
   render() {
-    return <Promotions filter="exclusive" />;
+    const { navigation } = this.props;
+    return <Promotions navigation={navigation} filter="exclusive" />;
   }
 }
 
