@@ -33,6 +33,7 @@ class PromotionBusiness extends Component {
       id: props.id,
       cardOpen: false,
       companyName: props.company,
+      companyId: props.companyId,
       newPromo: props.promo,
       promoUrl: props.url,
       startingDate,
@@ -40,9 +41,19 @@ class PromotionBusiness extends Component {
       startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
+      businessDetails: false,
       imageUpdated: false,
       processing: false,
     };
+
+    const businessDetailsRef = props.firestore.doc(
+      `businesses/${props.companyId}`
+    );
+    businessDetailsRef.get().then(result => {
+      // console.log('here is a result?', result);
+      this.setState({ businessDetails: result._data });
+      // console.log('final state?', this.state.businessDetails);
+    });
   }
 
   setModalVisible(visible) {
@@ -208,6 +219,7 @@ class PromotionBusiness extends Component {
       imageSource,
       processing,
       cardOpen,
+      businessDetails,
     } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
@@ -226,7 +238,12 @@ class PromotionBusiness extends Component {
     if (cardOpen) {
       toggleArea = (
         <View style={promos.businessDetailsWrap}>
-          <Text>Business Details here...</Text>
+          <Text style={promos.busTitle}>{businessDetails.name}</Text>
+          <Text style={promos.busAddress}>{businessDetails.address}</Text>
+          <Text style={promos.busAddress}>{businessDetails.city}</Text>
+          <Text style={promos.busAddress}>{businessDetails.state}</Text>
+          <Text style={promos.busAddress}>{businessDetails.zip}</Text>
+          <Text style={promos.busAddress}>{businessDetails.phone}</Text>
         </View>
       );
     }

@@ -16,6 +16,9 @@ export const defaults = {
     marginHorizontal: 20,
     paddingHorizontal: 20,
   },
+  inputGroup: {
+    flexDirection: 'row',
+  },
   textInput: {
     backgroundColor: 'white',
     paddingVertical: 7,
@@ -26,6 +29,7 @@ export const defaults = {
     borderColor: 'rgba(0,0,0,0.25)',
     borderWidth: 1,
     color: '#676867',
+    // flex: 1,
   },
   textArea: {
     height: 120,
@@ -223,5 +227,12 @@ export const promos = {
     fontSize: 17,
     paddingHorizontal: 15,
     paddingVertical: 17,
+  },
+  busTitle: {
+    color: colors.brandPrimary,
+    fontSize: 25,
+  },
+  busAddress: {
+    color: '#656565',
   },
 };

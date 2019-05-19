@@ -14,8 +14,9 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
-import RouterUser from './App/Components/RouterUser';
-import RouterBusiness from './App/Components/RouterBusiness';
+import Router from './App/Components/Router';
+// import RouterUser from './App/Components/RouterUser';
+// import RouterBusiness from './App/Components/RouterBusiness';
 import { colors } from './App/Styles/variables';
 import { defaults } from './App/Styles/defaultStyles';
 import { CloseIcon } from './App/Components/CloseIcon';
@@ -89,7 +90,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const { changeUserType, userLoggedIn } = this.props;
+    const { changeUserType, userLoggedIn, setBusinessDetails } = this.props;
     const value = await AsyncStorage.getItem('@UserType');
     if (value === 'business') {
       changeUserType(1);
@@ -99,6 +100,14 @@ class App extends Component {
     this.setState({
       loading: false,
     });
+
+    const busDetailsString = await AsyncStorage.getItem('@BusinessDetails');
+    if (busDetailsString) {
+      // console.log(busDetailsString);
+      const busDetails = JSON.parse(busDetailsString);
+      setBusinessDetails(busDetails);
+      console.log(busDetails);
+    }
     /**
      * The follow might not be necessary
      * watch the rest of the tutorial to see how helpful this is
@@ -228,10 +237,10 @@ class App extends Component {
       userType,
       toggleLoginModal,
     } = this.props;
-    let Router = RouterUser;
-    if (userType && loggedIn) {
-      Router = RouterBusiness;
-    }
+    // let Router = RouterUser;
+    // if (userType && loggedIn) {
+    //   Router = RouterBusiness;
+    // }
     let mainContent = (
       <View style={defaults.processingWrap}>
         <ActivityIndicator size="large" color={colors.brandPrimary} />
@@ -376,6 +385,9 @@ const mapActionsToProps = dispatch => ({
   },
   setCurrentUser(user) {
     dispatch({ type: 'CURRENT_USER', payload: user });
+  },
+  setBusinessDetails(details) {
+    dispatch({ type: 'BUSINESS_DETAILS', payload: details });
   },
   toggleLoginModal(open) {
     dispatch({ type: 'TOGGLE_LOG_IN', payload: open });

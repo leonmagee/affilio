@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -8,17 +7,17 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import RNFirebase from 'react-native-firebase';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import ImagePicker from 'react-native-image-picker';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-import LoginButton from './LoginButton';
+// import LoginButton from './LoginButton';
 import Footer from './Footer';
 
-const placeholderUrl = require('../Assets/Images/placeholder.jpg');
+const firestore = RNFirebase.firestore();
 
-const iconColor = '#BBB';
+// const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
   titleWrap: {
@@ -28,82 +27,66 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#eee',
   },
-  profileIconsWrap: {
-    flexDirection: 'row',
-    paddingHorizontal: 40,
-    justifyContent: 'space-around',
-  },
-  profileIcon: {
-    paddingTop: 11,
-    paddingHorizontal: 4,
-    borderWidth: 10,
-  },
-  label: {
-    textAlign: 'center',
-    padding: 7,
-    fontSize: 17,
-    fontFamily: 'Lato-Bold',
-    color: iconColor,
-  },
-  labelSelect: {
-    color: colors.brandPrimary,
-    fontFamily: 'Lato-Black',
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
 });
 
 class Profile extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { businessDetails } = props;
+
     this.state = {
-      imageSource: false,
+      name: businessDetails.name,
+      address: businessDetails.address,
+      city: businessDetails.city,
+      state: businessDetails.state,
+      zip: businessDetails.zip,
+      phone: businessDetails.phone,
     };
   }
 
-  changeUserType = type => {
-    const { changeUserType } = this.props;
-    changeUserType(type);
-    if (type) {
-      AsyncStorage.setItem('@UserType', 'business');
-    } else {
-      AsyncStorage.setItem('@UserType', 'user');
-    }
-  };
-
-  imageSelect = () => {
-    const options = {
-      title: 'Choose Promotion Image',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-      maxWidth: 550,
-      mediaType: 'photo',
-    };
-
-    ImagePicker.showImagePicker(options, response => {
-      // console.log('Response = ', response);
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.error('ImagePicker Error: ', response.error);
-      } else {
-        this.setState({
-          imageSource: response.uri,
-        });
-      }
+  updateTextInput = (value, name) => {
+    this.setState({
+      [name]: value,
     });
   };
 
+  updateBusinessInfo = () => {
+    const { name, address, city, state, zip, phone } = this.state;
+    // console.log('profile updates???', name, address, city, state, zip, phone);
+    const { currentUser } = this.props;
+    const busDetails = {
+      name,
+      address,
+      city,
+      state,
+      zip,
+      phone,
+    };
+    const busDetailsSave = JSON.stringify(busDetails);
+    // console.log(busDetailsSave);
+    /**
+     * validation function - make sure items aren't empty?
+     */
+    if (name && address && city && state && zip && phone) {
+      AsyncStorage.setItem('@BusinessDetails', busDetailsSave);
+    }
+    firestore
+      .collection('businesses')
+      .doc(currentUser.uid)
+      .set(busDetails)
+      .then(result => {
+        console.log(result);
+      })
+      .catch(error => {
+        console.error('errors?', error);
+      });
+  };
+
+  // this.afs.collection('[your collection]').doc('[your ID]').set([your document]);
+
   render() {
     const { userType, loggedIn, navigation } = this.props;
-    const { imageSource } = this.state;
-    const imageUrl = imageSource ? { uri: imageSource } : placeholderUrl;
+    const { name, address, city, state, zip, phone } = this.state;
 
     let businessSettings = <></>;
     if (userType) {
@@ -113,75 +96,81 @@ class Profile extends Component {
             <Text style={defaults.formSubTitle}>Business Details</Text>
           </View>
           <View style={defaults.formWrap}>
-            <TextInput style={defaults.textInput} placeholder="Business Name" />
+            <TextInput
+              name="name"
+              style={defaults.textInput}
+              placeholder="Business Name"
+              value={name}
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'name');
+              }}
+            />
+            <TextInput
+              name="address"
+              style={defaults.textInput}
+              placeholder="Address"
+              value={address}
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'address');
+              }}
+            />
+            <View style={defaults.inputGroup}>
+              <TextInput
+                name="city"
+                style={[defaults.textInput, { flex: 1, marginRight: 10 }]}
+                placeholder="City"
+                value={city}
+                required
+                onChangeText={e => {
+                  this.updateTextInput(e, 'city');
+                }}
+              />
+              <TextInput
+                name="state"
+                style={[defaults.textInput, { flex: 1, marginLeft: 10 }]}
+                placeholder="State"
+                value={state}
+                required
+                onChangeText={e => {
+                  this.updateTextInput(e, 'state');
+                }}
+              />
+            </View>
+            <View style={defaults.inputGroup}>
+              <TextInput
+                name="city"
+                style={[defaults.textInput, { flex: 1, marginRight: 10 }]}
+                placeholder="Zip"
+                value={zip}
+                required
+                onChangeText={e => {
+                  this.updateTextInput(e, 'zip');
+                }}
+              />
+              <TextInput
+                name="state"
+                style={[defaults.textInput, { flex: 1, marginLeft: 10 }]}
+                placeholder="Phone"
+                value={phone}
+                required
+                onChangeText={e => {
+                  this.updateTextInput(e, 'phone');
+                }}
+              />
+            </View>
             <View style={defaults.bigButtonWrap}>
               <TouchableHighlight
-                style={[defaults.buttonStyle, defaults.imageUploadButton]}
-                onPress={this.imageSelect}
+                style={[defaults.buttonStyle, defaults.blueButton]}
+                onPress={this.updateBusinessInfo}
                 underlayColor={colors.lightGray}
               >
-                <Text style={defaults.buttonText}>Set Business Logo</Text>
+                <Text style={defaults.buttonText}>Update</Text>
               </TouchableHighlight>
-            </View>
-            <View>
-              <Image style={styles.logo} source={imageUrl} />
             </View>
           </View>
         </View>
-      );
-    }
-
-    let settings = <LoginButton />;
-    if (loggedIn) {
-      settings = (
-        <>
-          <View style={styles.titleWrap}>
-            <Text style={defaults.formSubTitle}>Change Account Type</Text>
-          </View>
-          <View style={styles.profileIconsWrap}>
-            <TouchableHighlight onPress={() => this.changeUserType(1)}>
-              <View>
-                <View
-                  style={[
-                    styles.profileIcon,
-                    { borderColor: userType ? colors.brandPrimary : iconColor },
-                  ]}
-                >
-                  <Icon
-                    name="office-building"
-                    size={80}
-                    color={userType ? colors.brandPrimary : iconColor}
-                  />
-                </View>
-                <Text style={[styles.label, userType && styles.labelSelect]}>
-                  Business
-                </Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={() => this.changeUserType(0)}>
-              <View>
-                <View
-                  style={[
-                    styles.profileIcon,
-                    {
-                      borderColor: !userType ? colors.brandPrimary : iconColor,
-                    },
-                  ]}
-                >
-                  <Icon
-                    name="account"
-                    size={80}
-                    color={!userType ? colors.brandPrimary : iconColor}
-                  />
-                </View>
-                <Text style={[styles.label, !userType && styles.labelSelect]}>
-                  User
-                </Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-          {businessSettings}
-        </>
       );
     }
 
@@ -189,7 +178,7 @@ class Profile extends Component {
       <View style={{ flex: 1 }}>
         <View style={defaults.mainWrap}>
           <Text style={defaults.title}>Profile Settings</Text>
-          {settings}
+          {businessSettings}
         </View>
         <Footer navigation={navigation} />
       </View>
@@ -200,6 +189,8 @@ class Profile extends Component {
 const mapStateToProps = state => ({
   userType: state.userType,
   loggedIn: state.loggedIn,
+  businessDetails: state.businessDetails,
+  currentUser: state.currentUser,
 });
 
 const mapActionsToProps = dispatch => ({

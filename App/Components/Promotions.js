@@ -13,7 +13,6 @@ import { colors } from '../Styles/variables';
 import Promotion from './Promotion';
 import PromotionBusiness from './PromotionBusiness';
 import { getDocAndId } from '../Utils/utils';
-import Footer from './Footer';
 
 const firestore = RNFirebase.firestore();
 
@@ -131,6 +130,7 @@ class Promotions extends Component {
                 <PromotionBusiness
                   id={item.key}
                   company={item.data.company}
+                  companyId={item.data.companyId}
                   promo={item.data.promotion}
                   url={item.data.url}
                   start={item.data.start}
@@ -156,7 +156,6 @@ class Promotions extends Component {
             );
           }}
         />
-        <Footer navigation={navigation} />
       </View>
     );
   }
