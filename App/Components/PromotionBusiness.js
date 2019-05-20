@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Image,
+  Linking,
   Modal,
   ScrollView,
   Text,
@@ -33,7 +34,7 @@ class PromotionBusiness extends Component {
       id: props.id,
       cardOpen: false,
       companyName: props.company,
-      companyId: props.companyId,
+      // companyId: props.companyId,
       newPromo: props.promo,
       promoUrl: props.url,
       startingDate,
@@ -41,7 +42,7 @@ class PromotionBusiness extends Component {
       startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
-      businessDetails: false,
+      busDetails: false,
       imageUpdated: false,
       processing: false,
     };
@@ -51,7 +52,7 @@ class PromotionBusiness extends Component {
     );
     businessDetailsRef.get().then(result => {
       // console.log('here is a result?', result);
-      this.setState({ businessDetails: result._data });
+      this.setState({ busDetails: result._data });
       // console.log('final state?', this.state.businessDetails);
     });
   }
@@ -80,6 +81,11 @@ class PromotionBusiness extends Component {
       endingDate,
       endDateSubmit,
     });
+  };
+
+  urlLink = url => {
+    // const urlNew =
+    Linking.openURL(url);
   };
 
   // viewSingle = () => {
@@ -219,7 +225,7 @@ class PromotionBusiness extends Component {
       imageSource,
       processing,
       cardOpen,
-      businessDetails,
+      busDetails,
     } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
@@ -234,16 +240,73 @@ class PromotionBusiness extends Component {
       );
     }
 
+    let facebookLink = <></>;
+    if (busDetails.facebook) {
+      facebookLink = (
+        <TouchableHighlight
+          onPress={() => this.urlLink(busDetails.facebook)}
+          underlayColor="transparent"
+        >
+          <Icon name="facebook" size={38} color={colors.brandPrimary} />
+        </TouchableHighlight>
+      );
+    }
+    let twitterLink = <></>;
+    if (busDetails.twitter) {
+      twitterLink = (
+        <TouchableHighlight
+          onPress={() => this.urlLink(busDetails.twitter)}
+          underlayColor="transparent"
+        >
+          <Icon name="twitter" size={38} color={colors.brandPrimary} />
+        </TouchableHighlight>
+      );
+    }
+    let instagramLink = <></>;
+    if (busDetails.instagram) {
+      instagramLink = (
+        <TouchableHighlight
+          onPress={() => this.urlLink(busDetails.instagram)}
+          underlayColor="transparent"
+        >
+          <Icon name="instagram" size={38} color={colors.brandPrimary} />
+        </TouchableHighlight>
+      );
+    }
+
+    let socialMediaLinks = <></>;
+    if (busDetails.facebook || busDetails.twitter || busDetails.instagram) {
+      socialMediaLinks = (
+        <View style={promos.socialMediaWrap}>
+          {facebookLink}
+          {twitterLink}
+          {instagramLink}
+        </View>
+      );
+    }
+
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
-        <View style={promos.businessDetailsWrap}>
-          <Text style={promos.busTitle}>{businessDetails.name}</Text>
-          <Text style={promos.busAddress}>{businessDetails.address}</Text>
-          <Text style={promos.busAddress}>{businessDetails.city}</Text>
-          <Text style={promos.busAddress}>{businessDetails.state}</Text>
-          <Text style={promos.busAddress}>{businessDetails.zip}</Text>
-          <Text style={promos.busAddress}>{businessDetails.phone}</Text>
+        <View style={promos.busDetails}>
+          <Text style={promos.busTitle}>{busDetails.name}</Text>
+          <Text style={promos.busAddress}>{busDetails.address}</Text>
+          <Text style={promos.busAddress}>{busDetails.address2}</Text>
+          <View style={promos.cszWrap}>
+            <Text style={promos.csz}>{busDetails.city},</Text>
+            <Text style={promos.csz}>{busDetails.state}</Text>
+            <Text style={promos.csz}>{busDetails.zip}</Text>
+          </View>
+          <Text style={promos.busAddress}>{busDetails.phone}</Text>
+          <Text style={promos.busAddress}>{busDetails.email}</Text>
+          <TouchableHighlight
+            underlayColor="transparent"
+            onPress={() => this.urlLink(busDetails.website)}
+          >
+            <Text style={promos.website}>{busDetails.website}</Text>
+          </TouchableHighlight>
+          <Text style={promos.busAddress}>{busDetails.facebook}</Text>
+          {socialMediaLinks}
         </View>
       );
     }

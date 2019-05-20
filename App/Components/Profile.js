@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -7,11 +8,12 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNFirebase from 'react-native-firebase';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
-import { defaults } from '../Styles/defaultStyles';
+import { defaults, promos } from '../Styles/defaultStyles';
 // import LoginButton from './LoginButton';
 import Footer from './Footer';
 
@@ -35,12 +37,18 @@ class Profile extends Component {
     const { businessDetails } = props;
 
     this.state = {
-      name: businessDetails.name,
       address: businessDetails.address,
+      address2: businessDetails.address2,
       city: businessDetails.city,
       state: businessDetails.state,
       zip: businessDetails.zip,
+      country: businessDetails.country,
       phone: businessDetails.phone,
+      email: businessDetails.email,
+      website: businessDetails.website,
+      facebook: businessDetails.facebook,
+      twitter: businessDetails.twitter,
+      instagram: businessDetails.instagram,
     };
   }
 
@@ -51,23 +59,44 @@ class Profile extends Component {
   };
 
   updateBusinessInfo = () => {
-    const { name, address, city, state, zip, phone } = this.state;
-    // console.log('profile updates???', name, address, city, state, zip, phone);
-    const { currentUser } = this.props;
-    const busDetails = {
-      name,
+    // const url = 'https://levon.io';
+    // Linking.openURL(url);
+    const {
       address,
+      address2,
       city,
       state,
       zip,
+      country,
       phone,
+      email,
+      website,
+      facebook,
+      twitter,
+      instagram,
+    } = this.state;
+    // console.log('profile updates???', name, address, city, state, zip, phone);
+    const { currentUser } = this.props;
+    const busDetails = {
+      address,
+      address2,
+      city,
+      state,
+      country,
+      zip,
+      phone,
+      email,
+      website,
+      facebook,
+      twitter,
+      instagram,
     };
     const busDetailsSave = JSON.stringify(busDetails);
     // console.log(busDetailsSave);
     /**
      * validation function - make sure items aren't empty?
      */
-    if (name && address && city && state && zip && phone) {
+    if (address && city && state && zip && phone) {
       AsyncStorage.setItem('@BusinessDetails', busDetailsSave);
     }
     firestore
@@ -86,34 +115,47 @@ class Profile extends Component {
 
   render() {
     const { userType, loggedIn, navigation } = this.props;
-    const { name, address, city, state, zip, phone } = this.state;
+    const {
+      address,
+      address2,
+      city,
+      state,
+      zip,
+      country,
+      phone,
+      email,
+      website,
+      facebook,
+      twitter,
+      instagram,
+    } = this.state;
 
     let businessSettings = <></>;
     if (userType) {
       businessSettings = (
-        <View>
+        <ScrollView>
           <View style={styles.titleWrap}>
             <Text style={defaults.formSubTitle}>Business Details</Text>
           </View>
           <View style={defaults.formWrap}>
             <TextInput
-              name="name"
-              style={defaults.textInput}
-              placeholder="Business Name"
-              value={name}
-              required
-              onChangeText={e => {
-                this.updateTextInput(e, 'name');
-              }}
-            />
-            <TextInput
               name="address"
               style={defaults.textInput}
-              placeholder="Address"
+              placeholder="Address Line 1"
               value={address}
               required
               onChangeText={e => {
                 this.updateTextInput(e, 'address');
+              }}
+            />
+            <TextInput
+              name="address2"
+              style={defaults.textInput}
+              placeholder="Address Line 2"
+              value={address2}
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'address2');
               }}
             />
             <View style={defaults.inputGroup}>
@@ -140,9 +182,9 @@ class Profile extends Component {
             </View>
             <View style={defaults.inputGroup}>
               <TextInput
-                name="city"
+                name="zip"
                 style={[defaults.textInput, { flex: 1, marginRight: 10 }]}
-                placeholder="Zip"
+                placeholder="Zip / Postal Code"
                 value={zip}
                 required
                 onChangeText={e => {
@@ -150,16 +192,83 @@ class Profile extends Component {
                 }}
               />
               <TextInput
-                name="state"
+                name="country"
                 style={[defaults.textInput, { flex: 1, marginLeft: 10 }]}
-                placeholder="Phone"
+                placeholder="Country"
+                value={country}
+                required
+                onChangeText={e => {
+                  this.updateTextInput(e, 'country');
+                }}
+              />
+            </View>
+            <View style={defaults.inputGroup}>
+              <TextInput
+                name="phone"
+                style={[defaults.textInput, { flex: 1, marginRight: 10 }]}
+                placeholder="Phone Number"
                 value={phone}
                 required
                 onChangeText={e => {
                   this.updateTextInput(e, 'phone');
                 }}
               />
+              <TextInput
+                name="email"
+                style={[defaults.textInput, { flex: 1, marginLeft: 10 }]}
+                placeholder="Email"
+                value={email}
+                autoCapitalize="none"
+                required
+                onChangeText={e => {
+                  this.updateTextInput(e, 'email');
+                }}
+              />
             </View>
+            <TextInput
+              name="website"
+              style={defaults.textInput}
+              placeholder="Website"
+              value={website}
+              autoCapitalize="none"
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'website');
+              }}
+            />
+            <TextInput
+              name="facebook"
+              style={defaults.textInput}
+              placeholder="Facebook URL"
+              value={facebook}
+              autoCapitalize="none"
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'facebook');
+              }}
+            />
+            <TextInput
+              name="twitter"
+              style={defaults.textInput}
+              placeholder="Twitter URL"
+              value={twitter}
+              autoCapitalize="none"
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'twitter');
+              }}
+            />
+            <TextInput
+              name="instagram"
+              style={defaults.textInput}
+              placeholder="Instagram URL"
+              value={instagram}
+              autoCapitalize="none"
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'instagram');
+              }}
+            />
             <View style={defaults.bigButtonWrap}>
               <TouchableHighlight
                 style={[defaults.buttonStyle, defaults.blueButton]}
@@ -170,7 +279,7 @@ class Profile extends Component {
               </TouchableHighlight>
             </View>
           </View>
-        </View>
+        </ScrollView>
       );
     }
 

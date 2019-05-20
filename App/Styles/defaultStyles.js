@@ -226,13 +226,37 @@ export const promos = {
     borderWidth: 1,
     fontSize: 17,
     paddingHorizontal: 15,
-    paddingVertical: 17,
+    paddingTop: 10,
+    paddingBottom: 12,
   },
   busTitle: {
     color: colors.brandPrimary,
     fontSize: 25,
+    fontFamily: 'Lato-Bold',
+    paddingBottom: 5,
   },
   busAddress: {
     color: '#656565',
+    fontSize: 16,
+    fontFamily: 'Lato-Regular',
+  },
+  cszWrap: {
+    flexDirection: 'row',
+  },
+  csz: {
+    fontFamily: 'Lato-Regular',
+    color: '#656565',
+    fontSize: 15,
+    marginRight: 5,
+  },
+  website: {
+    color: colors.brandPrimary,
+    fontFamily: 'Lato-Bold',
+  },
+  socialMediaWrap: {
+    flexDirection: 'row',
+    paddingTop: 25,
+    paddingBottom: 15,
+    justifyContent: 'space-around',
   },
 };
