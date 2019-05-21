@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import IconMaterial from 'react-native-vector-icons/MaterialIcons';
-import { colors } from '../Styles/variables';
+// import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+// import { colors } from '../Styles/variables';
 
 const styles = StyleSheet.create({
   bottomNavWrap: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 18,
+    paddingTop: 15,
+    paddingBottom: 10,
   },
 });
 
@@ -30,7 +31,7 @@ class Footer extends Component {
           <Icon name="home" size={36} color="#ddd" />
         </TouchableHighlight>
         <TouchableHighlight onPress={this.openDrawer}>
-          <IconMaterial name="settings" size={36} color="#ddd" />
+          <Icon name="settings" size={36} color="#ddd" />
         </TouchableHighlight>
       </View>
     );

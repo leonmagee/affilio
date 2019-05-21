@@ -6,39 +6,13 @@ import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
 import LoginButton from './LoginButton';
+import LogOutButton from './LogOutButton';
 import Footer from './Footer';
 
-const iconColor = '#BBB';
-
 const styles = StyleSheet.create({
-  titleWrap: {
-    marginTop: 20,
-    paddingTop: 17,
-    paddingHorizontal: 30,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-  },
-  profileIconsWrap: {
-    flexDirection: 'row',
-    paddingHorizontal: 40,
-    justifyContent: 'space-around',
-  },
-  profileIcon: {
-    paddingTop: 11,
-    paddingHorizontal: 4,
-    borderWidth: 10,
-  },
-  label: {
-    textAlign: 'center',
-    padding: 7,
-    fontSize: 17,
-    fontFamily: 'Lato-Bold',
-    color: iconColor,
-  },
-  labelSelect: {
-    color: colors.brandPrimary,
-    fontFamily: 'Lato-Black',
-  },
+  // titleWrap: {
+  //   marginTop: 20,
+  // },
 });
 
 class Account extends Component {
@@ -53,66 +27,34 @@ class Account extends Component {
   };
 
   render() {
-    const { userType, loggedIn, navigation } = this.props;
+    const { currentUser, loggedIn, navigation } = this.props;
+    let userInfo = <></>;
+    if (currentUser) {
+      userInfo = (
+        <View style={styles.headerBar}>
+          <Text style={styles.logo}>PIEC</Text>
 
-    let settings = <LoginButton />;
-    if (loggedIn) {
-      settings = (
-        <>
-          <View style={styles.titleWrap}>
-            <Text style={defaults.formSubTitle}>Change Account Type</Text>
+          <View style={styles.headerUserInfo}>
+            <Icon name="account" size={25} style={styles.headerIcon} />
+            <Text style={styles.headerText}>{currentUser.displayName}</Text>
+            <Text style={styles.headerDivider}>/</Text>
           </View>
-          <View style={styles.profileIconsWrap}>
-            <TouchableHighlight onPress={() => this.changeUserType(1)}>
-              <View>
-                <View
-                  style={[
-                    styles.profileIcon,
-                    { borderColor: userType ? colors.brandPrimary : iconColor },
-                  ]}
-                >
-                  <Icon
-                    name="office-building"
-                    size={80}
-                    color={userType ? colors.brandPrimary : iconColor}
-                  />
-                </View>
-                <Text style={[styles.label, userType && styles.labelSelect]}>
-                  Business
-                </Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={() => this.changeUserType(0)}>
-              <View>
-                <View
-                  style={[
-                    styles.profileIcon,
-                    {
-                      borderColor: !userType ? colors.brandPrimary : iconColor,
-                    },
-                  ]}
-                >
-                  <Icon
-                    name="account"
-                    size={80}
-                    color={!userType ? colors.brandPrimary : iconColor}
-                  />
-                </View>
-                <Text style={[styles.label, !userType && styles.labelSelect]}>
-                  User
-                </Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-        </>
+        </View>
       );
+    }
+
+    let loginLogOut = <LoginButton />;
+
+    if (loggedIn) {
+      loginLogOut = <LogOutButton />;
     }
 
     return (
       <View style={{ flex: 1 }}>
         <View style={defaults.mainWrap}>
-          <Text style={defaults.title}>Account Type</Text>
-          {settings}
+          <Text style={defaults.title}>Account Info</Text>
+          {userInfo}
+          {loginLogOut}
         </View>
         <Footer navigation={navigation} />
       </View>
@@ -121,7 +63,8 @@ class Account extends Component {
 }
 
 const mapStateToProps = state => ({
-  userType: state.userType,
+  // userType: state.userType,
+  currentUser: state.currentUser,
   loggedIn: state.loggedIn,
 });
 

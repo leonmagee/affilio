@@ -29,17 +29,19 @@ const SlideNavigator = createMaterialTopTabNavigator(
     //   },
     // }),
     tabBarOptions: {
-      activeTintColor: '#555',
-      inactiveTintColor: '#777',
+      activeTintColor: '#444',
+      inactiveTintColor: '#656565',
       indicatorStyle: {
         backgroundColor: colors.brandPrimary,
-        height: 3,
+        height: 4,
       },
       labelStyle: {
         fontSize: 12,
+        fontFamily: 'Lato-Bold',
       },
       tabStyle: {
         width: 100,
+        paddingVertical: 4,
       },
       style: {
         backgroundColor: '#fff',

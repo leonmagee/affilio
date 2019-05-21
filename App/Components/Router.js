@@ -9,6 +9,7 @@ import PromotionsWrap from './PromotionsWrap';
 import Profile from './Profile';
 import Account from './Account';
 import About from './About';
+import SignUp from './SignUp';
 import { colors } from '../Styles/variables';
 
 const DrawerNavigator = createDrawerNavigator(
@@ -40,12 +41,21 @@ const DrawerNavigator = createDrawerNavigator(
         ),
       },
     },
+    Type: {
+      screen: SignUp,
+      navigationOptions: {
+        drawerLabel: 'Type',
+        drawerIcon: ({ tintColor }) => (
+          <Icon name="account-check" size={26} color={tintColor} />
+        ),
+      },
+    },
     About: {
       screen: About,
       navigationOptions: {
         drawerLabel: 'About',
         drawerIcon: ({ tintColor }) => (
-          <Icon name="information" size={26} color={tintColor} />
+          <Icon name="comment-question" size={26} color={tintColor} />
         ),
       },
     },
