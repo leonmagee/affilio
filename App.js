@@ -9,60 +9,27 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import Router from './App/Components/Router';
-// import RouterUser from './App/Components/RouterUser';
-// import RouterBusiness from './App/Components/RouterBusiness';
+import LoginRouter from './App/Components/LoginRouter';
 import { colors } from './App/Styles/variables';
 import { defaults } from './App/Styles/defaultStyles';
 import { CloseIcon } from './App/Components/CloseIcon';
 
 const styles = StyleSheet.create({
   headerBar: {
-    // backgroundColor: '#000',
-    // height: 85,
-    // paddingTop: 5,
     paddingBottom: 10,
     paddingHorizontal: 25,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
     alignItems: 'center',
   },
-  // headerText: {
-  //   color: '#FFF',
-  //   fontSize: 17,
-  //   fontFamily: 'Lato-Bold',
-  // },
   logo: {
     fontFamily: 'Baumans-Regular',
     color: '#fff',
     fontSize: 28,
   },
-  // headerDivider: {
-  //   color: 'rgba(255,255,255,0.5)',
-  //   paddingHorizontal: 10,
-  // },
-  // headerUserInfo: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  // },
-  // headerIcon: {
-  //   marginRight: 10,
-  //   color: 'rgba(255,255,255,0.5)',
-  // },
-  // bottomNavWrap: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-around',
-  //   paddingTop: 20,
-  // },
-  // navItem: {
-  //   color: '#fff',
-  //   fontSize: 18,
-  // },
 });
 
 class App extends Component {
@@ -294,11 +261,17 @@ class App extends Component {
       //     </TouchableHighlight>
       //   </View>
       // );
+      let RouterComponent;
+      if (loggedIn) {
+        RouterComponent = Router;
+      } else {
+        RouterComponent = LoginRouter;
+      }
 
       mainContent = (
         <View style={{ flex: 1 }}>
           {userInfo}
-          <Router />
+          <RouterComponent />
           <Modal
             sytle={{ flex: 1 }}
             animationType="slide"

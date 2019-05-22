@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 import Footer from './Footer';
 
 const styles = StyleSheet.create({
-  // titleWrap: {
-  //   marginTop: 20,
-  // },
+  userInfoWrap: {
+    marginTop: 20,
+    paddingTop: 25,
+    paddingBottom: 20,
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#EEE',
+  },
+  userInfoText: {
+    fontFamily: 'Lato-Bold',
+    fontSize: 25,
+    color: '#111',
+  },
 });
 
 class Account extends Component {
@@ -31,14 +39,10 @@ class Account extends Component {
     let userInfo = <></>;
     if (currentUser) {
       userInfo = (
-        <View style={styles.headerBar}>
-          <Text style={styles.logo}>PIEC</Text>
-
-          <View style={styles.headerUserInfo}>
-            <Icon name="account" size={25} style={styles.headerIcon} />
-            <Text style={styles.headerText}>{currentUser.displayName}</Text>
-            <Text style={styles.headerDivider}>/</Text>
-          </View>
+        <View style={styles.userInfoWrap}>
+          <Text style={styles.userInfoText}>
+            Hello, {currentUser.displayName}!
+          </Text>
         </View>
       );
     }

@@ -5,16 +5,19 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-// import LoginButton from './LoginButton';
-// import Footer from './Footer';
+import LoginButton from './LoginButton';
+import Footer from './Footer';
 
 const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
   titleWrap: {
     marginTop: 20,
+    paddingTop: 25,
     marginBottom: 10,
-    paddingHorizontal: 5,
+    paddingHorizontal: 30,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
     alignItems: 'center',
   },
   profileIconsWrap: {
@@ -40,21 +43,15 @@ const styles = StyleSheet.create({
   },
 });
 
-class SignUp extends Component {
+class ChangeType extends Component {
   changeUserType = type => {
-    const { changeUserType, navigation } = this.props;
+    const { changeUserType } = this.props;
     changeUserType(type);
     if (type) {
       AsyncStorage.setItem('@UserType', 'business');
     } else {
       AsyncStorage.setItem('@UserType', 'user');
     }
-    // navigateToPage(data) {
-    //   this.props.goToMenuPage(data)
-    //   this.props.navigation.navigate('MenuPage', data)
-    // }
-    const data = { name: 'Create Profile' };
-    navigation.navigate('ProfileSettings', data);
   };
 
   render() {
@@ -121,7 +118,11 @@ class SignUp extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={defaults.mainWrap}>{settings}</View>
+        <View style={defaults.mainWrap}>
+          <Text style={defaults.title}>Account Type</Text>
+          {settings}
+        </View>
+        <Footer navigation={navigation} />
       </View>
     );
   }
@@ -141,4 +142,4 @@ const mapActionsToProps = dispatch => ({
 module.exports = connect(
   mapStateToProps,
   mapActionsToProps
-)(SignUp);
+)(ChangeType);

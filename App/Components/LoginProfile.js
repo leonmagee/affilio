@@ -8,14 +8,13 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNFirebase from 'react-native-firebase';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
-import { defaults, promos } from '../Styles/defaultStyles';
+import { defaults } from '../Styles/defaultStyles';
 // import LoginButton from './LoginButton';
-import Footer from './Footer';
+// import Footer from './Footer';
 
 const firestore = RNFirebase.firestore();
 
@@ -23,15 +22,14 @@ const firestore = RNFirebase.firestore();
 
 const styles = StyleSheet.create({
   titleWrap: {
-    marginTop: 20,
-    paddingTop: 17,
-    paddingHorizontal: 30,
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
+    // marginTop: 20,
+    paddingVertical: 7,
+    // paddingHorizontal: 30,
+    alignItems: 'center',
   },
 });
 
-class Profile extends Component {
+class LoginProfile extends Component {
   constructor(props) {
     super(props);
     const { businessDetails } = props;
@@ -289,11 +287,7 @@ class Profile extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <View style={defaults.mainWrap}>
-          <Text style={defaults.title}>Profile Settings</Text>
-          {businessSettings}
-        </View>
-        <Footer navigation={navigation} />
+        <View style={defaults.mainWrap}>{businessSettings}</View>
       </View>
     );
   }
@@ -315,4 +309,4 @@ const mapActionsToProps = dispatch => ({
 module.exports = connect(
   mapStateToProps,
   mapActionsToProps
-)(Profile);
+)(LoginProfile);

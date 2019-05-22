@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  createBottomTabNavigator,
+  // createBottomTabNavigator,
   createAppContainer,
   createDrawerNavigator,
 } from 'react-navigation';
@@ -9,7 +9,8 @@ import PromotionsWrap from './PromotionsWrap';
 import Profile from './Profile';
 import Account from './Account';
 import About from './About';
-import SignUp from './SignUp';
+// import SignUp from './SignUp';
+import ChangeType from './ChangeType';
 import { colors } from '../Styles/variables';
 
 const DrawerNavigator = createDrawerNavigator(
@@ -42,7 +43,7 @@ const DrawerNavigator = createDrawerNavigator(
       },
     },
     Type: {
-      screen: SignUp,
+      screen: ChangeType,
       navigationOptions: {
         drawerLabel: 'Type',
         drawerIcon: ({ tintColor }) => (
@@ -79,39 +80,39 @@ const DrawerNavigator = createDrawerNavigator(
 
 // export const Drawer = createAppContainer(DrawerNavigator);
 
-const TabNavigator = createBottomTabNavigator(
-  {
-    Promotions: PromotionsWrap,
-    Profile,
-    About,
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ tintColor }) => {
-        const { routeName } = navigation.state;
-        let iconName;
-        if (routeName === 'Promotions') {
-          iconName = 'home';
-        } else if (routeName === 'AddPromotion') {
-          iconName = 'tag-plus';
-        } else if (routeName === 'Profile') {
-          iconName = 'account';
-        } else if (routeName === 'About') {
-          iconName = 'comment-question';
-        }
-        return <Icon name={iconName} size={35} color={tintColor} />;
-      },
-    }),
-    tabBarOptions: {
-      activeTintColor: colors.brandPrimary,
-      inactiveTintColor: '#DDD',
-      showLabel: false,
-      style: {
-        backgroundColor: '#000',
-        height: 75,
-      },
-    },
-  }
-);
+// const TabNavigator = createBottomTabNavigator(
+//   {
+//     Promotions: PromotionsWrap,
+//     Profile,
+//     About,
+//   },
+//   {
+//     defaultNavigationOptions: ({ navigation }) => ({
+//       tabBarIcon: ({ tintColor }) => {
+//         const { routeName } = navigation.state;
+//         let iconName;
+//         if (routeName === 'Promotions') {
+//           iconName = 'home';
+//         } else if (routeName === 'AddPromotion') {
+//           iconName = 'tag-plus';
+//         } else if (routeName === 'Profile') {
+//           iconName = 'account';
+//         } else if (routeName === 'About') {
+//           iconName = 'comment-question';
+//         }
+//         return <Icon name={iconName} size={35} color={tintColor} />;
+//       },
+//     }),
+//     tabBarOptions: {
+//       activeTintColor: colors.brandPrimary,
+//       inactiveTintColor: '#DDD',
+//       showLabel: false,
+//       style: {
+//         backgroundColor: '#000',
+//         height: 75,
+//       },
+//     },
+//   }
+// );
 
 export default createAppContainer(DrawerNavigator);
