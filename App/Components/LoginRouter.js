@@ -7,36 +7,40 @@ import {
 } from 'react-navigation';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import PromotionsWrap from './PromotionsWrap';
-import LoginProfile from './LoginProfile';
+import LoginStart from './LoginStart';
+import LoginType from './LoginType';
+import LoginProfile from './LoginProfile'; // bus profile? change name
 // import Account from './Account';
 // import About from './About';
-import SignUp from './SignUp';
 // import { colors } from '../Styles/variables';
 
-const navigationOptions = ({ navigation }) => ({
-  title: `${navigation.state.params.name}`,
-});
+// const navigationOptions = ({ navigation }) => ({
+//   title: `${navigation.state.params.name}`,
+// });
 
 const LoginStack = createStackNavigator(
   {
-    ChooseType: {
-      screen: SignUp,
+    LoginStart: {
+      screen: LoginStart,
       navigationOptions: {
-        title: 'AccountType',
+        title: 'Login',
         headerBackTitle: 'Back',
-        headerTitleStyle: {
-          color: '#111',
-          // padding: 0,
-          // margin: 0,
-          // fontFamily: 'Lato-Bold',
-          fontFamily: 'Lato-Bold',
-          fontSize: 23,
-        },
+      },
+    },
+    ChooseType: {
+      screen: LoginType,
+      navigationOptions: {
+        title: 'Account Type',
+        headerBackTitle: 'Back',
       },
     },
     ProfileSettings: {
       screen: LoginProfile,
-      navigationOptions,
+      navigationOptions: {
+        title: 'Create Profile',
+        headerBackTitle: 'Back',
+      },
+      // navigationOptions,
     },
   },
   {
@@ -48,6 +52,7 @@ const LoginStack = createStackNavigator(
     }),
     transparentCard: true,
     defaultNavigationOptions: {
+      headerForceInset: { top: 'never', bottom: 'never' },
       headerStyle: {
         // backgroundColor: 'transparent',
         // headerTransparent: true,
@@ -55,7 +60,10 @@ const LoginStack = createStackNavigator(
         // paddingTop: 0,
         // paddingBottom: 15,
         // height: 60,
+        // paddingVertical: 15,
+        marginTop: 10,
         paddingBottom: 10,
+        height: 50,
       },
       // headerTransparent: true,
       headerTitleStyle: {

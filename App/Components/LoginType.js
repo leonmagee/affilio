@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class SignUp extends Component {
+class LoginType extends Component {
   changeUserType = type => {
     const { changeUserType, navigation } = this.props;
     changeUserType(type);
@@ -141,4 +141,4 @@ const mapActionsToProps = dispatch => ({
 module.exports = connect(
   mapStateToProps,
   mapActionsToProps
-)(SignUp);
+)(LoginType);

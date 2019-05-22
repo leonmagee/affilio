@@ -6,10 +6,11 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableHighlight,
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+// import { TouchableHighlight } from 'react-native-gesture-handler';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';

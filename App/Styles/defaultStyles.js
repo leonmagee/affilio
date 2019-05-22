@@ -74,6 +74,7 @@ export const defaults = {
   },
   blueButton: {
     backgroundColor: colors.brandPrimary,
+    paddingVertical: 13,
   },
   redButton: {
     backgroundColor: colors.brandSecond,
