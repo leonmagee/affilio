@@ -67,6 +67,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#eee',
   },
+  checkBoxLabel: {
+    color: '#333',
+  },
 });
 
 class SignUpStart extends Component {
@@ -294,6 +297,7 @@ class SignUpStart extends Component {
               checkedColor={colors.brandPrimary}
               size={35}
               containerStyle={styles.checkBoxStyle}
+              textStyle={styles.checkBoxLabel}
               checked={termsAgree}
               onPress={() => this.setState({ termsAgree: !termsAgree })}
             />
@@ -302,6 +306,7 @@ class SignUpStart extends Component {
               checkedColor={colors.brandPrimary}
               size={35}
               containerStyle={styles.checkBoxStyle}
+              textStyle={styles.checkBoxLabel}
               checked={businessAgree}
               onPress={() => this.setState({ businessAgree: !businessAgree })}
             />
