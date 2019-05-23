@@ -8,7 +8,9 @@ import {
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import PromotionsWrap from './PromotionsWrap';
 import LoginStart from './LoginStart';
-import LoginType from './LoginType';
+import LoginType from './LoginType'; // change name to SignUpType
+// import SignUpType from './SignUpType';
+import SignUpStart from './SignUpStart';
 import LoginProfile from './LoginProfile'; // bus profile? change name
 // import Account from './Account';
 // import About from './About';
@@ -31,6 +33,13 @@ const LoginStack = createStackNavigator(
       screen: LoginType,
       navigationOptions: {
         title: 'Account Type',
+        headerBackTitle: 'Back',
+      },
+    },
+    SignUpStart: {
+      screen: SignUpStart,
+      navigationOptions: {
+        title: 'Sign Up',
         headerBackTitle: 'Back',
       },
     },

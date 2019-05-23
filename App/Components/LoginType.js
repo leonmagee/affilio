@@ -11,12 +11,11 @@ import { defaults } from '../Styles/defaultStyles';
 const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
-  titleWrap: {
-    marginTop: 20,
-    marginBottom: 10,
-    paddingHorizontal: 5,
-    alignItems: 'center',
-  },
+  // titleWrap: {
+  //   marginBottom: 10,
+  //   paddingHorizontal: 5,
+  //   alignItems: 'center',
+  // },
   profileIconsWrap: {
     flexDirection: 'row',
     paddingHorizontal: 40,
@@ -53,8 +52,9 @@ class LoginType extends Component {
     //   this.props.goToMenuPage(data)
     //   this.props.navigation.navigate('MenuPage', data)
     // }
-    const data = { name: 'Create Profile' };
-    navigation.navigate('ProfileSettings', data);
+    // const data = { name: 'Create Profile' };
+    // navigation.navigate('ProfileSettings', data);
+    navigation.navigate('SignUpStart');
   };
 
   render() {
@@ -64,7 +64,7 @@ class LoginType extends Component {
     // if (loggedIn) {
     const settings = (
       <>
-        <View style={styles.titleWrap}>
+        <View style={defaults.titleWrap}>
           <Text style={defaults.formSubTitle}>Choose Account Type</Text>
         </View>
         <View style={styles.profileIconsWrap}>

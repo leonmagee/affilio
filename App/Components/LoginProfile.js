@@ -21,12 +21,12 @@ const firestore = RNFirebase.firestore();
 // const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
-  titleWrap: {
-    // marginTop: 20,
-    paddingVertical: 7,
-    // paddingHorizontal: 30,
-    alignItems: 'center',
-  },
+  // titleWrap: {
+  //   // marginTop: 20,
+  //   paddingVertical: 7,
+  //   // paddingHorizontal: 30,
+  //   alignItems: 'center',
+  // },
 });
 
 class LoginProfile extends Component {
@@ -132,7 +132,7 @@ class LoginProfile extends Component {
     if (userType) {
       businessSettings = (
         <ScrollView>
-          <View style={styles.titleWrap}>
+          <View style={defaults.titleWrap}>
             <Text style={defaults.formSubTitle}>Business Details</Text>
           </View>
           <View style={defaults.formWrap}>

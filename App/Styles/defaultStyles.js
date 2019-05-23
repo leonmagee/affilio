@@ -3,8 +3,13 @@ import { colors } from './variables';
 export const defaults = {
   mainWrap: {
     flex: 1,
-    paddingTop: 17,
+    paddingTop: 25,
     backgroundColor: '#fff',
+  },
+  titleWrap: {
+    marginBottom: 10,
+    paddingHorizontal: 5,
+    alignItems: 'center',
   },
   title: {
     color: '#111',

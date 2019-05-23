@@ -186,7 +186,7 @@ class LoginStart extends Component {
     }
     const { username, password } = this.state;
     return (
-      <View style={{ flex: 1, paddingTop: 35 }}>
+      <View style={defaults.mainWrap}>
         <View style={defaults.formWrap}>
           <TextInput
             name="username"
