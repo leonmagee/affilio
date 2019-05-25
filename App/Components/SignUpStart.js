@@ -95,8 +95,17 @@ class SignUpStart extends Component {
 
   processLogin = () => {
     const { navigation } = this.props;
-    console.log('login works');
-    navigation.navigate('ProfileSettings');
+    const { username, email, password } = this.state;
+    console.log('login works', username, email, password);
+    RNFirebase.auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(result => {
+        console.log('logged in with custom info?', result);
+      })
+      .catch(error => {
+        console.error('we have an error?', error);
+      });
+    // navigation.navigate('ProfileSettings');
   };
 
   processSignUp = () => {
@@ -216,6 +225,7 @@ class SignUpStart extends Component {
             style={defaults.textInput}
             placeholder="Username"
             value={username}
+            autoCapitalize="none"
             required
             onChangeText={e => {
               this.updateTextInput(e, 'username');
@@ -226,6 +236,7 @@ class SignUpStart extends Component {
             style={defaults.textInput}
             placeholder="Email Address"
             value={email}
+            autoCapitalize="none"
             required
             onChangeText={e => {
               this.updateTextInput(e, 'email');
@@ -236,6 +247,7 @@ class SignUpStart extends Component {
             style={defaults.textInput}
             placeholder="Password"
             value={password}
+            autoCapitalize="none"
             required
             onChangeText={e => {
               this.updateTextInput(e, 'password');
@@ -246,6 +258,7 @@ class SignUpStart extends Component {
             style={defaults.textInput}
             placeholder="Password Repeat"
             value={passwordRepeat}
+            autoCapitalize="none"
             required
             onChangeText={e => {
               this.updateTextInput(e, 'passwordRepeat');
