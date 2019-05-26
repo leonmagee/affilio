@@ -15,6 +15,7 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
+import { createUserProfileDocument } from '../Utils/firebaseUtils';
 
 const styles = StyleSheet.create({
   // titleWrap: {
@@ -93,18 +94,36 @@ class SignUpStart extends Component {
     });
   };
 
-  processLogin = () => {
+  processLogin = async () => {
     const { navigation } = this.props;
     const { username, email, password } = this.state;
     console.log('login works', username, email, password);
-    RNFirebase.auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(result => {
-        console.log('logged in with custom info?', result);
-      })
-      .catch(error => {
-        console.error('we have an error?', error);
-      });
+    try {
+      const { user } = await RNFirebase.auth().createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      await user.updateProfile({ displayName: username });
+      this.props.setCurrentUser(user);
+      createUserProfileDocument(user, { displayName: 'Eddy McEddy' });
+    } catch (error) {
+      console.error(error);
+    }
+
+    // .then(result => {
+    //   console.log('logged in with custom info?', result);
+    // })
+    // .catch(error => {
+    //   console.error('we have an error?', error);
+    // });
+    // RNFirebase.auth()
+    //   .createUserWithEmailAndPassword(email, password)
+    //   .then(result => {
+    //     console.log('logged in with custom info?', result);
+    //   })
+    //   .catch(error => {
+    //     console.error('we have an error?', error);
+    //   });
     // navigation.navigate('ProfileSettings');
   };
 

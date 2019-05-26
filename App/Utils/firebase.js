@@ -1,3 +1,6 @@
+/**
+ * Deprecated?
+ */
 import RNFirebase from 'react-native-firebase';
 // import 'firebase/firestore';
 // import 'firebase/auth';

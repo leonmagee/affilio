@@ -36,11 +36,11 @@ const SlideNavigator = createMaterialTopTabNavigator(
         height: 4,
       },
       labelStyle: {
-        fontSize: 12,
+        fontSize: 11,
         fontFamily: 'Lato-Bold',
       },
       tabStyle: {
-        width: 100,
+        // width: 100,
         paddingVertical: 4,
       },
       style: {

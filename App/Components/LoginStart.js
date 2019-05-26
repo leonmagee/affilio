@@ -28,11 +28,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   socialButton: {
-    // padding: 15,
     color: '#FFF',
     fontSize: 12,
     fontFamily: 'Lato-Black',
-    // textAlign: 'center',
   },
   signUpWrap: {
     marginTop: 30,
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    // paddingHorizontal: 10,
     paddingLeft: 10,
     paddingRight: 15,
     paddingVertical: 15,
@@ -60,8 +57,10 @@ class LoginStart extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      email: '',
+      emailReq: false,
       password: '',
+      passwordReq: false,
       signInLoading: false,
     };
   }
@@ -73,7 +72,28 @@ class LoginStart extends Component {
   };
 
   processLogin = () => {
-    console.log('login works');
+    const { email, password } = this.state;
+    console.log('login works', email, password);
+    if (email === '') {
+      this.setState({ emailReq: true });
+    }
+    if (password === '') {
+      this.setState({ passwordReq: true });
+    }
+
+    if (email === '' || password === '') {
+      return;
+    }
+
+    RNFirebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(function(error) {
+        console.error(error);
+        // Handle Errors here.
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // ...
+      });
   };
 
   processSignUp = () => {
@@ -184,25 +204,28 @@ class LoginStart extends Component {
         </View>
       );
     }
-    const { username, password } = this.state;
+    const { email, password, emailReq, passwordReq } = this.state;
     return (
       <View style={defaults.mainWrap}>
         <View style={defaults.formWrap}>
           <TextInput
-            name="username"
-            style={defaults.textInput}
-            placeholder="Username"
-            value={username}
+            name="email"
+            style={[defaults.textInput, emailReq && defaults.required]}
+            placeholder="Email Address"
+            value={email}
+            autoCapitalize="none"
             required
             onChangeText={e => {
-              this.updateTextInput(e, 'username');
+              this.updateTextInput(e, 'email');
             }}
           />
           <TextInput
             name="password"
-            style={defaults.textInput}
+            style={[defaults.textInput, passwordReq && defaults.required]}
+            secureTextEntry
             placeholder="Password"
             value={password}
+            autoCapitalize="none"
             required
             onChangeText={e => {
               this.updateTextInput(e, 'password');
@@ -212,14 +235,14 @@ class LoginStart extends Component {
             <TouchableHighlight
               style={[defaults.buttonStyle, defaults.blueButton]}
               onPress={this.processLogin}
-              underlayColor={colors.lightGray}
+              underlayColor={colors.brandPrimary}
             >
               <Text style={defaults.buttonText}>Login</Text>
             </TouchableHighlight>
           </View>
           <View style={styles.socialLoginWrap}>
             <TouchableHighlight
-              underlayColor="transparent"
+              underlayColor="#4A66AD"
               onPress={this.facebookLogin}
               style={[
                 styles.socialButtonWrap,
@@ -232,7 +255,7 @@ class LoginStart extends Component {
               </View>
             </TouchableHighlight>
             <TouchableHighlight
-              underlayColor="transparent"
+              underlayColor={colors.brandSecond}
               onPress={this.googleLogin}
               style={[
                 styles.socialButtonWrap,
@@ -251,7 +274,7 @@ class LoginStart extends Component {
               <TouchableHighlight
                 style={[defaults.buttonStyle, defaults.blueButton]}
                 onPress={this.processSignUp}
-                underlayColor={colors.lightGray}
+                underlayColor={colors.brandPrimary}
               >
                 <Text style={defaults.buttonText}>Create Account</Text>
               </TouchableHighlight>

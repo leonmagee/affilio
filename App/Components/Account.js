@@ -38,6 +38,7 @@ class Account extends Component {
     const { currentUser, loggedIn, navigation } = this.props;
     let userInfo = <></>;
     if (currentUser) {
+      console.log('here is the current user', currentUser);
       userInfo = (
         <View style={styles.userInfoWrap}>
           <Text style={styles.userInfoText}>

@@ -36,6 +36,10 @@ export const defaults = {
     color: '#676867',
     // flex: 1,
   },
+  required: {
+    backgroundColor: colors.required,
+    borderColor: colors.brandSecond,
+  },
   textArea: {
     height: 120,
   },
