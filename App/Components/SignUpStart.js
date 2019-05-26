@@ -15,7 +15,10 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
-import { createUserProfileDocument } from '../Utils/firebaseUtils';
+import {
+  createUserProfileDocument,
+  firebaseError,
+} from '../Utils/firebaseUtils';
 
 const styles = StyleSheet.create({
   // titleWrap: {
@@ -78,12 +81,18 @@ class SignUpStart extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      displayName: '',
+      displayNameReq: false,
       email: '',
+      emailReq: false,
       password: '',
+      passwordReq: false,
       passwordRepeat: '',
+      passwordRepeatReq: false,
       termsAgree: false,
+      termsAgreeReq: false,
       businessAgree: false,
+      businessAgreeReq: false,
       signInLoading: false,
     };
   }
@@ -95,19 +104,79 @@ class SignUpStart extends Component {
   };
 
   processLogin = async () => {
-    const { navigation } = this.props;
-    const { username, email, password } = this.state;
-    console.log('login works', username, email, password);
+    this.setState({
+      createAccountFail: false,
+      displayNameReq: false,
+      emailReq: false,
+      passwordReq: false,
+      passwordRepeatReq: false,
+      termsAgreeReq: false,
+      businessAgreeReq: false,
+    });
+
+    const { setCurrentUser } = this.props;
+    const {
+      displayName,
+      email,
+      password,
+      passwordRepeat,
+      termsAgree,
+      businessAgree,
+    } = this.state;
+
+    if (displayName === '') {
+      this.setState({ displayNameReq: true });
+    }
+    if (email === '') {
+      this.setState({ emailReq: true });
+    }
+    if (password === '') {
+      this.setState({ passwordReq: true });
+    }
+    if (passwordRepeat === '') {
+      this.setState({ passwordRepeatReq: true });
+    }
+    if (!termsAgree) {
+      this.setState({ termsAgreeReq: true });
+    }
+    if (!businessAgree) {
+      this.setState({ businessAgreeReq: true });
+    }
+
+    if (
+      displayName === '' ||
+      email === '' ||
+      password === '' ||
+      passwordRepeat === ''
+    ) {
+      return;
+    }
+    // check user type first
+    if (!termsAgree) {
+      return;
+    }
+    if (!termsAgree || !businessAgree) {
+      return;
+    }
+
+    if (password !== passwordRepeat) {
+      const createAccountFail = 'Passwords must match.';
+      this.setState({ createAccountFail });
+      return;
+    }
+    // console.log('login works', displayName, email, password);
     try {
       const { user } = await RNFirebase.auth().createUserWithEmailAndPassword(
         email,
         password
       );
-      await user.updateProfile({ displayName: username });
-      this.props.setCurrentUser(user);
-      createUserProfileDocument(user, { displayName: 'Eddy McEddy' });
+      // await user.updateProfile({ displayName });
+      setCurrentUser(user); // this needs to make account page work
+      createUserProfileDocument(user, { displayName });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      const createAccountFail = firebaseError(error);
+      this.setState({ createAccountFail });
     }
 
     // .then(result => {
@@ -235,24 +304,44 @@ class SignUpStart extends Component {
         </View>
       );
     }
-    const { username, email, password, passwordRepeat } = this.state;
+    const {
+      displayName,
+      email,
+      password,
+      passwordRepeat,
+      displayNameReq,
+      emailReq,
+      passwordReq,
+      passwordRepeatReq,
+      termsAgreeReq,
+      businessAgreeReq,
+      createAccountFail,
+    } = this.state;
+    let validationMessage = <></>;
+    if (createAccountFail) {
+      validationMessage = (
+        <Text style={defaults.warning}>{createAccountFail}</Text>
+      );
+    }
+    const checkBox = '#bbb';
+    const checkBoxRequired = colors.brandSecond;
     return (
       <View style={defaults.mainWrap}>
         <View style={defaults.formWrap}>
           <TextInput
-            name="username"
-            style={defaults.textInput}
-            placeholder="Username"
-            value={username}
+            name="displayName"
+            style={[defaults.textInput, displayNameReq && defaults.required]}
+            placeholder="Display Name"
+            value={displayName}
             autoCapitalize="none"
             required
             onChangeText={e => {
-              this.updateTextInput(e, 'username');
+              this.updateTextInput(e, 'displayName');
             }}
           />
           <TextInput
             name="email"
-            style={defaults.textInput}
+            style={[defaults.textInput, emailReq && defaults.required]}
             placeholder="Email Address"
             value={email}
             autoCapitalize="none"
@@ -261,33 +350,47 @@ class SignUpStart extends Component {
               this.updateTextInput(e, 'email');
             }}
           />
-          <TextInput
-            name="password"
-            style={defaults.textInput}
-            placeholder="Password"
-            value={password}
-            autoCapitalize="none"
-            required
-            onChangeText={e => {
-              this.updateTextInput(e, 'password');
-            }}
-          />
-          <TextInput
-            name="passwordRepeat"
-            style={defaults.textInput}
-            placeholder="Password Repeat"
-            value={passwordRepeat}
-            autoCapitalize="none"
-            required
-            onChangeText={e => {
-              this.updateTextInput(e, 'passwordRepeat');
-            }}
-          />
+          <View style={defaults.inputGroup}>
+            <TextInput
+              name="password"
+              // style={defaults.textInput}
+              style={[
+                defaults.textInput,
+                { flex: 1, marginRight: 10 },
+                passwordReq && defaults.required,
+              ]}
+              secureTextEntry
+              placeholder="Password"
+              value={password}
+              autoCapitalize="none"
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'password');
+              }}
+            />
+            <TextInput
+              name="passwordRepeat"
+              style={[
+                defaults.textInput,
+                { flex: 1, marginLeft: 10 },
+                passwordRepeatReq && defaults.required,
+              ]}
+              secureTextEntry
+              placeholder="Password Repeat"
+              value={passwordRepeat}
+              autoCapitalize="none"
+              required
+              onChangeText={e => {
+                this.updateTextInput(e, 'passwordRepeat');
+              }}
+            />
+          </View>
+          {validationMessage}
           <View style={defaults.bigButtonWrap}>
             <TouchableHighlight
               style={[defaults.buttonStyle, defaults.blueButton]}
               onPress={this.processLogin}
-              underlayColor={colors.lightGray}
+              underlayColor={colors.brandPrimary}
             >
               <Text style={defaults.buttonText}>Create Account</Text>
             </TouchableHighlight>
@@ -328,6 +431,7 @@ class SignUpStart extends Component {
               title="I agree to terms and conditions and privacy policy."
               checkedColor={colors.brandPrimary}
               size={35}
+              uncheckedColor={termsAgreeReq ? checkBoxRequired : checkBox}
               containerStyle={styles.checkBoxStyle}
               textStyle={styles.checkBoxLabel}
               checked={termsAgree}
@@ -337,6 +441,7 @@ class SignUpStart extends Component {
               title="I verify that I am a represetative of this business."
               checkedColor={colors.brandPrimary}
               size={35}
+              uncheckedColor={businessAgreeReq ? checkBoxRequired : checkBox}
               containerStyle={styles.checkBoxStyle}
               textStyle={styles.checkBoxLabel}
               checked={businessAgree}

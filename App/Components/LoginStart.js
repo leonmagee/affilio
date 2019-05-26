@@ -14,6 +14,7 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
+import { firebaseError } from '../Utils/firebaseUtils';
 
 const styles = StyleSheet.create({
   titleWrap: {
@@ -73,6 +74,7 @@ class LoginStart extends Component {
   };
 
   processLogin = async () => {
+    this.setState({ signInFail: false, emailReq: false, passwordReq: false });
     const { email, password } = this.state;
     console.log('login works', email, password);
     if (email === '') {
@@ -92,8 +94,8 @@ class LoginStart extends Component {
         password
       );
     } catch (error) {
-      // console.error('sign in fail?', error);
-      this.setState({ signInFail: error });
+      const signInFail = firebaseError(error);
+      this.setState({ signInFail });
     }
 
     // RNFirebase.auth()
@@ -224,9 +226,7 @@ class LoginStart extends Component {
     }
     let validationMessage = <></>;
     if (signInFail) {
-      validationMessage = (
-        <Text style={defaults.warning}>{signInFail.message}</Text>
-      );
+      validationMessage = <Text style={defaults.warning}>{signInFail}</Text>;
     }
     return (
       <View style={defaults.mainWrap}>

@@ -24,18 +24,34 @@ export const createUserProfileDocument = async (user, additionalData) => {
 
   if (!snapshot.exists) {
     const createdAt = new Date();
-    const { displayName, email, photoUrl } = user;
+    const { displayName, email } = user;
     try {
       await userRef.set({
         displayName,
         email,
-        // photoUrl,
         createdAt,
-        ...additionalData,
+        // ...additionalData,
       });
     } catch (error) {
       console.error('Error creating user', error.message);
     }
   }
   return getUserDocument(user.uid);
+};
+
+export const firebaseError = error => {
+  console.log(error.code);
+  if (error.code === 'auth/invalid-email') {
+    return 'Please enter a valid email address.';
+  }
+  if (error.code === 'auth/user-not-found') {
+    return 'Email has not been registered.';
+  }
+  if (error.code === 'auth/wrong-password') {
+    return 'Password is not valid.';
+  }
+  if (error.code === 'auth/weak-password') {
+    return 'Password requries 6 characters minimum.';
+  }
+  return error.message;
 };
