@@ -40,6 +40,16 @@ export const defaults = {
     backgroundColor: colors.required,
     borderColor: colors.brandSecond,
   },
+  warning: {
+    fontFamily: 'Lato-Black',
+    backgroundColor: colors.brandSecond,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    color: '#fff',
+    fontSize: 20,
+    marginBottom: 20,
+    // textAlign: 'center',
+  },
   textArea: {
     height: 120,
   },

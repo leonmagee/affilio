@@ -62,6 +62,7 @@ class LoginStart extends Component {
       password: '',
       passwordReq: false,
       signInLoading: false,
+      signInFail: false,
     };
   }
 
@@ -71,7 +72,7 @@ class LoginStart extends Component {
     });
   };
 
-  processLogin = () => {
+  processLogin = async () => {
     const { email, password } = this.state;
     console.log('login works', email, password);
     if (email === '') {
@@ -85,15 +86,25 @@ class LoginStart extends Component {
       return;
     }
 
-    RNFirebase.auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch(function(error) {
-        console.error(error);
-        // Handle Errors here.
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // ...
-      });
+    try {
+      const signIn = await RNFirebase.auth().signInWithEmailAndPassword(
+        email,
+        password
+      );
+    } catch (error) {
+      // console.error('sign in fail?', error);
+      this.setState({ signInFail: error });
+    }
+
+    // RNFirebase.auth()
+    //   .signInWithEmailAndPassword(email, password)
+    //   .catch(function(error) {
+    //     console.error('sign in fail!', error);
+    //     // Handle Errors here.
+    //     // const errorCode = error.code;
+    //     // const errorMessage = error.message;
+    //     // ...
+    //   });
   };
 
   processSignUp = () => {
@@ -195,8 +206,15 @@ class LoginStart extends Component {
   };
 
   render() {
-    const { signInLoading } = this.state;
-    let loginActivity = <View />;
+    const {
+      signInLoading,
+      signInFail,
+      email,
+      password,
+      emailReq,
+      passwordReq,
+    } = this.state;
+    let loginActivity = <></>;
     if (signInLoading) {
       loginActivity = (
         <View style={defaults.processingWrap}>
@@ -204,7 +222,12 @@ class LoginStart extends Component {
         </View>
       );
     }
-    const { email, password, emailReq, passwordReq } = this.state;
+    let validationMessage = <></>;
+    if (signInFail) {
+      validationMessage = (
+        <Text style={defaults.warning}>{signInFail.message}</Text>
+      );
+    }
     return (
       <View style={defaults.mainWrap}>
         <View style={defaults.formWrap}>
@@ -231,6 +254,7 @@ class LoginStart extends Component {
               this.updateTextInput(e, 'password');
             }}
           />
+          {validationMessage}
           <View style={defaults.bigButtonWrap}>
             <TouchableHighlight
               style={[defaults.buttonStyle, defaults.blueButton]}
