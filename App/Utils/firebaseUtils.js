@@ -5,9 +5,11 @@ const firestore = firebase.firestore();
 export const getUserDocument = async uid => {
   if (!uid) return null;
   try {
-    const userDocument = await firestore.collection('users').doc(uid);
-
-    return { uid, ...userDocument.data };
+    const userDocument = await firestore
+      .collection('users')
+      .doc(uid)
+      .get();
+    return { uid, ...userDocument._data };
   } catch (error) {
     console.error('Error fetchign user', error.message);
   }
@@ -15,6 +17,8 @@ export const getUserDocument = async uid => {
 
 export const createUserProfileDocument = async (user, additionalData) => {
   if (!user) return;
+
+  // console.log('user object?', user);
 
   // Get a reference to the place in the database where a user profile might be.
   const userRef = firestore.doc(`users/${user.uid}`);
@@ -24,13 +28,12 @@ export const createUserProfileDocument = async (user, additionalData) => {
 
   if (!snapshot.exists) {
     const createdAt = new Date();
-    const { displayName, email } = user;
+    const { email } = user;
     try {
       await userRef.set({
-        displayName,
         email,
         createdAt,
-        // ...additionalData,
+        ...additionalData,
       });
     } catch (error) {
       console.error('Error creating user', error.message);

@@ -145,6 +145,7 @@ class Promotions extends Component {
               <Promotion
                 id={item.key}
                 company={item.data.company}
+                companyId={item.data.companyId}
                 promo={item.data.promotion}
                 url={item.data.url}
                 start={item.data.start}

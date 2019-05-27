@@ -34,7 +34,6 @@ class PromotionBusiness extends Component {
       id: props.id,
       cardOpen: false,
       companyName: props.company,
-      // companyId: props.companyId,
       newPromo: props.promo,
       promoUrl: props.url,
       startingDate,
@@ -288,24 +287,28 @@ class PromotionBusiness extends Component {
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
-        <View style={promos.busDetails}>
-          <Text style={promos.busTitle}>{busDetails.name}</Text>
-          <Text style={promos.busAddress}>{busDetails.address}</Text>
-          <Text style={promos.busAddress}>{busDetails.address2}</Text>
-          <View style={promos.cszWrap}>
-            <Text style={promos.csz}>{busDetails.city},</Text>
-            <Text style={promos.csz}>{busDetails.state}</Text>
-            <Text style={promos.csz}>{busDetails.zip}</Text>
+        <View style={promos.busDetailsWrap}>
+          <View style={promos.busDetails}>
+            <View style={promos.areaWrap}>
+              <Text style={promos.busAddress}>{busDetails.address}</Text>
+              <Text style={promos.busAddress}>{busDetails.address2}</Text>
+              <View style={promos.cszWrap}>
+                <Text style={promos.csz}>{busDetails.city},</Text>
+                <Text style={promos.csz}>{busDetails.state}</Text>
+                <Text style={promos.csz}>{busDetails.zip}</Text>
+              </View>
+            </View>
+            <View style={promos.areaWrap}>
+              <Text style={promos.busAddress}>{busDetails.phone}</Text>
+              <Text style={promos.busAddress}>{busDetails.email}</Text>
+              <TouchableHighlight
+                underlayColor="transparent"
+                onPress={() => this.urlLink(busDetails.website)}
+              >
+                <Text style={promos.website}>{busDetails.website}</Text>
+              </TouchableHighlight>
+            </View>
           </View>
-          <Text style={promos.busAddress}>{busDetails.phone}</Text>
-          <Text style={promos.busAddress}>{busDetails.email}</Text>
-          <TouchableHighlight
-            underlayColor="transparent"
-            onPress={() => this.urlLink(busDetails.website)}
-          >
-            <Text style={promos.website}>{busDetails.website}</Text>
-          </TouchableHighlight>
-          <Text style={promos.busAddress}>{busDetails.facebook}</Text>
           {socialMediaLinks}
         </View>
       );

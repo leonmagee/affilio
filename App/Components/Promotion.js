@@ -3,7 +3,7 @@ import { Image, Share, Text, TouchableHighlight, View } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
-import RNShare, { ShareSheet, Button } from 'react-native-share';
+// import RNShare, { ShareSheet, Button } from 'react-native-share';
 import { colors } from '../Styles/variables';
 import { promos } from '../Styles/defaultStyles';
 
@@ -26,7 +26,17 @@ class Promotion extends Component {
     this.state = {
       cardOpen: false,
       finalUrl,
+      busDetails: false,
     };
+    console.log('propzzzz', props.copmanyId);
+    const businessDetailsRef = props.firestore.doc(
+      `businesses/${props.companyId}`
+    );
+    businessDetailsRef.get().then(result => {
+      // console.log('here is a result?', result);
+      this.setState({ busDetails: result._data });
+      // console.log('final state?', this.state.businessDetails);
+    });
   }
 
   shareSocial = () => {
@@ -60,36 +70,104 @@ class Promotion extends Component {
 
   render() {
     const { company, promo, start, end, image, loggedIn } = this.props;
-    const { cardOpen, finalUrl } = this.state;
+    const { cardOpen, finalUrl, busDetails } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
 
+    // let toggleArea = <></>;
+    // if (cardOpen && loggedIn) {
+    //   toggleArea = (
+    //     <>
+    //       <View style={promos.sectionWrap}>
+    //         <View style={promos.iconWrap}>
+    //           <Icon name="link" size={28} color={colors.lightGray} />
+    //         </View>
+    //         <View style={promos.dateRangeWrap}>
+    //           <TouchableHighlight
+    //             onPress={this.shareSocial}
+    //             underlayColor="transparent"
+    //           >
+    //             <Text style={promos.url}>{finalUrl}</Text>
+    //           </TouchableHighlight>
+    //         </View>
+    //       </View>
+    //     </>
+    //   );
+    // }
+
+    let facebookLink = <></>;
+    if (busDetails.facebook) {
+      facebookLink = (
+        <TouchableHighlight
+          onPress={() => this.urlLink(busDetails.facebook)}
+          underlayColor="transparent"
+        >
+          <Icon name="facebook" size={38} color={colors.brandPrimary} />
+        </TouchableHighlight>
+      );
+    }
+    let twitterLink = <></>;
+    if (busDetails.twitter) {
+      twitterLink = (
+        <TouchableHighlight
+          onPress={() => this.urlLink(busDetails.twitter)}
+          underlayColor="transparent"
+        >
+          <Icon name="twitter" size={38} color={colors.brandPrimary} />
+        </TouchableHighlight>
+      );
+    }
+    let instagramLink = <></>;
+    if (busDetails.instagram) {
+      instagramLink = (
+        <TouchableHighlight
+          onPress={() => this.urlLink(busDetails.instagram)}
+          underlayColor="transparent"
+        >
+          <Icon name="instagram" size={38} color={colors.brandPrimary} />
+        </TouchableHighlight>
+      );
+    }
+
+    let socialMediaLinks = <></>;
+    if (busDetails.facebook || busDetails.twitter || busDetails.instagram) {
+      socialMediaLinks = (
+        <View style={promos.socialMediaWrap}>
+          {facebookLink}
+          {twitterLink}
+          {instagramLink}
+        </View>
+      );
+    }
+
     let toggleArea = <></>;
-    if (cardOpen && loggedIn) {
+    if (cardOpen) {
       toggleArea = (
-        <>
-          <View style={promos.sectionWrap}>
-            <View style={promos.iconWrap}>
-              <Icon name="link" size={28} color={colors.lightGray} />
+        <View style={promos.busDetailsWrap}>
+          <View style={promos.busDetails}>
+            <View style={promos.areaWrap}>
+              <Text style={promos.busAddress}>{busDetails.address}</Text>
+              <Text style={promos.busAddress}>{busDetails.address2}</Text>
+              <View style={promos.cszWrap}>
+                <Text style={promos.csz}>{busDetails.city},</Text>
+                <Text style={promos.csz}>{busDetails.state}</Text>
+                <Text style={promos.csz}>{busDetails.zip}</Text>
+              </View>
             </View>
-            <View style={promos.dateRangeWrap}>
+            <View style={promos.areaWrap}>
+              <Text style={promos.busAddress}>{busDetails.phone}</Text>
+              <Text style={promos.busAddress}>{busDetails.email}</Text>
               <TouchableHighlight
-                onPress={this.shareSocial}
                 underlayColor="transparent"
+                onPress={() => this.urlLink(busDetails.website)}
               >
-                <Text style={promos.url}>{finalUrl}</Text>
+                <Text style={promos.website}>{busDetails.website}</Text>
               </TouchableHighlight>
             </View>
           </View>
-          {/* <View style={promos.shareWrap}>
-            <TouchableHighlight onPress={this.shareFacebook}>
-              <Icon name="facebook" size={33} color={colors.brandPrimary} />
-            </TouchableHighlight>
-            <Icon name="twitter" size={33} color={colors.brandPrimary} />
-            <Icon name="share" size={33} color={colors.brandPrimary} />
-          </View> */}
-        </>
+          {socialMediaLinks}
+        </View>
       );
     }
 

@@ -21,10 +21,6 @@ import {
 } from '../Utils/firebaseUtils';
 
 const styles = StyleSheet.create({
-  // titleWrap: {
-  //   paddingVertical: 7,
-  //   alignItems: 'center',
-  // },
   socialLoginWrap: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -33,11 +29,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   socialButton: {
-    // padding: 15,
     color: '#FFF',
     fontSize: 12,
     fontFamily: 'Lato-Black',
-    // textAlign: 'center',
   },
   signUpWrap: {
     marginTop: 30,
@@ -53,7 +47,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    // paddingHorizontal: 10,
     paddingLeft: 10,
     paddingRight: 15,
     paddingVertical: 15,
@@ -77,9 +70,8 @@ const styles = StyleSheet.create({
 });
 
 class SignUpStart extends Component {
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.state = {
       displayName: '',
       displayNameReq: false,
@@ -103,7 +95,7 @@ class SignUpStart extends Component {
     });
   };
 
-  processLogin = async () => {
+  processCreateAccount = async () => {
     this.setState({
       createAccountFail: false,
       displayNameReq: false,
@@ -114,7 +106,7 @@ class SignUpStart extends Component {
       businessAgreeReq: false,
     });
 
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, userType } = this.props;
     const {
       displayName,
       email,
@@ -151,11 +143,12 @@ class SignUpStart extends Component {
     ) {
       return;
     }
-    // check user type first
-    if (!termsAgree) {
-      return;
-    }
-    if (!termsAgree || !businessAgree) {
+    // two checkboxes for business, one for users
+    if (userType) {
+      if (!termsAgree || !businessAgree) {
+        return;
+      }
+    } else if (!termsAgree) {
       return;
     }
 
@@ -170,7 +163,11 @@ class SignUpStart extends Component {
         email,
         password
       );
-      // await user.updateProfile({ displayName });
+      /**
+       * These should be the same... it will be easier to only pass the
+       * use document to redux - I'm just not sure how else I'm using
+       * the current user...
+       */
       setCurrentUser(user); // this needs to make account page work
       createUserProfileDocument(user, { displayName });
     } catch (error) {
@@ -296,6 +293,8 @@ class SignUpStart extends Component {
 
   render() {
     const { signInLoading, termsAgree, businessAgree } = this.state;
+    const { userType } = this.props;
+    // console.log('current user?', userType);
     let loginActivity = <View />;
     if (signInLoading) {
       loginActivity = (
@@ -325,6 +324,36 @@ class SignUpStart extends Component {
     }
     const checkBox = '#bbb';
     const checkBoxRequired = colors.brandSecond;
+    let busCheckBox = <></>;
+    if (userType) {
+      busCheckBox = (
+        <CheckBox
+          title="I verify that I am a represetative of this business."
+          checkedColor={colors.brandPrimary}
+          size={35}
+          uncheckedColor={businessAgreeReq ? checkBoxRequired : checkBox}
+          containerStyle={styles.checkBoxStyle}
+          textStyle={styles.checkBoxLabel}
+          checked={businessAgree}
+          onPress={() => this.setState({ businessAgree: !businessAgree })}
+        />
+      );
+    }
+    const checkboxSection = (
+      <View style={styles.checkBoxWrap}>
+        <CheckBox
+          title="I agree to terms and conditions and privacy policy."
+          checkedColor={colors.brandPrimary}
+          size={35}
+          uncheckedColor={termsAgreeReq ? checkBoxRequired : checkBox}
+          containerStyle={styles.checkBoxStyle}
+          textStyle={styles.checkBoxLabel}
+          checked={termsAgree}
+          onPress={() => this.setState({ termsAgree: !termsAgree })}
+        />
+        {busCheckBox}
+      </View>
+    );
     return (
       <View style={defaults.mainWrap}>
         <View style={defaults.formWrap}>
@@ -389,7 +418,7 @@ class SignUpStart extends Component {
           <View style={defaults.bigButtonWrap}>
             <TouchableHighlight
               style={[defaults.buttonStyle, defaults.blueButton]}
-              onPress={this.processLogin}
+              onPress={this.processCreateAccount}
               underlayColor={colors.brandPrimary}
             >
               <Text style={defaults.buttonText}>Create Account</Text>
@@ -426,28 +455,7 @@ class SignUpStart extends Component {
               </View>
             </TouchableHighlight>
           </View>
-          <View style={styles.checkBoxWrap}>
-            <CheckBox
-              title="I agree to terms and conditions and privacy policy."
-              checkedColor={colors.brandPrimary}
-              size={35}
-              uncheckedColor={termsAgreeReq ? checkBoxRequired : checkBox}
-              containerStyle={styles.checkBoxStyle}
-              textStyle={styles.checkBoxLabel}
-              checked={termsAgree}
-              onPress={() => this.setState({ termsAgree: !termsAgree })}
-            />
-            <CheckBox
-              title="I verify that I am a represetative of this business."
-              checkedColor={colors.brandPrimary}
-              size={35}
-              uncheckedColor={businessAgreeReq ? checkBoxRequired : checkBox}
-              containerStyle={styles.checkBoxStyle}
-              textStyle={styles.checkBoxLabel}
-              checked={businessAgree}
-              onPress={() => this.setState({ businessAgree: !businessAgree })}
-            />
-          </View>
+          {checkboxSection}
         </View>
 
         {loginActivity}
@@ -458,6 +466,7 @@ class SignUpStart extends Component {
 
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn,
+  userType: state.userType,
 });
 
 const mapActionsToProps = dispatch => ({

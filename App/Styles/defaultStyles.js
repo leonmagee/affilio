@@ -244,14 +244,22 @@ export const promos = {
     marginRight: 8,
     fontFamily: 'Lato-Regular',
   },
-  businessDetailsWrap: {
-    backgroundColor: '#fdfdfd',
-    borderColor: '#ebebeb',
-    borderWidth: 1,
-    fontSize: 17,
-    paddingHorizontal: 15,
-    paddingTop: 10,
-    paddingBottom: 12,
+  // businessDetailsWrap: {
+  //   backgroundColor: '#fdfdfd',
+  //   borderColor: '#ebebeb',
+  //   borderWidth: 1,
+  //   fontSize: 17,
+  //   paddingHorizontal: 15,
+  //   paddingTop: 10,
+  //   paddingBottom: 12,
+  // },
+  busDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  areaWrap: {
+    padding: 2,
+    // flex: 1,
   },
   busTitle: {
     color: colors.brandPrimary,
@@ -261,7 +269,7 @@ export const promos = {
   },
   busAddress: {
     color: '#656565',
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: 'Lato-Regular',
   },
   cszWrap: {
@@ -270,7 +278,7 @@ export const promos = {
   csz: {
     fontFamily: 'Lato-Regular',
     color: '#656565',
-    fontSize: 15,
+    fontSize: 11,
     marginRight: 5,
   },
   website: {
