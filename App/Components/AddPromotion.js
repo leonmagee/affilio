@@ -31,7 +31,7 @@ class AddPromotion extends Component {
   constructor() {
     super();
     this.state = {
-      companyName: '',
+      promotionTitle: '',
       newPromo: '',
       promoUrl: '',
       startingDate: '',
@@ -90,11 +90,6 @@ class AddPromotion extends Component {
     });
   };
 
-  // componentDidMount() {
-  //   const { navigation } = this.props;
-  //   navigation.navigate('Promotions');
-  // }
-
   addNewPromotion = () => {
     this.setState({
       processing: true,
@@ -103,27 +98,27 @@ class AddPromotion extends Component {
      * @todo validation? required fields? field types?
      */
     const {
-      companyName,
+      promotionTitle,
       newPromo,
       startDateSubmit,
       endDateSubmit,
       imageSource,
       promoUrl,
     } = this.state;
-    const { currentUser } = this.props;
+    const { currentUser, modalToggle } = this.props;
     let userId = false;
     if (currentUser) {
       userId = currentUser.uid;
     }
     if (
-      companyName !== '' &&
+      promotionTitle !== '' &&
       newPromo !== '' &&
       endDateSubmit &&
       imageSource &&
       userId
     ) {
       const promotion = {
-        company: companyName,
+        title: promotionTitle,
         promotion: newPromo,
         start: startDateSubmit,
         end: endDateSubmit,
@@ -172,7 +167,7 @@ class AddPromotion extends Component {
               // finalize by restting state
               // this should redirect instead - use nav method?
               this.setState({
-                companyName: '',
+                promotionTitle: '',
                 newPromo: '',
                 startingDate: '',
                 endingDate: '',
@@ -181,8 +176,11 @@ class AddPromotion extends Component {
                 processing: false,
               });
 
-              const { navigation } = this.props;
-              navigation.navigate('Promotions');
+              modalToggle();
+              this.props.navigation.navigate('New');
+
+              // const { navigation } = this.props;
+              // navigation.navigate('Promotions');
             })
             .catch(error => {
               console.error(error);
@@ -199,7 +197,7 @@ class AddPromotion extends Component {
 
   render() {
     const {
-      companyName,
+      promotionTitle,
       imageSource,
       newPromo, // @todo change this to 'promoText' or something else
       promoUrl,
@@ -228,14 +226,14 @@ class AddPromotion extends Component {
       } else {
         formWrap = (
           <ScrollView>
-            <View style={[defaults.formWrap, { marginTop: 20 }]}>
+            <View style={defaults.formWrap}>
               <TextInput
                 style={defaults.textInput}
-                value={companyName}
+                value={promotionTitle}
                 onChangeText={e => {
-                  this.updateTextInput(e, 'companyName');
+                  this.updateTextInput(e, 'promotionTitle');
                 }}
-                placeholder="Company Name"
+                placeholder="Promotion Title"
               />
               <TextInput
                 style={[defaults.textInput, defaults.textArea]}
@@ -334,12 +332,7 @@ class AddPromotion extends Component {
       }
     }
 
-    return (
-      <View style={defaults.mainWrap}>
-        <Text style={defaults.title}>Add New Promotion</Text>
-        {formWrap}
-      </View>
-    );
+    return <View style={defaults.mainWrap}>{formWrap}</View>;
   }
 }
 const mapStateToProps = state => ({

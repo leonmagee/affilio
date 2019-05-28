@@ -1,18 +1,28 @@
-import React from 'react';
-import {
-  // createBottomTabNavigator,
-  createAppContainer,
-  createDrawerNavigator,
-} from 'react-navigation';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { createAppContainer, createDrawerNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import PromotionsWrap from './PromotionsWrap';
+import PromotionsRouter from './PromotionsRouter';
 import Profile from './Profile';
 import Account from './Account';
 import About from './About';
-import AddPromotion from './AddPromotion';
-// import SignUp from './SignUp';
+import Footer from './Footer';
 import ChangeType from './ChangeType';
 import { colors } from '../Styles/variables';
+
+class PromotionsWrap extends Component {
+  static router = PromotionsRouter.router;
+
+  render() {
+    const { navigation } = this.props;
+    return (
+      <View style={{ flex: 1 }}>
+        <PromotionsRouter navigation={navigation} />
+        <Footer navigation={navigation} />
+      </View>
+    );
+  }
+}
 
 const DrawerNavigator = createDrawerNavigator(
   {
@@ -61,15 +71,6 @@ const DrawerNavigator = createDrawerNavigator(
         ),
       },
     },
-    AddPromotion: {
-      screen: AddPromotion,
-      navigationOptions: {
-        drawerLabel: 'Add Promo',
-        drawerIcon: ({ tintColor }) => (
-          <Icon name="plus-circle" size={26} color={tintColor} />
-        ),
-      },
-    },
   },
   {
     intialRouteName: 'Home',
@@ -87,42 +88,5 @@ const DrawerNavigator = createDrawerNavigator(
     },
   }
 );
-
-// export const Drawer = createAppContainer(DrawerNavigator);
-
-// const TabNavigator = createBottomTabNavigator(
-//   {
-//     Promotions: PromotionsWrap,
-//     Profile,
-//     About,
-//   },
-//   {
-//     defaultNavigationOptions: ({ navigation }) => ({
-//       tabBarIcon: ({ tintColor }) => {
-//         const { routeName } = navigation.state;
-//         let iconName;
-//         if (routeName === 'Promotions') {
-//           iconName = 'home';
-//         } else if (routeName === 'AddPromotion') {
-//           iconName = 'tag-plus';
-//         } else if (routeName === 'Profile') {
-//           iconName = 'account';
-//         } else if (routeName === 'About') {
-//           iconName = 'comment-question';
-//         }
-//         return <Icon name={iconName} size={35} color={tintColor} />;
-//       },
-//     }),
-//     tabBarOptions: {
-//       activeTintColor: colors.brandPrimary,
-//       inactiveTintColor: '#DDD',
-//       showLabel: false,
-//       style: {
-//         backgroundColor: '#000',
-//         height: 75,
-//       },
-//     },
-//   }
-// );
 
 export default createAppContainer(DrawerNavigator);

@@ -182,7 +182,7 @@ export const promos = {
     paddingHorizontal: 25,
     backgroundColor: '#FFF',
   },
-  companyNameWrap: {
+  promotionTitleWrap: {
     marginBottom: 10,
     borderBottomColor: 'rgba(0,0,0,0.07)',
     borderBottomWidth: 1,
@@ -191,7 +191,7 @@ export const promos = {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  companyName: {
+  promotionTitle: {
     fontSize: 24,
     color: '#111',
     fontFamily: 'Lato-Bold',
@@ -243,22 +243,21 @@ export const promos = {
     marginRight: 8,
     fontFamily: 'Lato-Regular',
   },
-  // businessDetailsWrap: {
-  //   backgroundColor: '#fdfdfd',
-  //   borderColor: '#ebebeb',
-  //   borderWidth: 1,
-  //   fontSize: 17,
-  //   paddingHorizontal: 15,
-  //   paddingTop: 10,
-  //   paddingBottom: 12,
-  // },
+  sharingDetailsWrap: {
+    // backgroundColor: '#ddd',
+  },
+  sharingDetails: {
+    // color: 'tomato',
+  },
+  businessDetailsWrap: {
+    // backgroundColor: '#fdfdfd',
+  },
   busDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   areaWrap: {
     padding: 2,
-    // flex: 1,
   },
   busTitle: {
     color: colors.brandPrimary,

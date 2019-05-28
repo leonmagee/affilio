@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableHighlight } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 // import { colors } from '../Styles/variables';

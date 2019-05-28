@@ -33,7 +33,7 @@ class PromotionBusiness extends Component {
       modalVisible: false,
       id: props.id,
       cardOpen: false,
-      companyName: props.company,
+      promotionTitle: props.title,
       newPromo: props.promo,
       promoUrl: props.url,
       startingDate,
@@ -131,7 +131,7 @@ class PromotionBusiness extends Component {
     });
     const {
       id,
-      companyName,
+      promotionTitle,
       startDateSubmit,
       endDateSubmit,
       newPromo,
@@ -143,7 +143,12 @@ class PromotionBusiness extends Component {
 
     const promoRef = firestore.doc(`promos/${id}`);
 
-    if (companyName !== '' && newPromo !== '' && endDateSubmit && imageSource) {
+    if (
+      promotionTitle !== '' &&
+      newPromo !== '' &&
+      endDateSubmit &&
+      imageSource
+    ) {
       if (imageUpdated) {
         const { Blob } = RNFetchBlob.polyfill;
         const { fs } = RNFetchBlob;
@@ -170,7 +175,7 @@ class PromotionBusiness extends Component {
           .then(firebaseUrl => {
             promoRef
               .update({
-                company: companyName,
+                title: promotionTitle,
                 promotion: newPromo,
                 url: promoUrl,
                 start: startDateSubmit,
@@ -193,7 +198,7 @@ class PromotionBusiness extends Component {
       } else {
         promoRef
           .update({
-            company: companyName,
+            title: promotionTitle,
             promotion: newPromo,
             url: promoUrl,
             start: startDateSubmit,
@@ -215,7 +220,7 @@ class PromotionBusiness extends Component {
   render() {
     const { company, promo, url, start, end, image } = this.props;
     const {
-      companyName,
+      promotionTitle,
       startingDate,
       endingDate,
       modalVisible,
@@ -276,10 +281,8 @@ class PromotionBusiness extends Component {
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
-        <View style={promos.busDetailsWrap}>
-          <View style={promos.busDetails}>
-            <Text>Busines Details</Text>
-          </View>
+        <View style={promos.sharingDetailsWrap}>
+          <Text style={promos.sharingDetails}>No Data Yet</Text>
         </View>
       );
     }
@@ -298,9 +301,9 @@ class PromotionBusiness extends Component {
         <View style={promos.promotionWrap}>
           <Image style={promos.promoImage} source={imageUrl} />
           <View style={promos.detailsWrap}>
-            <View style={promos.companyNameWrap}>
+            <View style={promos.promotionTitleWrap}>
               <View style={promos.titleWrapInner}>
-                <Text style={promos.companyName}>{company}</Text>
+                <Text style={promos.promotionTitle}>{promotionTitle}</Text>
                 <View style={promos.iconGroup}>
                   <TouchableHighlight
                     style={promos.iconGroupIcon}
@@ -335,7 +338,7 @@ class PromotionBusiness extends Component {
             {toggleArea}
           </View>
 
-          <Modal animationType="slide" transparent visible={modalVisible}>
+          <Modal animationType="slide" visible={modalVisible}>
             <ScrollView style={defaults.modalWrapInner}>
               <View style={defaults.modalHeader}>
                 <Text style={defaults.hiddenItem}>X</Text>
@@ -349,9 +352,9 @@ class PromotionBusiness extends Component {
               <View style={defaults.formWrapModal}>
                 <TextInput
                   style={defaults.textInput}
-                  value={companyName}
+                  value={promotionTitle}
                   onChangeText={e => {
-                    this.updateTextInput(e, 'companyName');
+                    this.updateTextInput(e, 'promotionTitle');
                   }}
                   placeholder="Company Name"
                 />

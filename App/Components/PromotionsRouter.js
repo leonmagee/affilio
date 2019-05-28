@@ -1,6 +1,7 @@
 import {
   createAppContainer,
   createMaterialTopTabNavigator,
+  withNavigation,
 } from 'react-navigation';
 import PromotionsFeatured from './PromotionsFeatured';
 import PromotionsNew from './PromotionsNew';
@@ -51,4 +52,6 @@ const SlideNavigator = createMaterialTopTabNavigator(
   }
 );
 
-export default createAppContainer(SlideNavigator);
+// export default createAppContainer(SlideNavigator);
+// export default withNavigation(SlideNavigator);
+export default SlideNavigator;

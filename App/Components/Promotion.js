@@ -20,7 +20,7 @@ class Promotion extends Component {
     if (props.currentUser) {
       const userId = props.currentUser.uid;
       finalUrl = `${baseUrl}?userId=${userId}&companyName=${
-        props.company
+        props.title
       }&redirectUrl=${props.url}`;
     }
     this.state = {
@@ -69,32 +69,11 @@ class Promotion extends Component {
   };
 
   render() {
-    const { company, promo, start, end, image, loggedIn } = this.props;
+    const { title, promo, start, end, image, loggedIn } = this.props;
     const { cardOpen, finalUrl, busDetails } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
-
-    // let toggleArea = <></>;
-    // if (cardOpen && loggedIn) {
-    //   toggleArea = (
-    //     <>
-    //       <View style={promos.sectionWrap}>
-    //         <View style={promos.iconWrap}>
-    //           <Icon name="link" size={28} color={colors.lightGray} />
-    //         </View>
-    //         <View style={promos.dateRangeWrap}>
-    //           <TouchableHighlight
-    //             onPress={this.shareSocial}
-    //             underlayColor="transparent"
-    //           >
-    //             <Text style={promos.url}>{finalUrl}</Text>
-    //           </TouchableHighlight>
-    //         </View>
-    //       </View>
-    //     </>
-    //   );
-    // }
 
     let facebookLink = <></>;
     if (busDetails.facebook) {
@@ -185,9 +164,9 @@ class Promotion extends Component {
         <View style={promos.promotionWrap}>
           <Image style={promos.promoImage} source={imageUrl} />
           <View style={promos.detailsWrap}>
-            <View style={promos.companyNameWrap}>
+            <View style={promos.promotionTitleWrap}>
               <View style={promos.titleWrapInner}>
-                <Text style={promos.companyName}>{company}</Text>
+                <Text style={promos.promotionTitle}>{title}</Text>
                 <View style={promos.iconGroup}>
                   <TouchableHighlight
                     style={promos.iconGroupIcon}

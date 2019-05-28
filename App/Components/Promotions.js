@@ -16,6 +16,7 @@ import PromotionBusiness from './PromotionBusiness';
 import { getDocAndId } from '../Utils/utils';
 import { defaults } from '../Styles/defaultStyles';
 import AddPromotion from './AddPromotion';
+import { CloseIcon } from './CloseIcon';
 
 const firestore = RNFirebase.firestore();
 
@@ -143,7 +144,7 @@ class Promotions extends Component {
 
   render() {
     const { promotions, modalVisible } = this.state;
-    const { userType, loggedIn } = this.props;
+    const { userType, loggedIn, navigation } = this.props;
 
     let addNewPromo = <></>;
 
@@ -174,7 +175,7 @@ class Promotions extends Component {
               return (
                 <PromotionBusiness
                   id={item.key}
-                  company={item.data.company}
+                  title={item.data.title}
                   companyId={item.data.companyId}
                   promo={item.data.promotion}
                   url={item.data.url}
@@ -189,7 +190,7 @@ class Promotions extends Component {
             return (
               <Promotion
                 id={item.key}
-                company={item.data.company}
+                title={item.data.title}
                 companyId={item.data.companyId}
                 promo={item.data.promotion}
                 url={item.data.url}
@@ -203,9 +204,23 @@ class Promotions extends Component {
           }}
         />
         {addNewPromo}
-        <Modal animationType="slide" transparent visible={modalVisible}>
+        <Modal animationType="slide" visible={modalVisible}>
           <View style={defaults.modalWrapInner}>
-            <AddPromotion />
+            <View style={defaults.modalHeader}>
+              <Text style={defaults.hiddenItem}>X</Text>
+              <Text style={defaults.title}>Add New Promotion</Text>
+              <CloseIcon
+                toggle={() => {
+                  this.setModalVisible(!modalVisible);
+                }}
+              />
+            </View>
+            <AddPromotion
+              modalToggle={() => {
+                this.setModalVisible(!modalVisible);
+              }}
+              navigation={navigation}
+            />
           </View>
         </Modal>
       </View>
