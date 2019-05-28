@@ -9,6 +9,7 @@ import PromotionsWrap from './PromotionsWrap';
 import Profile from './Profile';
 import Account from './Account';
 import About from './About';
+import AddPromotion from './AddPromotion';
 // import SignUp from './SignUp';
 import ChangeType from './ChangeType';
 import { colors } from '../Styles/variables';
@@ -57,6 +58,15 @@ const DrawerNavigator = createDrawerNavigator(
         drawerLabel: 'About',
         drawerIcon: ({ tintColor }) => (
           <Icon name="comment-question" size={26} color={tintColor} />
+        ),
+      },
+    },
+    AddPromotion: {
+      screen: AddPromotion,
+      navigationOptions: {
+        drawerLabel: 'Add Promo',
+        drawerIcon: ({ tintColor }) => (
+          <Icon name="plus-circle" size={26} color={tintColor} />
         ),
       },
     },

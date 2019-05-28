@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
@@ -112,10 +113,27 @@ class LoginStart extends Component {
     //   });
   };
 
-  processSignUp = () => {
-    // console.log('login works');
-    const { navigation } = this.props;
-    navigation.navigate('ChooseType');
+  // processSignUp = () => {
+  //   // console.log('login works');
+  //   const { navigation } = this.props;
+  //   navigation.navigate('ChooseType');
+  // };
+
+  changeUserType = type => {
+    const { changeUserType, navigation } = this.props;
+    changeUserType(type);
+    if (type) {
+      AsyncStorage.setItem('@UserType', 'business');
+    } else {
+      AsyncStorage.setItem('@UserType', 'user');
+    }
+    // navigateToPage(data) {
+    //   this.props.goToMenuPage(data)
+    //   this.props.navigation.navigate('MenuPage', data)
+    // }
+    // const data = { name: 'Create Profile' };
+    // navigation.navigate('ProfileSettings', data);
+    navigation.navigate('SignUpStart');
   };
 
   facebookLogin = () => {
@@ -223,7 +241,7 @@ class LoginStart extends Component {
     if (signInLoading) {
       loginActivity = (
         <View style={defaults.processingWrap}>
-          <ActivityIndicator size="large" color={colors.brandPrimary} />
+          <ActivityIndicator size="large" color={colors.activity} />
         </View>
       );
     }
@@ -300,10 +318,20 @@ class LoginStart extends Component {
             <View style={defaults.bigButtonWrap}>
               <TouchableHighlight
                 style={[defaults.buttonStyle, defaults.blueButton]}
-                onPress={this.processSignUp}
+                // onPress={this.processSignUp}
+                onPress={() => this.changeUserType(0)}
                 underlayColor={colors.brandPrimary}
               >
-                <Text style={defaults.buttonText}>Create Account</Text>
+                <Text style={defaults.buttonText}>Create User Account</Text>
+              </TouchableHighlight>
+            </View>
+            <View style={defaults.bigButtonWrap}>
+              <TouchableHighlight
+                style={[defaults.buttonStyle, defaults.redButton]}
+                onPress={() => this.changeUserType(1)}
+                underlayColor={colors.brandSecond}
+              >
+                <Text style={defaults.buttonText}>Create Business Account</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -328,9 +356,9 @@ const mapActionsToProps = dispatch => ({
   userLoggedIn(type) {
     dispatch({ type: 'LOGGED_IN', payload: type });
   },
-  // changeUserType(type) {
-  //   dispatch({ type: 'USER_TYPE', payload: type });
-  // },
+  changeUserType(type) {
+    dispatch({ type: 'USER_TYPE', payload: type });
+  },
   setCurrentUser(user) {
     const newUser = dispatch({ type: 'CURRENT_USER', payload: user });
   },

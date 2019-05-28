@@ -213,7 +213,7 @@ class PromotionBusiness extends Component {
   };
 
   render() {
-    const { company, promo, url, start, end, image, loggedIn } = this.props;
+    const { company, promo, url, start, end, image } = this.props;
     const {
       companyName,
       startingDate,
@@ -273,43 +273,13 @@ class PromotionBusiness extends Component {
       );
     }
 
-    let socialMediaLinks = <></>;
-    if (busDetails.facebook || busDetails.twitter || busDetails.instagram) {
-      socialMediaLinks = (
-        <View style={promos.socialMediaWrap}>
-          {facebookLink}
-          {twitterLink}
-          {instagramLink}
-        </View>
-      );
-    }
-
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
         <View style={promos.busDetailsWrap}>
           <View style={promos.busDetails}>
-            <View style={promos.areaWrap}>
-              <Text style={promos.busAddress}>{busDetails.address}</Text>
-              <Text style={promos.busAddress}>{busDetails.address2}</Text>
-              <View style={promos.cszWrap}>
-                <Text style={promos.csz}>{busDetails.city},</Text>
-                <Text style={promos.csz}>{busDetails.state}</Text>
-                <Text style={promos.csz}>{busDetails.zip}</Text>
-              </View>
-            </View>
-            <View style={promos.areaWrap}>
-              <Text style={promos.busAddress}>{busDetails.phone}</Text>
-              <Text style={promos.busAddress}>{busDetails.email}</Text>
-              <TouchableHighlight
-                underlayColor="transparent"
-                onPress={() => this.urlLink(busDetails.website)}
-              >
-                <Text style={promos.website}>{busDetails.website}</Text>
-              </TouchableHighlight>
-            </View>
+            <Text>Busines Details</Text>
           </View>
-          {socialMediaLinks}
         </View>
       );
     }
@@ -365,12 +335,7 @@ class PromotionBusiness extends Component {
             {toggleArea}
           </View>
 
-          <Modal
-            sytle={{ flex: 1 }}
-            animationType="slide"
-            transparent
-            visible={modalVisible}
-          >
+          <Modal animationType="slide" transparent visible={modalVisible}>
             <ScrollView style={defaults.modalWrapInner}>
               <View style={defaults.modalHeader}>
                 <Text style={defaults.hiddenItem}>X</Text>

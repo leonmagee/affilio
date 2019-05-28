@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import {
   FlatList,
+  Modal,
   StyleSheet,
-  // Text,
-  // TouchableHighlight,
+  Text,
+  TouchableHighlight,
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import RNFirebase from 'react-native-firebase';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../Styles/variables';
-
 import Promotion from './Promotion';
 import PromotionBusiness from './PromotionBusiness';
 import { getDocAndId } from '../Utils/utils';
+import { defaults } from '../Styles/defaultStyles';
+import AddPromotion from './AddPromotion';
 
 const firestore = RNFirebase.firestore();
 
@@ -37,6 +40,24 @@ const styles = StyleSheet.create({
   navItemSelected: {
     color: colors.brandPrimary,
   },
+  addNewPromoWrap: {
+    // backgroundColor: 'tomato',
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    width: 45,
+    height: 45,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 40,
+  },
+  plusIcon: {
+    marginTop: 1.5,
+    marginLeft: 0.5,
+  },
 });
 
 class Promotions extends Component {
@@ -46,8 +67,13 @@ class Promotions extends Component {
     super();
     this.state = {
       promotions: [],
-      current: 'all',
+      // current: 'all',
+      modalVisible: false,
     };
+  }
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
   }
 
   componentDidMount = () => {
@@ -116,8 +142,27 @@ class Promotions extends Component {
   };
 
   render() {
-    const { promotions, current } = this.state;
-    const { userType, loggedIn, navigation } = this.props;
+    const { promotions, modalVisible } = this.state;
+    const { userType, loggedIn } = this.props;
+
+    let addNewPromo = <></>;
+
+    if (userType) {
+      addNewPromo = (
+        <TouchableHighlight
+          // onPress={this.addPromo}
+          onPress={() => this.setModalVisible(!modalVisible)}
+          style={styles.addNewPromoWrap}
+        >
+          <Icon
+            style={styles.plusIcon}
+            name="plus-circle"
+            size={40}
+            color={colors.brandPrimary}
+          />
+        </TouchableHighlight>
+      );
+    }
 
     return (
       <View style={styles.mainWrap}>
@@ -157,6 +202,12 @@ class Promotions extends Component {
             );
           }}
         />
+        {addNewPromo}
+        <Modal animationType="slide" transparent visible={modalVisible}>
+          <View style={defaults.modalWrapInner}>
+            <AddPromotion />
+          </View>
+        </Modal>
       </View>
     );
   }

@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-import { AccessToken, LoginManager } from 'react-native-fbsdk';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import { GoogleSignin, statusCodes } from 'react-native-google-signin';
+// import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
@@ -52,16 +52,17 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   checkBoxWrap: {
-    borderTopWidth: 1,
-    borderColor: '#eee',
-    marginTop: 25,
+    // borderTopWidth: 1,
+    // borderColor: '#eee',
+    // marginTop: 25,
   },
   checkBoxStyle: {
     backgroundColor: 'transparent',
     borderWidth: 0,
     paddingLeft: 0,
+    paddingTop: 13,
     paddingBottom: 15,
-    borderBottomWidth: 1,
+    borderTopWidth: 1,
     borderColor: '#eee',
   },
   checkBoxLabel: {
@@ -171,130 +172,20 @@ class SignUpStart extends Component {
       setCurrentUser(user); // this needs to make account page work
       createUserProfileDocument(user, { displayName });
     } catch (error) {
-      // console.error(error);
       const createAccountFail = firebaseError(error);
       this.setState({ createAccountFail });
     }
-
-    // .then(result => {
-    //   console.log('logged in with custom info?', result);
-    // })
-    // .catch(error => {
-    //   console.error('we have an error?', error);
-    // });
-    // RNFirebase.auth()
-    //   .createUserWithEmailAndPassword(email, password)
-    //   .then(result => {
-    //     console.log('logged in with custom info?', result);
-    //   })
-    //   .catch(error => {
-    //     console.error('we have an error?', error);
-    //   });
-    // navigation.navigate('ProfileSettings');
   };
 
-  processSignUp = () => {
-    // console.log('login works');
-    const { navigation } = this.props;
-    navigation.navigate('ProfileSettings');
-  };
-
-  facebookLogin = () => {
-    this.setState({
-      signInLoading: true,
-    });
-    return LoginManager.logInWithReadPermissions(['public_profile', 'email'])
-      .then(result => {
-        console.log('this is a result?', result);
-        if (!result.isCancelled) {
-          console.log(
-            `Login success with permissions: ${result.grantedPermissions.toString()}`
-          );
-          // get the access token
-          return AccessToken.getCurrentAccessToken();
-        }
-        this.setState({
-          // hide spinner when canceled
-          signInLoading: false,
-        });
-      })
-      .then(data => {
-        console.log('we get some data????', data);
-        if (data) {
-          // create a new firebase credential with the token
-          const credential = RNFirebase.auth.FacebookAuthProvider.credential(
-            data.accessToken
-          );
-          // login with credential
-          return RNFirebase.auth().signInWithCredential(credential);
-        }
-      })
-      .then(currentUser => {
-        if (currentUser) {
-          console.info(JSON.stringify(currentUser.toJSON()));
-          this.setState({
-            // modalVisible: false,
-            // currentUser,
-            signInLoading: false,
-          });
-          this.props.setCurrentUser(currentUser);
-          // this.props.toggleLoginModal(false);
-        }
-      })
-      .catch(error => {
-        console.log(`Login fail with error: ${error}`);
-      });
-  };
-
-  googleLogin = async () => {
-    this.setState({
-      signInLoading: true,
-    });
-    try {
-      // Add any configuration settings here:
-      await GoogleSignin.configure({ prompt: 'select_account' });
-
-      const data = await GoogleSignin.signIn();
-
-      const authProvider = RNFirebase.auth.GoogleAuthProvider;
-
-      // authProvider.setCustomParameters({
-      //   prompt: 'select_account',
-      // });
-
-      // create a new firebase credential with the token
-      const credential = authProvider.credential(
-        data.idToken,
-        data.accessToken
-      );
-
-      // login with credential
-      await RNFirebase.auth().signInWithCredential(credential);
-
-      const newCurrentUser = await RNFirebase.auth().currentUser;
-
-      this.setState({
-        // modalVisible: false,
-        // currentUser: newCurrentUser,
-        signInLoading: false,
-      });
-      // this.props.toggleLoginModal(false);
-      this.props.setCurrentUser(newCurrentUser);
-
-      // console.info(JSON.stringify(currentUser.toJSON()));
-    } catch (e) {
-      if (e.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-        console.log('sign in was canceled???');
-      }
-      console.error(e);
-    }
-  };
+  // processSignUp = () => {
+  //   // console.log('login works');
+  //   const { navigation } = this.props;
+  //   navigation.navigate('ProfileSettings');
+  // };
 
   render() {
     const { signInLoading, termsAgree, businessAgree } = this.state;
     const { userType } = this.props;
-    // console.log('current user?', userType);
     let loginActivity = <View />;
     if (signInLoading) {
       loginActivity = (
@@ -325,7 +216,9 @@ class SignUpStart extends Component {
     const checkBox = '#bbb';
     const checkBoxRequired = colors.brandSecond;
     let busCheckBox = <></>;
+    let placeholder = 'Display Name';
     if (userType) {
+      placeholder = 'Company Name';
       busCheckBox = (
         <CheckBox
           title="I verify that I am a represetative of this business."
@@ -360,7 +253,7 @@ class SignUpStart extends Component {
           <TextInput
             name="displayName"
             style={[defaults.textInput, displayNameReq && defaults.required]}
-            placeholder="Display Name"
+            placeholder={placeholder}
             value={displayName}
             autoCapitalize="none"
             required
@@ -414,6 +307,7 @@ class SignUpStart extends Component {
               }}
             />
           </View>
+          {checkboxSection}
           {validationMessage}
           <View style={defaults.bigButtonWrap}>
             <TouchableHighlight
@@ -424,38 +318,6 @@ class SignUpStart extends Component {
               <Text style={defaults.buttonText}>Create Account</Text>
             </TouchableHighlight>
           </View>
-          <View style={[defaults.titleWrap, { marginBottom: 20 }]}>
-            <Text style={[defaults.title, { fontSize: 18 }]}>OR</Text>
-          </View>
-          <View style={styles.socialLoginWrap}>
-            <TouchableHighlight
-              underlayColor="transparent"
-              onPress={this.facebookLogin}
-              style={[
-                styles.socialButtonWrap,
-                { backgroundColor: '#4A66AD', marginRight: 10 },
-              ]}
-            >
-              <View style={styles.socialInner}>
-                <Icon name="facebook" size={20} color="#fff" />
-                <Text style={styles.socialButton}>Facebook Login</Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              underlayColor="transparent"
-              onPress={this.googleLogin}
-              style={[
-                styles.socialButtonWrap,
-                { backgroundColor: colors.brandSecond, marginLeft: 10 },
-              ]}
-            >
-              <View style={styles.socialInner}>
-                <Icon name="google" size={20} color="#fff" />
-                <Text style={styles.socialButton}>Google Login</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-          {checkboxSection}
         </View>
 
         {loginActivity}

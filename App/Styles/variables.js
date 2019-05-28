@@ -6,4 +6,5 @@ export const colors = {
   brandThird: '#EDE338', // yellow
   borderColor: '#e7e7e7',
   required: '#FAEEED',
+  activity: '#888',
 };
