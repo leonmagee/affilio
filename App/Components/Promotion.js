@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 // import RNShare, { ShareSheet, Button } from 'react-native-share';
 import { colors } from '../Styles/variables';
-import { promos } from '../Styles/defaultStyles';
+import { defaults, promos } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
@@ -91,7 +91,7 @@ class Promotion extends Component {
     const iconColor = colors.brandPrimary;
 
     let facebookLink = <></>;
-    const socialMediaIconSize = 27;
+    const socialMediaIconSize = 23;
     if (busDetails.facebook) {
       facebookLink = (
         <TouchableHighlight
@@ -169,7 +169,7 @@ class Promotion extends Component {
       addressDetails = (
         <View style={promos.sectionWrap}>
           <View style={promos.iconWrap}>
-            <Icon name="map-marker" size={24} color={iconColor} />
+            <Icon name="map-marker" size={22} color={iconColor} />
           </View>
           <Text style={promos.promoText}>
             {busDetails.city}, {busDetails.state} {busDetails.zip}
@@ -183,10 +183,17 @@ class Promotion extends Component {
       emailAddress = (
         <View style={promos.sectionWrap}>
           <View style={promos.iconWrap}>
-            <Icon name="email" size={22} color={iconColor} />
+            <Icon name="email" size={20} color={iconColor} />
           </View>
           <Text style={promos.promoText}>{busDetails.email}</Text>
         </View>
+      );
+    }
+
+    let logo = <></>;
+    if (busDetails.image) {
+      logo = (
+        <Image style={promos.promoLogo} source={{ uri: busDetails.image }} />
       );
     }
 
@@ -194,7 +201,10 @@ class Promotion extends Component {
     if (cardOpen) {
       toggleArea = (
         <View style={promos.busDetailsWrap}>
-          {userNameLink}
+          <View style={promos.promoLogoWrap}>
+            {logo}
+            {userNameLink}
+          </View>
           <Text style={promos.detailsText}>{busDetails.details}</Text>
           {addressDetails}
           {emailAddress}

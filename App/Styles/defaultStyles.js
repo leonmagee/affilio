@@ -235,7 +235,7 @@ export const promos = {
   promoText: {
     color: '#444',
     fontFamily: 'Lato-Regular',
-    fontSize: 17,
+    fontSize: 15,
     flex: 1,
   },
   userNameLink: {
@@ -284,48 +284,26 @@ export const promos = {
   busDetailsWrap: {
     borderTopWidth: 1,
     borderTopColor: '#eee',
-    paddingTop: 15,
-    marginTop: 10,
+    paddingTop: 13,
+    marginTop: 8,
   },
   detailsText: {
     fontFamily: 'Lato-Regular',
     color: '#888',
+    fontSize: 14,
     marginVertical: 10,
   },
-  // busDetail: {
-  //   // backgroundColor: 'tomato',
-  // },
-  // busDetails: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  // },
-  // areaWrap: {
-  //   padding: 2,
-  // },
-  // busTitle: {
-  //   color: colors.brandPrimary,
-  //   fontSize: 25,
-  //   fontFamily: 'Lato-Bold',
-  //   paddingBottom: 5,
-  // },
-  // busAddress: {
-  //   color: '#656565',
-  //   fontSize: 12,
-  //   fontFamily: 'Lato-Regular',
-  // },
-  // cszWrap: {
-  //   flexDirection: 'row',
-  // },
-  // csz: {
-  //   fontFamily: 'Lato-Regular',
-  //   color: '#656565',
-  //   fontSize: 11,
-  //   marginRight: 5,
-  // },
-  // website: {
-  //   color: colors.brandPrimary,
-  //   fontFamily: 'Lato-Bold',
-  // },
+  promoLogoWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  promoLogo: {
+    height: 38,
+    width: 38,
+    borderRadius: 19,
+    marginRight: 15,
+    backgroundColor: '#eee',
+  },
   socialMediaWrap: {
     flexDirection: 'row',
     marginTop: 5,
