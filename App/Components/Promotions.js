@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import RNFirebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ScrollView } from 'react-native-gesture-handler';
 import { colors } from '../Styles/variables';
 import Promotion from './Promotion';
 import PromotionBusiness from './PromotionBusiness';
@@ -205,8 +206,8 @@ class Promotions extends Component {
           }}
         />
         {addNewPromo}
-        <Modal animationType="slide" visible={modalVisible}>
-          <View style={defaults.modalWrapInner}>
+        <Modal animationType="slide" visible={modalVisible} transparent>
+          <ScrollView style={defaults.modalWrapInner}>
             <View style={defaults.modalHeader}>
               <CloseIcon
                 toggle={() => {
@@ -222,7 +223,7 @@ class Promotions extends Component {
               }}
               navigation={navigation}
             />
-          </View>
+          </ScrollView>
         </Modal>
       </View>
     );

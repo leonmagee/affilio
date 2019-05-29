@@ -47,21 +47,13 @@ class App extends Component {
       props.userLoggedIn(0);
     }
 
-    console.log('xxxxxxxxxx', currentUser.uid);
-
-    const newUser = getUserDocument(currentUser.uid).then(user => {
-      console.log('yyyyyyyyy', user);
+    getUserDocument(currentUser.uid).then(user => {
       props.setCurrentUser(user);
     });
-
-    // props.setCurrentUser(currentUser);
-
-    // console.log('UUU', currentUser);
 
     this.state = {
       loading: true,
       signInLoading: false,
-      // currentUser,
     };
   }
 
@@ -77,13 +69,14 @@ class App extends Component {
       loading: false,
     });
 
-    const busDetailsString = await AsyncStorage.getItem('@BusinessDetails');
-    if (busDetailsString) {
-      // console.log(busDetailsString);
-      const busDetails = JSON.parse(busDetailsString);
-      setBusinessDetails(busDetails);
-      console.log(busDetails);
-    }
+    // const busDetailsString = await AsyncStorage.getItem('@BusinessDetails');
+    // if (busDetailsString) {
+    //   console.log('ssdfddddddddddd333333333333333333333');
+    //   // console.log(busDetailsString);
+    //   const busDetails = JSON.parse(busDetailsString);
+    //   setBusinessDetails(busDetails);
+    //   console.log(busDetails);
+    // }
     /**
      * The follow might not be necessary
      * watch the rest of the tutorial to see how helpful this is

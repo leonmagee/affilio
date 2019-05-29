@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Image,
-  ScrollView,
   Text,
   TextInput,
   TouchableHighlight,
@@ -269,130 +268,128 @@ class AddPromotion extends Component {
         );
       } else {
         formWrap = (
-          <ScrollView>
-            <View style={defaults.formWrapModal}>
-              <TextInput
+          <View style={defaults.formWrapModal}>
+            <TextInput
+              style={[
+                defaults.textInput,
+                promotionTitleReq && defaults.required,
+              ]}
+              value={promotionTitle}
+              onChangeText={e => {
+                this.updateTextInput(e, 'promotionTitle');
+              }}
+              placeholder="Promotion Title"
+            />
+            <TextInput
+              style={[
+                defaults.textInput,
+                defaults.textArea,
+                promotionDetailsReq && defaults.required,
+              ]}
+              value={promotionDetails}
+              multiline
+              onChangeText={e => {
+                this.updateTextInput(e, 'promotionDetails');
+              }}
+              placeholder="Promotion Details"
+            />
+            <TextInput
+              style={[defaults.textInput, promoUrlReq && defaults.required]}
+              value={promoUrl}
+              autoCapitalize="none"
+              onChangeText={e => {
+                this.updateTextInput(e, 'promoUrl');
+              }}
+              placeholder="Promotion URL"
+            />
+            <View style={defaults.datePickerWrap}>
+              <DatePicker
+                // style={[defaults.datePicker, { marginRight: 10 }]}
                 style={[
-                  defaults.textInput,
-                  promotionTitleReq && defaults.required,
+                  defaults.datePicker,
+                  { marginRight: 10 },
+                  startingDateReq && defaults.required,
                 ]}
-                value={promotionTitle}
-                onChangeText={e => {
-                  this.updateTextInput(e, 'promotionTitle');
+                date={startingDate}
+                mode="date"
+                placeholder="Starting Date"
+                format="MM-DD-YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                minDate={new Date()}
+                showIcon={false}
+                customStyles={{
+                  placeholderText: {
+                    fontSize: 14,
+                    fontFamily: 'Lato-Regular',
+                    alignItems: 'flex-start',
+                  },
+                  dateInput: {
+                    alignItems: 'flex-start',
+                    paddingVertical: 7,
+                    paddingHorizontal: 14,
+                    borderColor: startingDateReq
+                      ? colors.brandSecond
+                      : 'rgba(0,0,0,0.25)',
+                  },
                 }}
-                placeholder="Promotion Title"
+                onDateChange={this.setStartingDate}
               />
-              <TextInput
+              <DatePicker
                 style={[
-                  defaults.textInput,
-                  defaults.textArea,
-                  promotionDetailsReq && defaults.required,
+                  defaults.datePicker,
+                  { marginLeft: 10 },
+                  endingDateReq && defaults.required,
                 ]}
-                value={promotionDetails}
-                multiline
-                onChangeText={e => {
-                  this.updateTextInput(e, 'promotionDetails');
+                date={endingDate}
+                mode="date"
+                placeholder="Expiration Date"
+                format="MM-DD-YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                minDate={new Date()}
+                showIcon={false}
+                customStyles={{
+                  placeholderText: {
+                    fontSize: 14,
+                    fontFamily: 'Lato-Regular',
+                    alignItems: 'flex-start',
+                  },
+                  dateInput: {
+                    alignItems: 'flex-start',
+                    paddingVertical: 7,
+                    paddingHorizontal: 14,
+                    borderColor: endingDateReq
+                      ? colors.brandSecond
+                      : 'rgba(0,0,0,0.25)',
+                  },
                 }}
-                placeholder="Promotion Details"
+                onDateChange={this.setEndingDate}
               />
-              <TextInput
-                style={[defaults.textInput, promoUrlReq && defaults.required]}
-                value={promoUrl}
-                autoCapitalize="none"
-                onChangeText={e => {
-                  this.updateTextInput(e, 'promoUrl');
-                }}
-                placeholder="Promotion URL"
-              />
-              <View style={defaults.datePickerWrap}>
-                <DatePicker
-                  // style={[defaults.datePicker, { marginRight: 10 }]}
-                  style={[
-                    defaults.datePicker,
-                    { marginRight: 10 },
-                    startingDateReq && defaults.required,
-                  ]}
-                  date={startingDate}
-                  mode="date"
-                  placeholder="Starting Date"
-                  format="MM-DD-YYYY"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  minDate={new Date()}
-                  showIcon={false}
-                  customStyles={{
-                    placeholderText: {
-                      fontSize: 14,
-                      fontFamily: 'Lato-Regular',
-                      alignItems: 'flex-start',
-                    },
-                    dateInput: {
-                      alignItems: 'flex-start',
-                      paddingVertical: 7,
-                      paddingHorizontal: 14,
-                      borderColor: startingDateReq
-                        ? colors.brandSecond
-                        : 'rgba(0,0,0,0.25)',
-                    },
-                  }}
-                  onDateChange={this.setStartingDate}
-                />
-                <DatePicker
-                  style={[
-                    defaults.datePicker,
-                    { marginLeft: 10 },
-                    endingDateReq && defaults.required,
-                  ]}
-                  date={endingDate}
-                  mode="date"
-                  placeholder="Expiration Date"
-                  format="MM-DD-YYYY"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  minDate={new Date()}
-                  showIcon={false}
-                  customStyles={{
-                    placeholderText: {
-                      fontSize: 14,
-                      fontFamily: 'Lato-Regular',
-                      alignItems: 'flex-start',
-                    },
-                    dateInput: {
-                      alignItems: 'flex-start',
-                      paddingVertical: 7,
-                      paddingHorizontal: 14,
-                      borderColor: endingDateReq
-                        ? colors.brandSecond
-                        : 'rgba(0,0,0,0.25)',
-                    },
-                  }}
-                  onDateChange={this.setEndingDate}
-                />
-              </View>
-              <View style={defaults.bigButtonWrap}>
-                <TouchableHighlight
-                  style={[
-                    defaults.buttonStyle,
-                    defaults.imageUploadButton,
-                    imageSourceReq && defaults.redButton,
-                    { marginRight: 10 },
-                  ]}
-                  onPress={this.imageSelect}
-                  underlayColor={colors.lightGray}
-                >
-                  <Text style={defaults.buttonText}>Image</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  style={[defaults.buttonStyle, defaults.updateSubmitButton]}
-                  onPress={this.addNewPromotion}
-                  underlayColor={colors.brandPrimary}
-                >
-                  <Text style={defaults.buttonText}>Submit</Text>
-                </TouchableHighlight>
-              </View>
-              {imagePreview}
             </View>
-          </ScrollView>
+            <View style={defaults.bigButtonWrap}>
+              <TouchableHighlight
+                style={[
+                  defaults.buttonStyle,
+                  defaults.imageUploadButton,
+                  imageSourceReq && defaults.redButton,
+                  { marginRight: 10 },
+                ]}
+                onPress={this.imageSelect}
+                underlayColor={colors.lightGray}
+              >
+                <Text style={defaults.buttonText}>Image</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[defaults.buttonStyle, defaults.updateSubmitButton]}
+                onPress={this.addNewPromotion}
+                underlayColor={colors.brandPrimary}
+              >
+                <Text style={defaults.buttonText}>Submit</Text>
+              </TouchableHighlight>
+            </View>
+            {imagePreview}
+          </View>
         );
       }
     }

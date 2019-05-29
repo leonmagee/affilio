@@ -125,6 +125,15 @@ export const defaults = {
   imagePreview: {
     height: 140,
   },
+  logoPreviewWrap: {
+    alignItems: 'center',
+  },
+  logoPreview: {
+    height: 70,
+    width: 70,
+    borderRadius: 35,
+    marginTop: -5,
+  },
   processingWrap: {
     flex: 1,
     justifyContent: 'center',
@@ -135,7 +144,16 @@ export const defaults = {
   },
   modalWrapInner: {
     backgroundColor: '#fff',
-    // paddingTop: 35,
+    flex: 1,
+    marginVertical: 50,
+    marginHorizontal: 20,
+    borderRadius: 20,
+    shadowOffset: { width: 2, height: 2 },
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+  },
+  formWrapModal: {
+    paddingHorizontal: 20,
     flex: 1,
   },
   modalHeader: {
@@ -147,10 +165,6 @@ export const defaults = {
     backgroundColor: '#fcfcfc',
     borderBottomWidth: 1,
     borderBottomColor: '#e7e7e7',
-  },
-  formWrapModal: {
-    paddingHorizontal: 20,
-    flex: 1,
   },
   buttonWrap: {
     alignItems: 'center',

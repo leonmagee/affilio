@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,7 +9,9 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+// import AsyncStorage from '@react-native-community/async-storage';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNFirebase from 'react-native-firebase';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -50,26 +53,51 @@ class Profile extends Component {
       city: businessDetails.city,
       state: businessDetails.state,
       zip: businessDetails.zip,
-      // country: businessDetails.country,
-      // phone: businessDetails.phone,
       email: businessDetails.email,
       website: businessDetails.website,
       facebook: businessDetails.facebook,
       twitter: businessDetails.twitter,
       instagram: businessDetails.instagram,
+      image: businessDetails.image,
       triggerActivity: false,
     };
+    // console.log(businessDetails, 'xxxxxxxxyyyyyyyyyiiiiii');
 
     firestore
       .collection('businesses')
       .doc(currentUser.uid)
       .get()
       .then(result => {
-        console.log('hey, does this work?', result.data());
         const data = result.data();
+        // console.log('data??????', data);
         this.setState({ ...data, triggerActivity: false });
+        console.log(this.state);
       });
   }
+
+  imageSelect = () => {
+    const options = {
+      title: 'Choose Logo or Profile Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+      maxWidth: 200,
+      mediaType: 'photo',
+    };
+
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.error('ImagePicker Error: ', response.error);
+      } else {
+        this.setState({
+          image: response.uri,
+        });
+      }
+    });
+  };
 
   updateTextInput = (value, name) => {
     this.setState({
@@ -78,8 +106,6 @@ class Profile extends Component {
   };
 
   updateBusinessInfo = () => {
-    // const url = 'https://levon.io';
-    // Linking.openURL(url);
     this.setState({ triggerActivity: true });
     const {
       address,
@@ -87,52 +113,86 @@ class Profile extends Component {
       city,
       state,
       zip,
-      // country,
-      // phone,
       email,
       website,
       facebook,
       twitter,
       instagram,
+      image,
     } = this.state;
-    // console.log('profile updates???', name, address, city, state, zip, phone);
     const { currentUser, setBusinessDetails } = this.props;
     const busDetails = {
       address,
       details,
       city,
       state,
-      // country,
       zip,
-      // phone,
       email,
       website,
       facebook,
       twitter,
       instagram,
+      image,
     };
     setBusinessDetails(busDetails);
 
-    // const busDetailsSave = JSON.stringify(busDetails);
-    // console.log(busDetailsSave);
-    /**
-     * validation function - make sure items aren't empty?
-     */
-    // if (address && city && state && zip && phone) {
-    //   AsyncStorage.setItem('@BusinessDetails', busDetailsSave);
-    // }
     firestore
       .collection('businesses')
       .doc(currentUser.uid)
       .set(busDetails)
-      .then(result => {
-        console.log(result);
-        this.setState({ triggerActivity: false });
+      .then(() => {
+        // result is undefined
+        // console.log(result, 'abcdefg');
+        const firestoreId = currentUser.uid;
+        if (image) {
+          const postRef = firestore.doc(`businesses/${firestoreId}`);
+          // const firestoreId = result.id;
+          // const postRef = firestore.doc(`businesses/${firestoreId}`);
+          const { Blob } = RNFetchBlob.polyfill;
+          const { fs } = RNFetchBlob;
+          window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+          window.Blob = Blob;
+          const imageRef = RNFirebase.storage()
+            .ref(currentUser.uid)
+            .child(`logo-${firestoreId}.jpg`);
+          const mime = 'image/jpeg';
+          const filePath = image.replace('file:', '');
+          let uploadBlob = false;
+          fs.readFile(filePath, 'base64')
+            .then(data =>
+              // console.log('step 1');
+              Blob.build(data, { type: `${mime};BASE64` })
+            )
+            .then(blob => {
+              // console.log('step 2');
+              uploadBlob = blob;
+              return imageRef.put(blob._ref, { contentType: mime });
+            })
+            .then(() => {
+              // console.log('step 3');
+              uploadBlob.close();
+              return imageRef.getDownloadURL();
+            })
+            .then(firebaseUrl => {
+              console.log('step 3 - upload worked', firebaseUrl);
+              postRef.update({ image: firebaseUrl });
+              this.setState({
+                triggerActivity: false,
+                imageSource: firebaseUrl,
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          this.setState({ triggerActivity: false });
+        }
       })
       .catch(error => {
-        console.error('errors?', error);
+        console.error('errors? xxx', error);
         this.setState({ triggerActivity: false });
       });
+    this.setState({ triggerActivity: false });
   };
 
   // this.afs.collection('[your collection]').doc('[your ID]').set([your document]);
@@ -153,7 +213,17 @@ class Profile extends Component {
       twitter,
       instagram,
       triggerActivity,
+      image,
     } = this.state;
+
+    let imagePreview = <></>;
+    if (image) {
+      imagePreview = (
+        <View style={defaults.logoPreviewWrap}>
+          <Image style={defaults.logoPreview} source={{ uri: image }} />
+        </View>
+      );
+    }
 
     let activityWrapper = <></>;
     if (triggerActivity) {
@@ -286,13 +356,29 @@ class Profile extends Component {
               </View>
               <View style={defaults.bigButtonWrap}>
                 <TouchableHighlight
-                  style={[defaults.buttonStyle, defaults.blueButton]}
+                  style={[
+                    defaults.buttonStyle,
+                    defaults.imageUploadButton,
+                    { marginRight: 10 },
+                  ]}
+                  onPress={this.imageSelect}
+                  underlayColor={colors.lightGray}
+                >
+                  <Text style={defaults.buttonText}>Logo/Profile</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={[
+                    defaults.buttonStyle,
+                    defaults.blueButton,
+                    { marginLeft: 10 },
+                  ]}
                   onPress={this.updateBusinessInfo}
                   underlayColor={colors.brandPrimary}
                 >
                   <Text style={defaults.buttonText}>Update</Text>
                 </TouchableHighlight>
               </View>
+              {imagePreview}
             </View>
           </View>
           {activityWrapper}

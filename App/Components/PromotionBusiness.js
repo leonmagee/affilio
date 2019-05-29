@@ -382,7 +382,7 @@ class PromotionBusiness extends Component {
             {toggleArea}
           </View>
 
-          <Modal animationType="slide" visible={modalVisible}>
+          <Modal animationType="slide" visible={modalVisible} transparent>
             <ScrollView style={defaults.modalWrapInner}>
               <View style={defaults.modalHeader}>
                 <CloseIcon
