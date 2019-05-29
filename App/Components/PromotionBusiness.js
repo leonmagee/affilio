@@ -34,7 +34,7 @@ class PromotionBusiness extends Component {
       id: props.id,
       cardOpen: false,
       promotionTitle: props.title,
-      newPromo: props.promo,
+      promotionDetails: props.promo,
       promoUrl: props.url,
       startingDate,
       endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
@@ -44,6 +44,11 @@ class PromotionBusiness extends Component {
       busDetails: false,
       imageUpdated: false,
       processing: false,
+      showSpinner: true, // just in update modal
+      promotionTitleReq: false,
+      promotionDetailsReq: false,
+      promoUrlReq: false,
+      imageSourceReq: false,
     };
 
     const businessDetailsRef = props.firestore.doc(
@@ -83,15 +88,8 @@ class PromotionBusiness extends Component {
   };
 
   urlLink = url => {
-    // const urlNew =
     Linking.openURL(url);
   };
-
-  // viewSingle = () => {
-  //   const { id } = this.state;
-  //   const { filterId } = this.props;
-  //   filterId(id);
-  // };
 
   imageSelect = () => {
     const options = {
@@ -127,25 +125,56 @@ class PromotionBusiness extends Component {
 
   updateCurrentPromotion = () => {
     this.setState({
-      processing: true,
+      promotionTitleReq: false,
+      promotionDetailsReq: false,
+      promoUrlReq: false,
+      imageSourceReq: false,
     });
     const {
       id,
       promotionTitle,
       startDateSubmit,
       endDateSubmit,
-      newPromo,
+      promotionDetails,
       promoUrl,
       imageSource,
       imageUpdated,
     } = this.state;
+
+    if (promotionTitle === '') {
+      this.setState({ promotionTitleReq: true });
+    }
+    if (promotionDetails === '') {
+      this.setState({ promotionDetailsReq: true });
+    }
+    if (promoUrl === '') {
+      this.setState({ promoUrlReq: true });
+    }
+    if (!imageSource) {
+      this.setState({ imageSourceReq: true });
+    }
+    if (
+      promotionTitle === '' ||
+      promotionDetails === '' ||
+      promoUrl === '' ||
+      !startDateSubmit ||
+      !endDateSubmit ||
+      !imageSource
+    ) {
+      return;
+    }
+
+    this.setState({
+      processing: true,
+    });
+
     const { firestore, currentUser } = this.props;
 
     const promoRef = firestore.doc(`promos/${id}`);
 
     if (
       promotionTitle !== '' &&
-      newPromo !== '' &&
+      promotionDetails !== '' &&
       endDateSubmit &&
       imageSource
     ) {
@@ -176,7 +205,7 @@ class PromotionBusiness extends Component {
             promoRef
               .update({
                 title: promotionTitle,
-                promotion: newPromo,
+                promotion: promotionDetails,
                 url: promoUrl,
                 start: startDateSubmit,
                 end: endDateSubmit,
@@ -199,7 +228,7 @@ class PromotionBusiness extends Component {
         promoRef
           .update({
             title: promotionTitle,
-            promotion: newPromo,
+            promotion: promotionDetails,
             url: promoUrl,
             start: startDateSubmit,
             end: endDateSubmit,
@@ -224,12 +253,17 @@ class PromotionBusiness extends Component {
       startingDate,
       endingDate,
       modalVisible,
-      newPromo,
+      promotionDetails,
       promoUrl,
       imageSource,
       processing,
       cardOpen,
       busDetails,
+      showSpinner,
+      promotionTitleReq,
+      promotionDetailsReq,
+      promoUrlReq,
+      imageSourceReq,
     } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
@@ -239,44 +273,44 @@ class PromotionBusiness extends Component {
     if (processing) {
       processIndicator = (
         <View style={defaults.indicatorWrap}>
-          <ActivityIndicator size="large" color="#222" />
+          <ActivityIndicator size="large" color={colors.activity} />
         </View>
       );
     }
 
-    let facebookLink = <></>;
-    if (busDetails.facebook) {
-      facebookLink = (
-        <TouchableHighlight
-          onPress={() => this.urlLink(busDetails.facebook)}
-          underlayColor="transparent"
-        >
-          <Icon name="facebook" size={38} color={colors.brandPrimary} />
-        </TouchableHighlight>
-      );
-    }
-    let twitterLink = <></>;
-    if (busDetails.twitter) {
-      twitterLink = (
-        <TouchableHighlight
-          onPress={() => this.urlLink(busDetails.twitter)}
-          underlayColor="transparent"
-        >
-          <Icon name="twitter" size={38} color={colors.brandPrimary} />
-        </TouchableHighlight>
-      );
-    }
-    let instagramLink = <></>;
-    if (busDetails.instagram) {
-      instagramLink = (
-        <TouchableHighlight
-          onPress={() => this.urlLink(busDetails.instagram)}
-          underlayColor="transparent"
-        >
-          <Icon name="instagram" size={38} color={colors.brandPrimary} />
-        </TouchableHighlight>
-      );
-    }
+    // let facebookLink = <></>;
+    // if (busDetails.facebook) {
+    //   facebookLink = (
+    //     <TouchableHighlight
+    //       onPress={() => this.urlLink(busDetails.facebook)}
+    //       underlayColor="transparent"
+    //     >
+    //       <Icon name="facebook" size={38} color={colors.brandPrimary} />
+    //     </TouchableHighlight>
+    //   );
+    // }
+    // let twitterLink = <></>;
+    // if (busDetails.twitter) {
+    //   twitterLink = (
+    //     <TouchableHighlight
+    //       onPress={() => this.urlLink(busDetails.twitter)}
+    //       underlayColor="transparent"
+    //     >
+    //       <Icon name="twitter" size={38} color={colors.brandPrimary} />
+    //     </TouchableHighlight>
+    //   );
+    // }
+    // let instagramLink = <></>;
+    // if (busDetails.instagram) {
+    //   instagramLink = (
+    //     <TouchableHighlight
+    //       onPress={() => this.urlLink(busDetails.instagram)}
+    //       underlayColor="transparent"
+    //     >
+    //       <Icon name="instagram" size={38} color={colors.brandPrimary} />
+    //     </TouchableHighlight>
+    //   );
+    // }
 
     let toggleArea = <></>;
     if (cardOpen) {
@@ -292,6 +326,16 @@ class PromotionBusiness extends Component {
       startingData = (
         <View style={promos.dateRangeWrap}>
           <Text style={promos.dateItem}>Starts: {startDate} -</Text>
+        </View>
+      );
+    }
+
+    let modalSpinner = <></>;
+
+    if (showSpinner) {
+      modalSpinner = (
+        <View style={defaults.indicatorWrapModal}>
+          <ActivityIndicator size="large" color={colors.activity} />
         </View>
       );
     }
@@ -341,34 +385,41 @@ class PromotionBusiness extends Component {
           <Modal animationType="slide" visible={modalVisible}>
             <ScrollView style={defaults.modalWrapInner}>
               <View style={defaults.modalHeader}>
-                <Text style={defaults.hiddenItem}>X</Text>
-                <Text style={defaults.title}>Update Promotion</Text>
                 <CloseIcon
                   toggle={() => {
                     this.setModalVisible(!modalVisible);
                   }}
                 />
+                <Text style={defaults.title}>Update Promotion</Text>
+                <Text style={defaults.hiddenItem}>X</Text>
               </View>
               <View style={defaults.formWrapModal}>
                 <TextInput
-                  style={defaults.textInput}
+                  style={[
+                    defaults.textInput,
+                    promotionTitleReq && defaults.required,
+                  ]}
                   value={promotionTitle}
                   onChangeText={e => {
                     this.updateTextInput(e, 'promotionTitle');
                   }}
-                  placeholder="Company Name"
+                  placeholder="Promotion Title"
                 />
                 <TextInput
-                  style={[defaults.textInput, defaults.textArea]}
-                  value={newPromo}
+                  style={[
+                    defaults.textInput,
+                    defaults.textArea,
+                    promotionDetailsReq && defaults.required,
+                  ]}
+                  value={promotionDetails}
                   multiline
                   onChangeText={e => {
-                    this.updateTextInput(e, 'newPromo');
+                    this.updateTextInput(e, 'promotionDetails');
                   }}
                   placeholder="Promotion Details"
                 />
                 <TextInput
-                  style={defaults.textInput}
+                  style={[defaults.textInput, promoUrlReq && defaults.required]}
                   value={promoUrl}
                   autoCapitalize="none"
                   onChangeText={e => {
@@ -416,34 +467,39 @@ class PromotionBusiness extends Component {
                 </View>
                 <View style={defaults.bigButtonWrap}>
                   <TouchableHighlight
-                    style={[defaults.buttonStyle, defaults.imageUploadButton]}
+                    style={[
+                      defaults.buttonStyle,
+                      defaults.imageUploadButton,
+                      { marginRight: 10 },
+                    ]}
                     onPress={this.imageSelect}
                     underlayColor={colors.lightGray}
                   >
                     <Text style={defaults.buttonText}>Image</Text>
                   </TouchableHighlight>
-                </View>
-                <Image
-                  style={defaults.imagePreview}
-                  source={{ uri: imageSource }}
-                />
-                <View style={defaults.bigButtonWrap}>
                   <TouchableHighlight
-                    style={[defaults.buttonStyle, defaults.cancelButton]}
-                    onPress={() => {
-                      this.setModalVisible(!modalVisible);
-                    }}
-                    underlayColor={colors.brandSecond}
-                  >
-                    <Text style={defaults.buttonText}>Cancel</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    style={[defaults.buttonStyle, defaults.updateSubmitButton]}
+                    style={[
+                      defaults.buttonStyle,
+                      defaults.updateSubmitButton,
+                      { marginLeft: 10 },
+                    ]}
                     onPress={this.updateCurrentPromotion}
                     underlayColor={colors.brandPrimary}
                   >
                     <Text style={defaults.buttonText}>Update</Text>
                   </TouchableHighlight>
+                </View>
+                <View style={defaults.imagePreviewWrap}>
+                  {modalSpinner}
+                  <Image
+                    onLoadEnd={() => {
+                      this.setState({
+                        showSpinner: false,
+                      });
+                    }}
+                    style={defaults.imagePreview}
+                    source={{ uri: imageSource }}
+                  />
                 </View>
                 {processIndicator}
               </View>

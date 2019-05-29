@@ -19,26 +19,24 @@ import LoginButton from './LoginButton';
 
 const firestore = RNFirebase.firestore();
 
-// const styles = StyleSheet.create({
-//   mainWrap: {
-//     flex: 1,
-//     paddingTop: 45,
-//     backgroundColor: '#fff',
-//   },
-// });
-
 class AddPromotion extends Component {
   constructor() {
     super();
     this.state = {
       promotionTitle: '',
-      newPromo: '',
+      promotionTitleReq: false,
+      promotionDetails: '',
+      promotionDetailsReq: false,
       promoUrl: '',
+      promoUrlReq: false,
       startingDate: '',
+      startingDateReq: false,
       endingDate: '',
+      endingDateReq: false,
       startDateSubmit: false,
       endDateSubmit: false,
       imageSource: false,
+      imageSourceReq: false,
       processing: false,
     };
   }
@@ -91,20 +89,60 @@ class AddPromotion extends Component {
   };
 
   addNewPromotion = () => {
-    this.setState({
-      processing: true,
-    });
     /**
      * @todo validation? required fields? field types?
      */
+    this.setState({
+      promotionTitleReq: false,
+      promotionDetailsReq: false,
+      promoUrlReq: false,
+      startingDateReq: false,
+      endingDateReq: false,
+      imageSourceReq: false,
+    });
     const {
       promotionTitle,
-      newPromo,
+      promotionDetails,
       startDateSubmit,
       endDateSubmit,
       imageSource,
       promoUrl,
     } = this.state;
+
+    if (promotionTitle === '') {
+      this.setState({ promotionTitleReq: true });
+    }
+    if (promotionDetails === '') {
+      this.setState({ promotionDetailsReq: true });
+    }
+    if (promoUrl === '') {
+      this.setState({ promoUrlReq: true });
+    }
+    if (!startDateSubmit) {
+      this.setState({ startingDateReq: true });
+    }
+    if (!endDateSubmit) {
+      this.setState({ endingDateReq: true });
+    }
+    if (!imageSource) {
+      this.setState({ imageSourceReq: true });
+    }
+
+    if (
+      promotionTitle === '' ||
+      promotionDetails === '' ||
+      promoUrl === '' ||
+      !startDateSubmit ||
+      !endDateSubmit ||
+      !imageSource
+    ) {
+      return;
+    }
+
+    this.setState({
+      processing: true,
+    });
+
     const { currentUser, modalToggle } = this.props;
     let userId = false;
     if (currentUser) {
@@ -112,14 +150,14 @@ class AddPromotion extends Component {
     }
     if (
       promotionTitle !== '' &&
-      newPromo !== '' &&
+      promotionDetails !== '' &&
       endDateSubmit &&
       imageSource &&
       userId
     ) {
       const promotion = {
         title: promotionTitle,
-        promotion: newPromo,
+        promotion: promotionDetails,
         start: startDateSubmit,
         end: endDateSubmit,
         url: promoUrl,
@@ -168,7 +206,7 @@ class AddPromotion extends Component {
               // this should redirect instead - use nav method?
               this.setState({
                 promotionTitle: '',
-                newPromo: '',
+                promotionDetails: '',
                 startingDate: '',
                 endingDate: '',
                 promoUrl: '',
@@ -198,11 +236,17 @@ class AddPromotion extends Component {
   render() {
     const {
       promotionTitle,
-      imageSource,
-      newPromo, // @todo change this to 'promoText' or something else
+      promotionTitleReq,
+      promotionDetails,
+      promotionDetailsReq,
       promoUrl,
+      promoUrlReq,
+      imageSource,
+      imageSourceReq,
       startingDate,
+      startingDateReq,
       endingDate,
+      endingDateReq,
       processing,
     } = this.state;
     const { loggedIn } = this.props;
@@ -226,9 +270,12 @@ class AddPromotion extends Component {
       } else {
         formWrap = (
           <ScrollView>
-            <View style={defaults.formWrap}>
+            <View style={defaults.formWrapModal}>
               <TextInput
-                style={defaults.textInput}
+                style={[
+                  defaults.textInput,
+                  promotionTitleReq && defaults.required,
+                ]}
                 value={promotionTitle}
                 onChangeText={e => {
                   this.updateTextInput(e, 'promotionTitle');
@@ -236,16 +283,20 @@ class AddPromotion extends Component {
                 placeholder="Promotion Title"
               />
               <TextInput
-                style={[defaults.textInput, defaults.textArea]}
-                value={newPromo}
+                style={[
+                  defaults.textInput,
+                  defaults.textArea,
+                  promotionDetailsReq && defaults.required,
+                ]}
+                value={promotionDetails}
                 multiline
                 onChangeText={e => {
-                  this.updateTextInput(e, 'newPromo');
+                  this.updateTextInput(e, 'promotionDetails');
                 }}
                 placeholder="Promotion Details"
               />
               <TextInput
-                style={defaults.textInput}
+                style={[defaults.textInput, promoUrlReq && defaults.required]}
                 value={promoUrl}
                 autoCapitalize="none"
                 onChangeText={e => {
@@ -255,7 +306,12 @@ class AddPromotion extends Component {
               />
               <View style={defaults.datePickerWrap}>
                 <DatePicker
-                  style={[defaults.datePicker, { marginRight: 10 }]}
+                  // style={[defaults.datePicker, { marginRight: 10 }]}
+                  style={[
+                    defaults.datePicker,
+                    { marginRight: 10 },
+                    startingDateReq && defaults.required,
+                  ]}
                   date={startingDate}
                   mode="date"
                   placeholder="Starting Date"
@@ -266,7 +322,7 @@ class AddPromotion extends Component {
                   showIcon={false}
                   customStyles={{
                     placeholderText: {
-                      fontSize: 17,
+                      fontSize: 14,
                       fontFamily: 'Lato-Regular',
                       alignItems: 'flex-start',
                     },
@@ -274,13 +330,19 @@ class AddPromotion extends Component {
                       alignItems: 'flex-start',
                       paddingVertical: 7,
                       paddingHorizontal: 14,
-                      borderColor: 'rgba(0,0,0,0.25)',
+                      borderColor: startingDateReq
+                        ? colors.brandSecond
+                        : 'rgba(0,0,0,0.25)',
                     },
                   }}
                   onDateChange={this.setStartingDate}
                 />
                 <DatePicker
-                  style={[defaults.datePicker, { marginLeft: 10 }]}
+                  style={[
+                    defaults.datePicker,
+                    { marginLeft: 10 },
+                    endingDateReq && defaults.required,
+                  ]}
                   date={endingDate}
                   mode="date"
                   placeholder="Expiration Date"
@@ -291,7 +353,7 @@ class AddPromotion extends Component {
                   showIcon={false}
                   customStyles={{
                     placeholderText: {
-                      fontSize: 17,
+                      fontSize: 14,
                       fontFamily: 'Lato-Regular',
                       alignItems: 'flex-start',
                     },
@@ -299,7 +361,9 @@ class AddPromotion extends Component {
                       alignItems: 'flex-start',
                       paddingVertical: 7,
                       paddingHorizontal: 14,
-                      borderColor: 'rgba(0,0,0,0.25)',
+                      borderColor: endingDateReq
+                        ? colors.brandSecond
+                        : 'rgba(0,0,0,0.25)',
                     },
                   }}
                   onDateChange={this.setEndingDate}
@@ -310,6 +374,7 @@ class AddPromotion extends Component {
                   style={[
                     defaults.buttonStyle,
                     defaults.imageUploadButton,
+                    imageSourceReq && defaults.redButton,
                     { marginRight: 10 },
                   ]}
                   onPress={this.imageSelect}
@@ -332,7 +397,7 @@ class AddPromotion extends Component {
       }
     }
 
-    return <View style={defaults.mainWrap}>{formWrap}</View>;
+    return <View>{formWrap}</View>;
   }
 }
 const mapStateToProps = state => ({

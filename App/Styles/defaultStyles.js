@@ -51,7 +51,7 @@ export const defaults = {
     // textAlign: 'center',
   },
   textArea: {
-    height: 120,
+    height: 100,
   },
   datePickerWrap: {
     flexDirection: 'row',
@@ -113,9 +113,17 @@ export const defaults = {
     marginBottom: 20,
     backgroundColor: '#eee',
   },
+  imagePreviewWrap: {
+    backgroundColor: '#eee',
+    height: 140,
+  },
+  indicatorWrapModal: {
+    height: 140,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   imagePreview: {
-    height: 100,
-    marginBottom: 20,
+    height: 140,
   },
   processingWrap: {
     flex: 1,
@@ -127,17 +135,20 @@ export const defaults = {
   },
   modalWrapInner: {
     backgroundColor: '#fff',
-    paddingTop: 35,
+    // paddingTop: 35,
     flex: 1,
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingTop: 30,
-    paddingBottom: 20,
+    paddingBottom: 25,
+    marginBottom: 30,
+    backgroundColor: '#fcfcfc',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e7e7e7',
   },
   formWrapModal: {
-    paddingVertical: 10,
     paddingHorizontal: 20,
     flex: 1,
   },

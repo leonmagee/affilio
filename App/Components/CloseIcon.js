@@ -8,8 +8,8 @@ export const CloseIcon = ({ toggle }) => (
   <TouchableHighlight onPress={toggle} underlayColor="transparent">
     <Icon
       name="close-circle"
-      size={30}
-      color={colors.brandSecond}
+      size={33}
+      color="#ccc"
       style={defaults.closeIcon}
     />
   </TouchableHighlight>

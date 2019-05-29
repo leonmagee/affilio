@@ -42,9 +42,16 @@ class About extends Component {
               Posts Incentivized to Elevate the Clout
             </Text>
             <Text style={styles.aboutText}>
-              Efficiently aggregate flexible methodologies via value-added
-              mindshare. Monotonectally benchmark innovative processes whereas
-              enterprise-wide niches. Credibly deliver progressive.
+              PIEC is an online platform that provides businesses qualified
+              leads by incentivizing customer posts. Utilizing customer’s social
+              circle connects businesses with people of similar interests as
+              their customers. While improving business’s success, customers are
+              empowered by giving them incentives for the use of their data as
+              well as the power to choose who to share their data with. Our
+              vision is to become a trusted transparent data-sharing platform
+              where people truly own their personal data. We want to eliminate
+              the misuse of personal data from companies who profit off them and
+              give people the power to reclaim their personal data.
             </Text>
           </View>
         </View>

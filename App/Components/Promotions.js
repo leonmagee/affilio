@@ -154,6 +154,7 @@ class Promotions extends Component {
           // onPress={this.addPromo}
           onPress={() => this.setModalVisible(!modalVisible)}
           style={styles.addNewPromoWrap}
+          underlayColor="#fff"
         >
           <Icon
             style={styles.plusIcon}
@@ -207,13 +208,13 @@ class Promotions extends Component {
         <Modal animationType="slide" visible={modalVisible}>
           <View style={defaults.modalWrapInner}>
             <View style={defaults.modalHeader}>
-              <Text style={defaults.hiddenItem}>X</Text>
-              <Text style={defaults.title}>Add New Promotion</Text>
               <CloseIcon
                 toggle={() => {
                   this.setModalVisible(!modalVisible);
                 }}
               />
+              <Text style={defaults.title}>Add New Promotion</Text>
+              <Text style={defaults.hiddenItem}>X</Text>
             </View>
             <AddPromotion
               modalToggle={() => {

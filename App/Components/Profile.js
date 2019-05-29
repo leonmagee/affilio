@@ -182,9 +182,10 @@ class Profile extends Component {
               />
               <TextInput
                 name="details"
-                style={defaults.textInput}
+                style={[defaults.textInput, defaults.textArea]}
                 placeholder="Company Information"
                 value={details}
+                multiline
                 required
                 onChangeText={e => {
                   this.updateTextInput(e, 'details');
