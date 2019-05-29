@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Image, Share, Text, TouchableHighlight, View } from 'react-native';
+import {
+  Image,
+  Linking,
+  Share,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
@@ -27,15 +34,18 @@ class Promotion extends Component {
       cardOpen: false,
       finalUrl,
       busDetails: false,
+      userName: '',
     };
-    console.log('propzzzz', props.copmanyId);
+    const userDetailsRef = props.firestore.doc(`users/${props.companyId}`);
+    userDetailsRef.get().then(result => {
+      this.setState({ userName: result._data.displayName });
+    });
+
     const businessDetailsRef = props.firestore.doc(
       `businesses/${props.companyId}`
     );
     businessDetailsRef.get().then(result => {
-      // console.log('here is a result?', result);
       this.setState({ busDetails: result._data });
-      // console.log('final state?', this.state.businessDetails);
     });
   }
 
@@ -68,21 +78,32 @@ class Promotion extends Component {
     }
   };
 
+  urlLink = url => {
+    Linking.openURL(url);
+  };
+
   render() {
-    const { title, promo, start, end, image, loggedIn } = this.props;
-    const { cardOpen, finalUrl, busDetails } = this.state;
+    const { title, promo, start, end, image } = this.props;
+    const { cardOpen, busDetails, userName } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
+    const iconColor = colors.brandPrimary;
 
     let facebookLink = <></>;
+    const socialMediaIconSize = 27;
     if (busDetails.facebook) {
       facebookLink = (
         <TouchableHighlight
           onPress={() => this.urlLink(busDetails.facebook)}
           underlayColor="transparent"
         >
-          <Icon name="facebook" size={38} color={colors.brandPrimary} />
+          <Icon
+            style={promos.socialIcon}
+            name="facebook"
+            size={socialMediaIconSize}
+            color={iconColor}
+          />
         </TouchableHighlight>
       );
     }
@@ -93,7 +114,12 @@ class Promotion extends Component {
           onPress={() => this.urlLink(busDetails.twitter)}
           underlayColor="transparent"
         >
-          <Icon name="twitter" size={38} color={colors.brandPrimary} />
+          <Icon
+            style={promos.socialIcon}
+            name="twitter"
+            size={socialMediaIconSize}
+            color={iconColor}
+          />
         </TouchableHighlight>
       );
     }
@@ -104,7 +130,12 @@ class Promotion extends Component {
           onPress={() => this.urlLink(busDetails.instagram)}
           underlayColor="transparent"
         >
-          <Icon name="instagram" size={38} color={colors.brandPrimary} />
+          <Icon
+            style={promos.socialIcon}
+            name="instagram"
+            size={socialMediaIconSize}
+            color={iconColor}
+          />
         </TouchableHighlight>
       );
     }
@@ -120,30 +151,45 @@ class Promotion extends Component {
       );
     }
 
+    let userNameLink = <Text style={promos.userNameLink}>{userName}</Text>;
+    if (busDetails.website) {
+      userNameLink = (
+        <TouchableHighlight
+          underlayColor="transparent"
+          onPress={() => this.urlLink(busDetails.website)}
+        >
+          <Text style={promos.userNameLink}>{userName}</Text>
+        </TouchableHighlight>
+      );
+    }
+
+    let addressDetails = <></>;
+
+    if (busDetails.city && busDetails.state && busDetails.zip) {
+      addressDetails = (
+        <View style={promos.sectionWrap}>
+          <View style={promos.iconWrap}>
+            <Icon name="map-marker" size={24} color={iconColor} />
+          </View>
+          <Text style={promos.promoText}>
+            {busDetails.city}, {busDetails.state} {busDetails.zip}
+          </Text>
+        </View>
+      );
+    }
+
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
         <View style={promos.busDetailsWrap}>
-          <View style={promos.busDetails}>
-            <View style={promos.areaWrap}>
-              <Text style={promos.busAddress}>{busDetails.address}</Text>
-              <Text style={promos.busAddress}>{busDetails.address2}</Text>
-              <View style={promos.cszWrap}>
-                <Text style={promos.csz}>{busDetails.city},</Text>
-                <Text style={promos.csz}>{busDetails.state}</Text>
-                <Text style={promos.csz}>{busDetails.zip}</Text>
-              </View>
+          {userNameLink}
+          <Text style={promos.detailsText}>{busDetails.details}</Text>
+          {addressDetails}
+          <View style={promos.sectionWrap}>
+            <View style={promos.iconWrap}>
+              <Icon name="email" size={22} color={iconColor} />
             </View>
-            <View style={promos.areaWrap}>
-              <Text style={promos.busAddress}>{busDetails.phone}</Text>
-              <Text style={promos.busAddress}>{busDetails.email}</Text>
-              <TouchableHighlight
-                underlayColor="transparent"
-                onPress={() => this.urlLink(busDetails.website)}
-              >
-                <Text style={promos.website}>{busDetails.website}</Text>
-              </TouchableHighlight>
-            </View>
+            <Text style={promos.promoText}>{busDetails.email}</Text>
           </View>
           {socialMediaLinks}
         </View>
@@ -173,7 +219,7 @@ class Promotion extends Component {
                     onPress={this.shareSocial}
                     underlayColor="transparent"
                   >
-                    <Icon name="share" size={28} color={colors.brandPrimary} />
+                    <Icon name="share" size={28} color={iconColor} />
                   </TouchableHighlight>
                 </View>
               </View>
@@ -187,7 +233,7 @@ class Promotion extends Component {
             </View>
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
-                <Icon name="tag" size={22} color={colors.lightGray} />
+                <Icon name="tag" size={22} color={iconColor} />
               </View>
               <Text style={promos.promoText}>{promo}</Text>
             </View>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Image,
-  Linking,
+  // Linking,
   Modal,
   ScrollView,
   Text,
@@ -87,9 +87,9 @@ class PromotionBusiness extends Component {
     });
   };
 
-  urlLink = url => {
-    Linking.openURL(url);
-  };
+  // urlLink = url => {
+  //   Linking.openURL(url);
+  // };
 
   imageSelect = () => {
     const options = {

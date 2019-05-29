@@ -214,13 +214,20 @@ export const promos = {
     marginBottom: 10,
   },
   iconWrap: {
-    width: 42,
+    width: 35,
+    alignItems: 'center',
+    marginRight: 10,
   },
   promoText: {
     color: '#444',
+    fontFamily: 'Lato-Regular',
     fontSize: 17,
     flex: 1,
-    fontFamily: 'Lato-Regular',
+  },
+  userNameLink: {
+    color: colors.brandPrimary,
+    fontFamily: 'Lato-Black',
+    fontSize: 19,
   },
   shareWrap: {
     flexDirection: 'row',
@@ -260,44 +267,60 @@ export const promos = {
   sharingDetails: {
     // color: 'tomato',
   },
-  businessDetailsWrap: {
-    // backgroundColor: '#fdfdfd',
+  busDetailsWrap: {
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+    paddingTop: 15,
+    marginTop: 10,
   },
-  busDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  areaWrap: {
-    padding: 2,
-  },
-  busTitle: {
-    color: colors.brandPrimary,
-    fontSize: 25,
-    fontFamily: 'Lato-Bold',
-    paddingBottom: 5,
-  },
-  busAddress: {
-    color: '#656565',
-    fontSize: 12,
+  detailsText: {
     fontFamily: 'Lato-Regular',
+    color: '#888',
+    marginVertical: 10,
   },
-  cszWrap: {
-    flexDirection: 'row',
-  },
-  csz: {
-    fontFamily: 'Lato-Regular',
-    color: '#656565',
-    fontSize: 11,
-    marginRight: 5,
-  },
-  website: {
-    color: colors.brandPrimary,
-    fontFamily: 'Lato-Bold',
-  },
+  // busDetail: {
+  //   // backgroundColor: 'tomato',
+  // },
+  // busDetails: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  // },
+  // areaWrap: {
+  //   padding: 2,
+  // },
+  // busTitle: {
+  //   color: colors.brandPrimary,
+  //   fontSize: 25,
+  //   fontFamily: 'Lato-Bold',
+  //   paddingBottom: 5,
+  // },
+  // busAddress: {
+  //   color: '#656565',
+  //   fontSize: 12,
+  //   fontFamily: 'Lato-Regular',
+  // },
+  // cszWrap: {
+  //   flexDirection: 'row',
+  // },
+  // csz: {
+  //   fontFamily: 'Lato-Regular',
+  //   color: '#656565',
+  //   fontSize: 11,
+  //   marginRight: 5,
+  // },
+  // website: {
+  //   color: colors.brandPrimary,
+  //   fontFamily: 'Lato-Bold',
+  // },
   socialMediaWrap: {
     flexDirection: 'row',
-    paddingTop: 25,
-    paddingBottom: 15,
-    justifyContent: 'space-around',
+    marginTop: 5,
+    paddingTop: 13,
+    paddingBottom: 5,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  socialIcon: {
+    marginRight: 15,
   },
 };
