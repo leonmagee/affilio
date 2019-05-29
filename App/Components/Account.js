@@ -6,7 +6,6 @@ import { defaults } from '../Styles/defaultStyles';
 import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 import Footer from './Footer';
-import { createUserProfileDocument } from '../Utils/firebaseUtils';
 
 const styles = StyleSheet.create({
   userInfoWrap: {
@@ -25,20 +24,12 @@ const styles = StyleSheet.create({
 });
 
 class Account extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      currentUser: {},
+      currentUser: props.currentUser,
     };
   }
-
-  componentDidMount = async () => {
-    const { currentUser } = this.props;
-    const newUser = await createUserProfileDocument(currentUser);
-    this.setState({
-      currentUser: newUser,
-    });
-  };
 
   changeUserType = type => {
     const { changeUserType } = this.props;
@@ -49,10 +40,6 @@ class Account extends Component {
       AsyncStorage.setItem('@UserType', 'user');
     }
   };
-
-  // getUserDetails = user => {
-
-  // }
 
   render() {
     const { loggedIn, navigation } = this.props;

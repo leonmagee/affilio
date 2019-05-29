@@ -178,6 +178,18 @@ class Promotion extends Component {
       );
     }
 
+    let emailAddress = <></>;
+    if (busDetails.email) {
+      emailAddress = (
+        <View style={promos.sectionWrap}>
+          <View style={promos.iconWrap}>
+            <Icon name="email" size={22} color={iconColor} />
+          </View>
+          <Text style={promos.promoText}>{busDetails.email}</Text>
+        </View>
+      );
+    }
+
     let toggleArea = <></>;
     if (cardOpen) {
       toggleArea = (
@@ -185,12 +197,7 @@ class Promotion extends Component {
           {userNameLink}
           <Text style={promos.detailsText}>{busDetails.details}</Text>
           {addressDetails}
-          <View style={promos.sectionWrap}>
-            <View style={promos.iconWrap}>
-              <Icon name="email" size={22} color={iconColor} />
-            </View>
-            <Text style={promos.promoText}>{busDetails.email}</Text>
-          </View>
+          {emailAddress}
           {socialMediaLinks}
         </View>
       );

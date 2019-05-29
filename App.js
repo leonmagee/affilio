@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
+import { getUserDocument } from './App/Utils/firebaseUtils';
 import Router from './App/Components/Router';
 import LoginRouter from './App/Components/LoginRouter';
 import { colors } from './App/Styles/variables';
@@ -46,7 +47,14 @@ class App extends Component {
       props.userLoggedIn(0);
     }
 
-    props.setCurrentUser(currentUser);
+    console.log('xxxxxxxxxx', currentUser.uid);
+
+    const newUser = getUserDocument(currentUser.uid).then(user => {
+      console.log('yyyyyyyyy', user);
+      props.setCurrentUser(user);
+    });
+
+    // props.setCurrentUser(currentUser);
 
     // console.log('UUU', currentUser);
 
