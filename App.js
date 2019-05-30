@@ -196,6 +196,54 @@ class App extends Component {
     setCurrentUser(false);
   };
 
+  // rebrandlyApi = url => {
+  //   const linkRequest = {
+  //     // destination: url,
+  //     destination: 'https://levon.io',
+  //     domain: { fullName: 'rebrand.ly' },
+  //     // , slashtag: "A_NEW_SLASHTAG"
+  //     // , title: "Rebrandly YouTube channel"
+  //   };
+
+  //   const YOUR_API_KEY = '';
+  //   const YOUR_WORKSPACE_ID = '';
+
+  //   const requestHeaders = {
+  //     'Content-Type': 'application/json',
+  //     apikey: 'YOUR_API_KEY',
+  //     workspace: 'YOUR_WORKSPACE_ID',
+  //   };
+
+  //   const rbUrl = 'https://api.rebrandly.com/v1/links';
+
+  //   fetch(rbUrl, {
+  //     method: 'POST',
+  //     headers: requestHeaders,
+  //     body: JSON.stringify(linkRequest),
+  //   })
+  //     .then(result => {
+  //       console.log('does rebrandly work?', result);
+  //     })
+  //     .catch(error => {
+  //       console.error('you have an error?', error);
+  //     });
+
+  //   // request(
+  //   //   {
+  //   //     uri: 'https://api.rebrandly.com/v1/links',
+  //   //     method: 'POST',
+  //   //     body: JSON.stringify(linkRequest),
+  //   //     headers: requestHeaders,
+  //   //   },
+  //   //   (err, response, body) => {
+  //   //     const link = JSON.parse(body);
+  //   //     console.log(
+  //   //       `Long URL was ${link.destination}, short URL is ${link.shortUrl}`
+  //   //     );
+  //   //   }
+  //   // );
+  // };
+
   render() {
     const { loading, signInLoading } = this.state;
     // const modalVisible = this.props.loginModal;

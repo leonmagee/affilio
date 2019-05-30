@@ -238,6 +238,12 @@ export const promos = {
     fontSize: 15,
     flex: 1,
   },
+  promoLinkText: {
+    color: colors.brandPrimary,
+    fontFamily: 'Lato-Regular',
+    fontSize: 11,
+    paddingRight: 50,
+  },
   userNameLink: {
     color: colors.brandPrimary,
     fontFamily: 'Lato-Black',

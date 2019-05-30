@@ -26,10 +26,11 @@ class Promotion extends Component {
     let finalUrl = false;
     if (props.currentUser) {
       const userId = props.currentUser.uid;
-      finalUrl = `${baseUrl}?userId=${userId}&companyName=${
-        props.title
-      }&redirectUrl=${props.url}`;
+      finalUrl = `${baseUrl}?userId=${userId}&promoId=${props.id}&redirectUrl=${
+        props.url
+      }`;
     }
+    console.log(finalUrl, 'ppppppppppppp');
     this.state = {
       cardOpen: false,
       finalUrl,
@@ -84,7 +85,7 @@ class Promotion extends Component {
 
   render() {
     const { title, promo, start, end, image } = this.props;
-    const { cardOpen, busDetails, userName } = this.state;
+    const { cardOpen, busDetails, userName, finalUrl } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
@@ -253,6 +254,17 @@ class Promotion extends Component {
                 <Icon name="tag" size={22} color={iconColor} />
               </View>
               <Text style={promos.promoText}>{promo}</Text>
+            </View>
+            <View style={promos.sectionWrap}>
+              <View style={promos.iconWrap}>
+                <Icon name="link" size={22} color={iconColor} />
+              </View>
+              <TouchableHighlight
+                onPress={this.shareSocial}
+                underlayColor="transparent"
+              >
+                <Text style={promos.promoLinkText}>{finalUrl}</Text>
+              </TouchableHighlight>
             </View>
             {toggleArea}
           </View>
