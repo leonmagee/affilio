@@ -145,8 +145,9 @@ export const defaults = {
   modalWrapInner: {
     backgroundColor: '#fff',
     flex: 1,
-    marginVertical: 50,
-    marginHorizontal: 20,
+    marginTop: 27,
+    marginBottom: 15,
+    marginHorizontal: 13,
     borderRadius: 20,
     shadowOffset: { width: 2, height: 2 },
     shadowColor: '#000',
@@ -321,4 +322,62 @@ export const promos = {
   socialIcon: {
     marginRight: 15,
   },
+  tableWrap: {
+    // padding: 10,
+    // backgroundColor: '#ddd',
+  },
+  tableHeaderWrap: {
+    paddingVertical: 13,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+  },
+  tableHeader: {
+    fontFamily: 'Lato-Black',
+    color: '#555',
+    fontSize: 17,
+    flex: 1,
+    textAlign: 'center',
+  },
+  tableBody: {
+    // padding: 10,
+  },
+  tableItemWrap: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  tableUser: {
+    fontSize: 18,
+    fontFamily: 'Lato-Black',
+    flex: 1,
+    textAlign: 'center',
+    color: '#333',
+  },
+  tableCount: {
+    fontSize: 28,
+    fontFamily: 'Lato-Black',
+    flex: 1,
+    textAlign: 'center',
+    color: colors.brandPrimary,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: '#000',
+    shadowRadius: 1,
+    shadowOpacity: 0.1,
+  },
 };
+
+//   <View style={promos.tableItemWrap}>
+//     <Text style={promos.tableUser}>Leon Magee</Text>
+//     <Text style={promos.tableCount}>3
+
+// promos.tableWrap}>
+//   <View style={promos.tableHeaderWrap}>
+//     <Text style={promos.tableHeader}>Users</Text>
+//     <Text style={promos.tableHeader}>Impressions</Text>
+//   </View>
+//   <View style={promos.tableBody}>
+//     <View style={promos.tableLeft} />
+//     <View style={promos.tableRight} />

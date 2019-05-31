@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
-import { getUserDocument } from './App/Utils/firebaseUtils';
+import { getUserDocument } from './App/Utils/utils';
 import Router from './App/Components/Router';
 import LoginRouter from './App/Components/LoginRouter';
 import { colors } from './App/Styles/variables';

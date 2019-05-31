@@ -15,10 +15,7 @@ import { CheckBox } from 'react-native-elements';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
-import {
-  createUserProfileDocument,
-  firebaseError,
-} from '../Utils/firebaseUtils';
+import { createUserProfileDocument, firebaseError } from '../Utils/utils';
 
 const styles = StyleSheet.create({
   socialLoginWrap: {

@@ -15,7 +15,7 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
-import { firebaseError } from '../Utils/firebaseUtils';
+import { firebaseError } from '../Utils/utils';
 
 const styles = StyleSheet.create({
   titleWrap: {

@@ -17,6 +17,7 @@ import RNFirebase from 'react-native-firebase';
 import RNFetchBlob from 'rn-fetch-blob';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
+import { getUserDocument } from '../Utils/utils';
 import { CloseIcon } from './CloseIcon';
 import { colors } from '../Styles/variables';
 import { defaults, promos } from '../Styles/defaultStyles';
@@ -32,7 +33,7 @@ class PromotionBusiness extends Component {
     this.state = {
       modalVisible: false,
       id: props.id,
-      cardOpen: false,
+      cardOpen: true,
       promotionTitle: props.title,
       promotionDetails: props.promo,
       promoUrl: props.url,
@@ -41,15 +42,16 @@ class PromotionBusiness extends Component {
       startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
-      busDetails: false,
+      // busDetails: false,
       imageUpdated: false,
       processing: false,
       showSpinner: true, // just in update modal
       promotionTitleReq: false,
       promotionDetailsReq: false,
       promoUrlReq: false,
-      imageSourceReq: false,
+      // imageSourceReq: false,
       clicks: false,
+      userData: {},
     };
 
     const businessDetailsRef = props.firestore.doc(
@@ -64,11 +66,47 @@ class PromotionBusiness extends Component {
 
   componentDidMount = () => {
     const { firestore } = this.props;
-    firestore.collection('clicks').onSnapshot(snapshot => {
-      // const promotions = snapshot.docs.map(getDocAndId);
-      // this.setState({ promotions });
-      console.log('click snapshot???', snapshot);
-    });
+    const { id } = this.state;
+    firestore
+      .collection('clicks')
+      .where('promo', '==', id)
+      .onSnapshot(snapshot => {
+        // const promotions = snapshot.docs.map(getDocAndId);
+        // this.setState({ promotions });
+        const dataArray = [];
+        // const obj = {};
+        snapshot.docs.map(click => {
+          const data = click.data();
+          // console.log('click item', click.id, click.data());
+          // obj[a[i]] = 0;
+          getUserDocument(data.user).then(result => {
+            const { userData } = this.state;
+            console.log('we found a user?', result);
+            if (!userData[data.user]) {
+              this.setState({
+                userData: { [data.user]: result },
+              });
+            }
+            console.log('statey', userData);
+          });
+          let arrayValue = [];
+          if (dataArray[data.user]) {
+            arrayValue = dataArray[data.user];
+            dataArray[data.user] = arrayValue.push(data.promo);
+            // console.log('working?');
+          } else {
+            dataArray[data.user] = [data.promo];
+          }
+          // obj[data.user] = data.promo;
+          // dataArray.push(obj);
+          // dataArray.push(data.user);
+          // newArray.push(data.promo);
+        });
+        console.log('datazzz', dataArray);
+        this.setState({
+          clicks: snapshot.docs,
+        });
+      });
   };
 
   setModalVisible(visible) {
@@ -268,12 +306,14 @@ class PromotionBusiness extends Component {
       imageSource,
       processing,
       cardOpen,
-      busDetails,
+      // busDetails,
       showSpinner,
       promotionTitleReq,
       promotionDetailsReq,
       promoUrlReq,
-      imageSourceReq,
+      // imageSourceReq,
+      clicks,
+      userData,
     } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
@@ -288,47 +328,41 @@ class PromotionBusiness extends Component {
       );
     }
 
-    // let facebookLink = <></>;
-    // if (busDetails.facebook) {
-    //   facebookLink = (
-    //     <TouchableHighlight
-    //       onPress={() => this.urlLink(busDetails.facebook)}
-    //       underlayColor="transparent"
-    //     >
-    //       <Icon name="facebook" size={38} color={colors.brandPrimary} />
-    //     </TouchableHighlight>
-    //   );
-    // }
-    // let twitterLink = <></>;
-    // if (busDetails.twitter) {
-    //   twitterLink = (
-    //     <TouchableHighlight
-    //       onPress={() => this.urlLink(busDetails.twitter)}
-    //       underlayColor="transparent"
-    //     >
-    //       <Icon name="twitter" size={38} color={colors.brandPrimary} />
-    //     </TouchableHighlight>
-    //   );
-    // }
-    // let instagramLink = <></>;
-    // if (busDetails.instagram) {
-    //   instagramLink = (
-    //     <TouchableHighlight
-    //       onPress={() => this.urlLink(busDetails.instagram)}
-    //       underlayColor="transparent"
-    //     >
-    //       <Icon name="instagram" size={38} color={colors.brandPrimary} />
-    //     </TouchableHighlight>
-    //   );
-    // }
+    let shareData = <></>;
+    if (clicks.length) {
+      console.log('here is the clicks?', clicks);
+      const clickData = clicks.map((item, key) => {
+        const data = item.data();
+        let name = <></>;
+        if (userData[data.user]) {
+          name = userData[data.user].displayName;
+        }
+        return (
+          <View style={promos.tableItemWrap} key={key}>
+            <Text style={promos.tableUser}>{name}</Text>
+            <Text style={promos.tableCount}>3</Text>
+          </View>
+        );
+      });
+
+      shareData = (
+        <View style={promos.tableWrap}>
+          <View style={promos.tableHeaderWrap}>
+            <Text style={promos.tableHeader}>Users</Text>
+            <Text style={promos.tableHeader}>Impressions</Text>
+          </View>
+          <View style={promos.tableBody}>{clickData}</View>
+        </View>
+      );
+    }
+
+    // snapshot.docs.map(click => {
+    //   console.log('click item', click.id, click.data());
+    // });
 
     let toggleArea = <></>;
     if (cardOpen) {
-      toggleArea = (
-        <View style={promos.sharingDetailsWrap}>
-          <Text style={promos.sharingDetails}>No Data Yet</Text>
-        </View>
-      );
+      toggleArea = <View style={promos.sharingDetailsWrap}>{shareData}</View>;
     }
 
     let startingData = <></>;
