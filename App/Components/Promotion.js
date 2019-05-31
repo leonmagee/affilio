@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 // import RNShare, { ShareSheet, Button } from 'react-native-share';
 import { colors } from '../Styles/variables';
-import { defaults, promos } from '../Styles/defaultStyles';
+import { promos } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
@@ -30,7 +30,6 @@ class Promotion extends Component {
         props.url
       }`;
     }
-    console.log(finalUrl, 'ppppppppppppp');
     this.state = {
       cardOpen: false,
       finalUrl,
@@ -257,7 +256,7 @@ class Promotion extends Component {
             </View>
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
-                <Icon name="link" size={22} color={iconColor} />
+                <Icon name="link-variant" size={22} color={iconColor} />
               </View>
               <TouchableHighlight
                 onPress={this.shareSocial}

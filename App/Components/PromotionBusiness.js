@@ -49,6 +49,7 @@ class PromotionBusiness extends Component {
       promotionDetailsReq: false,
       promoUrlReq: false,
       imageSourceReq: false,
+      clicks: false,
     };
 
     const businessDetailsRef = props.firestore.doc(
@@ -60,6 +61,15 @@ class PromotionBusiness extends Component {
       // console.log('final state?', this.state.businessDetails);
     });
   }
+
+  componentDidMount = () => {
+    const { firestore } = this.props;
+    firestore.collection('clicks').onSnapshot(snapshot => {
+      // const promotions = snapshot.docs.map(getDocAndId);
+      // this.setState({ promotions });
+      console.log('click snapshot???', snapshot);
+    });
+  };
 
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });

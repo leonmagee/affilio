@@ -4,7 +4,8 @@ export const colors = {
   brandPrimary: '#4EC5C1', // blue
   brandSecond: '#EC576B', // red
   brandThird: '#EDE338', // yellow
-  borderColor: '#e7e7e7',
+  brandOrange: '#FFA228', // orange
+  borderColor: '#E7E7E7',
   required: '#FAEEED',
   activity: '#888',
 };
