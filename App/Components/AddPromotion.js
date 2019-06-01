@@ -213,6 +213,23 @@ class AddPromotion extends Component {
                 processing: false,
               });
 
+              // const baseUrl =
+              //   'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
+
+              // const finalUrl = `${baseUrl}?userId=${userId}&promoId=${firestoreId}&redirectUrl=${
+              //   props.url
+              // }`;
+
+              // const rebrandApiUrl = `https://us-central1-affilio.cloudfunctions.net/createRebrandly?promoId=${firestoreId}&finalUrl=${finalUrl}`;
+
+              // fetch(rebrandApiUrl)
+              //   .then(res => {
+              //     console.log('here is the new api response?', res);
+              //   })
+              //   .catch(error => {
+              //     console.error('new api does not work?', error);
+              //   });
+
               modalToggle();
               this.props.navigation.navigate('New');
 

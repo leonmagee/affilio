@@ -77,34 +77,34 @@ class PromotionBusiness extends Component {
         // const obj = {};
         snapshot.docs.map(click => {
           const data = click.data();
-          // console.log('click item', click.id, click.data());
-          // obj[a[i]] = 0;
           getUserDocument(data.user).then(result => {
             const { userData } = this.state;
-            console.log('we found a user?', result);
             if (!userData[data.user]) {
               this.setState({
                 userData: { [data.user]: result },
               });
             }
-            console.log('statey', userData);
           });
           let arrayValue = [];
           if (dataArray[data.user]) {
             arrayValue = dataArray[data.user];
-            dataArray[data.user] = arrayValue.push(data.promo);
+            dataArray[data.user] = [...arrayValue, data.promo];
             // console.log('working?');
           } else {
+            console.log('does this ever happen?', data.user, data.promo);
+
             dataArray[data.user] = [data.promo];
+            console.log('first timezzz', dataArray[data.user]);
           }
           // obj[data.user] = data.promo;
           // dataArray.push(obj);
           // dataArray.push(data.user);
           // newArray.push(data.promo);
         });
-        console.log('datazzz', dataArray);
+        console.log('testy', dataArray, snapshot.docs);
         this.setState({
-          clicks: snapshot.docs,
+          // clicks: snapshot.docs,
+          clicks: dataArray,
         });
       });
   };
@@ -330,12 +330,15 @@ class PromotionBusiness extends Component {
 
     let shareData = <></>;
     if (clicks.length) {
-      console.log('here is the clicks?', clicks);
+      // console.log('here is the clicks?', clicks);
       const clickData = clicks.map((item, key) => {
-        const data = item.data();
+        console.log('IIIIIIIIII', item);
+        // const data = item.data();
         let name = <></>;
-        if (userData[data.user]) {
-          name = userData[data.user].displayName;
+        // if (userData[data.user]) {
+        if (userData[item]) {
+          // name = userData[data.user].displayName;
+          name = userData[item].displayName;
         }
         return (
           <View style={promos.tableItemWrap} key={key}>

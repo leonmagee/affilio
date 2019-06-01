@@ -23,19 +23,22 @@ const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
 class Promotion extends Component {
   constructor(props) {
     super(props);
-    let finalUrl = false;
-    if (props.currentUser) {
-      const userId = props.currentUser.uid;
-      finalUrl = `${baseUrl}?userId=${userId}&promoId=${props.id}&redirectUrl=${
-        props.url
-      }`;
-    }
+
     this.state = {
       cardOpen: false,
-      finalUrl,
+      finalUrl: false,
       busDetails: false,
       userName: '',
     };
+    // let finalUrl = false;
+    if (props.currentUser) {
+      const userId = props.currentUser.uid;
+      const finalUrl = `${baseUrl}?userId=${userId}&promoId=${
+        props.id
+      }&redirectUrl=${props.url}`;
+      this.rebrandlyApi(finalUrl);
+    }
+
     const userDetailsRef = props.firestore.doc(`users/${props.companyId}`);
     userDetailsRef.get().then(result => {
       this.setState({ userName: result._data.displayName });
@@ -48,6 +51,40 @@ class Promotion extends Component {
       this.setState({ busDetails: result._data });
     });
   }
+
+  rebrandlyApi = url => {
+    const linkRequest = {
+      destination: url,
+      domain: { fullName: 'promo.mypiec.com' },
+      // , slashtag: "A_NEW_SLASHTAG"
+      // , title: "Rebrandly YouTube channel"
+    };
+
+    const YOUR_API_KEY = '456feafa5b4c40079ba09a6459695ca5';
+
+    const requestHeaders = {
+      'Content-Type': 'application/json',
+      apikey: YOUR_API_KEY,
+      // workspace: YOUR_WORKSPACE_ID,
+    };
+
+    const rbUrl = 'https://api.rebrandly.com/v1/links';
+
+    fetch(rbUrl, {
+      method: 'POST',
+      headers: requestHeaders,
+      body: JSON.stringify(linkRequest),
+    })
+      .then(result => {
+        result.json().then(newResult => {
+          this.setState({ finalUrl: newResult.shortUrl });
+          console.log('short url result?', newResult.shortUrl);
+        });
+      })
+      .catch(error => {
+        console.error('you have an error?', error);
+      });
+  };
 
   shareSocial = () => {
     const { finalUrl } = this.state;

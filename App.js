@@ -9,6 +9,8 @@ import {
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
+// const Rebrandly = require("rebrandly");
+import Rebrandly from 'rebrandly';
 import { getUserDocument } from './App/Utils/utils';
 import Router from './App/Components/Router';
 import LoginRouter from './App/Components/LoginRouter';
@@ -81,6 +83,9 @@ class App extends Component {
   }
 
   render() {
+    // const client = this.rebrandlyApi('https://levon.io');
+    // console.log('Rebrandly in action', xxxxxx);
+    // this.rebrandlyApi('https://levon.io');
     const { backgroundColor, loading } = this.state;
     const { loggedIn } = this.props;
 
