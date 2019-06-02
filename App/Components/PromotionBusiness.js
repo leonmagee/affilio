@@ -33,7 +33,7 @@ class PromotionBusiness extends Component {
     this.state = {
       modalVisible: false,
       id: props.id,
-      cardOpen: true,
+      cardOpen: false,
       promotionTitle: props.title,
       promotionDetails: props.promo,
       promoUrl: props.url,
@@ -42,46 +42,33 @@ class PromotionBusiness extends Component {
       startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
-      // busDetails: false,
       imageUpdated: false,
       processing: false,
       showSpinner: true, // just in update modal
       promotionTitleReq: false,
       promotionDetailsReq: false,
       promoUrlReq: false,
-      // imageSourceReq: false,
       clicks: false,
       userData: {},
     };
-
-    const businessDetailsRef = props.firestore.doc(
-      `businesses/${props.companyId}`
-    );
-    businessDetailsRef.get().then(result => {
-      // console.log('here is a result?', result);
-      this.setState({ busDetails: result._data });
-      // console.log('final state?', this.state.businessDetails);
-    });
   }
 
   componentDidMount = () => {
     const { firestore } = this.props;
     const { id } = this.state;
+    const userData = {};
     firestore
       .collection('clicks')
       .where('promo', '==', id)
       .onSnapshot(snapshot => {
-        // const promotions = snapshot.docs.map(getDocAndId);
-        // this.setState({ promotions });
         const dataArray = [];
-        // const obj = {};
         snapshot.docs.map(click => {
           const data = click.data();
           getUserDocument(data.user).then(result => {
             const { userData } = this.state;
             if (!userData[data.user]) {
               this.setState({
-                userData: { [data.user]: result },
+                userData: { ...userData, [data.user]: result },
               });
             }
           });
@@ -89,22 +76,12 @@ class PromotionBusiness extends Component {
           if (dataArray[data.user]) {
             arrayValue = dataArray[data.user];
             dataArray[data.user] = [...arrayValue, data.promo];
-            // console.log('working?');
           } else {
-            console.log('does this ever happen?', data.user, data.promo);
-
             dataArray[data.user] = [data.promo];
-            console.log('first timezzz', dataArray[data.user]);
           }
-          // obj[data.user] = data.promo;
-          // dataArray.push(obj);
-          // dataArray.push(data.user);
-          // newArray.push(data.promo);
         });
-        console.log('testy', dataArray, snapshot.docs);
         this.setState({
-          // clicks: snapshot.docs,
-          clicks: dataArray,
+          clicks: snapshot.docs,
         });
       });
   };
@@ -176,7 +153,7 @@ class PromotionBusiness extends Component {
       promotionTitleReq: false,
       promotionDetailsReq: false,
       promoUrlReq: false,
-      imageSourceReq: false,
+      // imageSourceReq: false,
     });
     const {
       id,
@@ -288,14 +265,13 @@ class PromotionBusiness extends Component {
               processing: false,
               imageUpdated: false,
             });
-            // this.viewSingle();
           });
       }
     }
   };
 
   render() {
-    const { company, promo, url, start, end, image } = this.props;
+    const { promo, url, start, end, image } = this.props;
     const {
       promotionTitle,
       startingDate,
@@ -306,12 +282,10 @@ class PromotionBusiness extends Component {
       imageSource,
       processing,
       cardOpen,
-      // busDetails,
       showSpinner,
       promotionTitleReq,
       promotionDetailsReq,
       promoUrlReq,
-      // imageSourceReq,
       clicks,
       userData,
     } = this.state;
@@ -328,22 +302,36 @@ class PromotionBusiness extends Component {
       );
     }
 
-    let shareData = <></>;
+    let newObj = {};
+
     if (clicks.length) {
-      // console.log('here is the clicks?', clicks);
-      const clickData = clicks.map((item, key) => {
-        console.log('IIIIIIIIII', item);
-        // const data = item.data();
-        let name = <></>;
-        // if (userData[data.user]) {
-        if (userData[item]) {
-          // name = userData[data.user].displayName;
-          name = userData[item].displayName;
+      clicks.map(i => {
+        const item = i.data();
+        if (!newObj[item.user]) {
+          newObj = { ...newObj, [item.user]: 1 };
+        } else {
+          newObj[item.user] += 1;
+        }
+      });
+    }
+
+    let shareData = <></>;
+
+    const dataArray = [];
+    Object.keys(newObj).forEach(function(key, index) {
+      dataArray.push({ user: key, value: newObj[key] });
+    });
+
+    if (dataArray.length) {
+      const clickData = dataArray.map((item, key) => {
+        let name = '- - -';
+        if (userData[item.user]) {
+          name = userData[item.user].displayName;
         }
         return (
           <View style={promos.tableItemWrap} key={key}>
             <Text style={promos.tableUser}>{name}</Text>
-            <Text style={promos.tableCount}>3</Text>
+            <Text style={promos.tableCount}>{item.value}</Text>
           </View>
         );
       });
