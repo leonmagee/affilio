@@ -78,14 +78,6 @@ export const defaults = {
     alignItems: 'center',
     flex: 1,
   },
-  // button: {
-  //   paddingVertical: 14,
-  //   color: '#FFF',
-  //   fontSize: 18,
-  //   fontFamily: 'Lato-Black',
-  //   textAlign: 'center',
-  //   backgroundColor: '#222',
-  // },
   buttonText: {
     color: '#FFF',
     fontSize: 17,
@@ -188,9 +180,21 @@ export const defaults = {
   radioButtonInner: {
     paddingBottom: 7,
   },
+  privicyText: {
+    color: colors.brandSecond,
+    fontFamily: 'Lato-Bold',
+    marginTop: 10,
+  },
+  termsText: {
+    color: '#777',
+    fontSize: 18,
+  },
 };
 
 export const promos = {
+  mainWrap: {
+    flex: 1,
+  },
   promotionWrap: {
     shadowOffset: { width: 2, height: 2 },
     shadowColor: '#000',
@@ -282,12 +286,6 @@ export const promos = {
     marginRight: 8,
     fontFamily: 'Lato-Regular',
   },
-  sharingDetailsWrap: {
-    // backgroundColor: '#ddd',
-  },
-  sharingDetails: {
-    // color: 'tomato',
-  },
   busDetailsWrap: {
     borderTopWidth: 1,
     borderTopColor: '#eee',
@@ -322,10 +320,6 @@ export const promos = {
   socialIcon: {
     marginRight: 15,
   },
-  tableWrap: {
-    // padding: 10,
-    // backgroundColor: '#ddd',
-  },
   tableHeaderWrap: {
     paddingVertical: 10,
     marginTop: 10,
@@ -342,9 +336,6 @@ export const promos = {
     fontSize: 16,
     flex: 1,
     textAlign: 'center',
-  },
-  tableBody: {
-    // padding: 10,
   },
   tableItemWrap: {
     paddingVertical: 10,
@@ -385,16 +376,3 @@ export const promos = {
     fontFamily: 'Lato-Bold',
   },
 };
-
-//   <View style={promos.tableItemWrap}>
-//     <Text style={promos.tableUser}>Leon Magee</Text>
-//     <Text style={promos.tableCount}>3
-
-// promos.tableWrap}>
-//   <View style={promos.tableHeaderWrap}>
-//     <Text style={promos.tableHeader}>Users</Text>
-//     <Text style={promos.tableHeader}>Impressions</Text>
-//   </View>
-//   <View style={promos.tableBody}>
-//     <View style={promos.tableLeft} />
-//     <View style={promos.tableRight} />

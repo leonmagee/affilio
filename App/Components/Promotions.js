@@ -16,7 +16,7 @@ import { colors } from '../Styles/variables';
 import Promotion from './Promotion';
 import PromotionBusiness from './PromotionBusiness';
 import { getDocAndId } from '../Utils/utils';
-import { defaults } from '../Styles/defaultStyles';
+import { defaults, promos } from '../Styles/defaultStyles';
 import AddPromotion from './AddPromotion';
 import { CloseIcon } from './CloseIcon';
 
@@ -26,9 +26,9 @@ console.log('my height is????', deviceHeight);
 const firestore = RNFirebase.firestore();
 
 const styles = StyleSheet.create({
-  mainWrap: {
-    flex: 1,
-  },
+  // mainWrap: {
+  //   flex: 1,
+  // },
   navWrap: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
@@ -187,7 +187,7 @@ class Promotions extends Component {
     // const scrollKey = 0;
 
     return (
-      <View style={styles.mainWrap}>
+      <View style={promos.mainWrap}>
         {/* <TouchableHighlight onPress={() => this.scrollToIndex(2)}>
           <Text
             style={{
@@ -226,7 +226,6 @@ class Promotions extends Component {
                   end={item.data.end}
                   image={item.data.image}
                   firestore={firestore}
-                  // filterId={this.filterId}
                   exclusive={item.data.exclusive}
                 />
               );
@@ -244,7 +243,6 @@ class Promotions extends Component {
                 end={item.data.end}
                 image={item.data.image}
                 firestore={firestore}
-                // filterId={this.filterId}
                 exclusive={item.data.exclusive}
               />
             );

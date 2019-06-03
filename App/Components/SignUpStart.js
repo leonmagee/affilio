@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
+  Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -9,10 +11,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
+import RNFirebase from 'react-native-firebase';
+import { CloseIcon } from './CloseIcon';
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 // import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 // import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
 import { createUserProfileDocument, firebaseError } from '../Utils/utils';
@@ -84,7 +87,12 @@ class SignUpStart extends Component {
       businessAgree: false,
       businessAgreeReq: false,
       signInLoading: false,
+      modalVisible: false,
     };
+  }
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
   }
 
   updateTextInput = (value, name) => {
@@ -203,6 +211,7 @@ class SignUpStart extends Component {
       termsAgreeReq,
       businessAgreeReq,
       createAccountFail,
+      modalVisible,
     } = this.state;
     let validationMessage = <></>;
     if (createAccountFail) {
@@ -315,9 +324,46 @@ class SignUpStart extends Component {
               <Text style={defaults.buttonText}>Create Account</Text>
             </TouchableHighlight>
           </View>
+          <View style={defaults.bigButtonWrap}>
+            <TouchableHighlight
+              onPress={() => this.setModalVisible(!modalVisible)}
+              underlayColor="transparent"
+            >
+              <Text style={defaults.privicyText}>
+                View Terms and Conditions
+              </Text>
+            </TouchableHighlight>
+          </View>
         </View>
 
         {loginActivity}
+        <Modal animationType="slide" visible={modalVisible} transparent>
+          <ScrollView style={defaults.modalWrapInner}>
+            <View style={defaults.modalHeader}>
+              <CloseIcon
+                toggle={() => {
+                  this.setModalVisible(!modalVisible);
+                }}
+              />
+              <Text style={defaults.title}>Terms and Conditions</Text>
+              <Text style={defaults.hiddenItem}>X</Text>
+            </View>
+            <View style={defaults.formWrapModal}>
+              <Text style={defaults.termsText}>
+                Assertively disintermediate cutting-edge applications without
+                client-centric processes. Proactively actualize one-to-one value
+                for business convergence. Energistically actualize intermandated
+                total linkage before timely users. Dramatically initiate fully
+                researched schemas with progressive outsourcing. Seamlessly
+                productize parallel benefits before distinctive platforms.
+                Intrinsicly synergize resource sucking functionalities rather
+                than magnetic e-business. Phosfluorescently iterate intuitive
+                metrics via proactive leadership. Completely transform resource
+                maximizing.
+              </Text>
+            </View>
+          </ScrollView>
+        </Modal>
       </View>
     );
   }

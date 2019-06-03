@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   },
   socialButton: {
     color: '#FFF',
-    marginLeft: 10,
-    fontSize: 14,
+    marginLeft: 6,
+    fontSize: 13,
     fontFamily: 'Lato-Black',
   },
   signUpWrap: {

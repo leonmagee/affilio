@@ -133,7 +133,7 @@ class Promotion extends Component {
   };
 
   render() {
-    const { title, promo, start, end, image } = this.props;
+    const { title, promo, start, end, image, exclusive } = this.props;
     const { cardOpen, busDetails, userName, finalUrl } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
@@ -272,6 +272,37 @@ class Promotion extends Component {
       );
     }
 
+    let shareExlusiveIcon = <></>;
+    let shareLinkArea = <></>;
+    if (exclusive) {
+      shareExlusiveIcon = (
+        <Icon name="star" size={28} color={colors.brandOrange} />
+      );
+    } else {
+      shareExlusiveIcon = (
+        <TouchableHighlight
+          style={promos.iconGroupIcon}
+          onPress={this.shareSocial}
+          underlayColor="transparent"
+        >
+          <Icon name="share" size={28} color={iconColor} />
+        </TouchableHighlight>
+      );
+      shareLinkArea = (
+        <View style={promos.sectionWrap}>
+          <View style={promos.iconWrap}>
+            <Icon name="link" size={22} color={iconColor} />
+          </View>
+          <TouchableHighlight
+            onPress={this.shareSocial}
+            underlayColor="transparent"
+          >
+            <Text style={promos.promoLinkText}>{finalUrl}</Text>
+          </TouchableHighlight>
+        </View>
+      );
+    }
+
     return (
       <TouchableHighlight underlayColor="transparent" onPress={this.toggleCard}>
         <View style={promos.promotionWrap}>
@@ -280,15 +311,7 @@ class Promotion extends Component {
             <View style={promos.promotionTitleWrap}>
               <View style={promos.titleWrapInner}>
                 <Text style={promos.promotionTitle}>{title}</Text>
-                <View style={promos.iconGroup}>
-                  <TouchableHighlight
-                    style={promos.iconGroupIcon}
-                    onPress={this.shareSocial}
-                    underlayColor="transparent"
-                  >
-                    <Icon name="share" size={28} color={iconColor} />
-                  </TouchableHighlight>
-                </View>
+                <View style={promos.iconGroup}>{shareExlusiveIcon}</View>
               </View>
 
               <View style={promos.sectionWrap}>
@@ -304,17 +327,7 @@ class Promotion extends Component {
               </View>
               <Text style={promos.promoText}>{promo}</Text>
             </View>
-            <View style={promos.sectionWrap}>
-              <View style={promos.iconWrap}>
-                <Icon name="link" size={22} color={iconColor} />
-              </View>
-              <TouchableHighlight
-                onPress={this.shareSocial}
-                underlayColor="transparent"
-              >
-                <Text style={promos.promoLinkText}>{finalUrl}</Text>
-              </TouchableHighlight>
-            </View>
+            {shareLinkArea}
             {toggleArea}
           </View>
         </View>
