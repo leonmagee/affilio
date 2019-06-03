@@ -4,12 +4,12 @@ import { View } from 'react-native';
 import {
   createAppContainer,
   createDrawerNavigator,
-  // StackActions,
-  // NavigationActions,
+  NavigationActions,
+  StackActions,
 } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PromotionsRouter from './PromotionsRouter';
-// import PromotionsRouterBus from './PromotionsRouterBus';
+import PromotionsRouterBus from './PromotionsRouterBus';
 import PromotionsNewBusiness from './PromotionsNewBusiness';
 import Profile from './Profile';
 import Account from './Account';
@@ -23,43 +23,24 @@ class PromotionsWrap extends Component {
 
   render() {
     const { navigation } = this.props;
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Home' })],
+    });
+    navigation.dispatch(resetAction);
     return (
       <View style={{ flex: 1 }}>
-        <PromotionsRouter navigation={navigation} />
+        <PromotionsRouterBus navigation={navigation} />
         <Footer navigation={navigation} />
       </View>
     );
   }
 }
 
-// class PromotionsWrapBusiness extends Component {
-//   static router = PromotionsRouter.router;
-
-//   componentDidMount() {
-//     const { navigation } = this.props;
-//     const resetAction = StackActions.reset({
-//       index: 0,
-//       actions: [NavigationActions.navigate({ routeName: 'Home' })],
-//     });
-//     navigation.dispatch(resetAction);
-//   }
-
-//   render() {
-//     const { navigation } = this.props;
-//     navigation.reset();
-//     return (
-//       <View style={{ flex: 1 }}>
-//         <PromotionsRouterBus navigation={navigation} />
-//         <Footer navigation={navigation} />
-//       </View>
-//     );
-//   }
-// }
-
 const DrawerNavigator = createDrawerNavigator(
   {
     Home: {
-      screen: PromotionsWrap,
+      screen: PromotionsNewBusiness,
       navigationOptions: {
         drawerLabel: 'Home',
         drawerIcon: ({ tintColor }) => (

@@ -5,17 +5,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-// import LoginButton from './LoginButton';
-// import Footer from './Footer';
 
 const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
-  // titleWrap: {
-  //   marginBottom: 10,
-  //   paddingHorizontal: 5,
-  //   alignItems: 'center',
-  // },
   profileIconsWrap: {
     flexDirection: 'row',
     paddingHorizontal: 40,
@@ -58,10 +51,8 @@ class LoginType extends Component {
   };
 
   render() {
-    const { userType, loggedIn, navigation } = this.props;
+    const { userType } = this.props;
 
-    // let settings = <LoginButton />;
-    // if (loggedIn) {
     const settings = (
       <>
         <View style={defaults.titleWrap}>
@@ -117,7 +108,6 @@ class LoginType extends Component {
         </View>
       </>
     );
-    // }
 
     return (
       <View style={{ flex: 1 }}>

@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
 import { getUserDocument } from './App/Utils/utils';
 import Router from './App/Components/Router';
+import BusinessRouter from './App/Components/BusinessRouter';
 import LoginRouter from './App/Components/LoginRouter';
 import { colors } from './App/Styles/variables';
 import { defaults } from './App/Styles/defaultStyles';
@@ -82,7 +83,7 @@ class App extends Component {
 
   render() {
     const { backgroundColor, loading } = this.state;
-    const { loggedIn } = this.props;
+    const { loggedIn, userType } = this.props;
 
     let mainContent = (
       <View style={defaults.processingWrap}>
@@ -98,7 +99,11 @@ class App extends Component {
 
       let RouterComponent;
       if (loggedIn) {
-        RouterComponent = Router;
+        if (userType === 0) {
+          RouterComponent = Router;
+        } else {
+          RouterComponent = BusinessRouter;
+        }
       } else {
         RouterComponent = LoginRouter;
       }
@@ -122,6 +127,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   loggedIn: state.loggedIn,
   currentUser: state.currentUser,
+  userType: state.userType,
 });
 
 const mapActionsToProps = dispatch => ({

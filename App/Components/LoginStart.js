@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
   },
   socialButton: {
     color: '#FFF',
-    fontSize: 12,
+    marginLeft: 10,
+    fontSize: 14,
     fontFamily: 'Lato-Black',
   },
   signUpWrap: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   socialInner: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 15,
     paddingVertical: 15,

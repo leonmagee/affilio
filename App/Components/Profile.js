@@ -11,19 +11,13 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-// import AsyncStorage from '@react-native-community/async-storage';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNFirebase from 'react-native-firebase';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-// import LoginButton from './LoginButton';
 import Footer from './Footer';
 
 const firestore = RNFirebase.firestore();
-
-// const iconColor = '#BBB';
 
 const styles = StyleSheet.create({
   titleWrap: {
@@ -61,7 +55,6 @@ class Profile extends Component {
       image: businessDetails.image,
       triggerActivity: false,
     };
-    // console.log(businessDetails, 'xxxxxxxxyyyyyyyyyiiiiii');
 
     firestore
       .collection('businesses')
@@ -69,7 +62,6 @@ class Profile extends Component {
       .get()
       .then(result => {
         const data = result.data();
-        // console.log('data??????', data);
         this.setState({ ...data, triggerActivity: false });
         console.log(this.state);
       });
@@ -141,13 +133,9 @@ class Profile extends Component {
       .doc(currentUser.uid)
       .set(busDetails)
       .then(() => {
-        // result is undefined
-        // console.log(result, 'abcdefg');
         const firestoreId = currentUser.uid;
         if (image) {
           const postRef = firestore.doc(`businesses/${firestoreId}`);
-          // const firestoreId = result.id;
-          // const postRef = firestore.doc(`businesses/${firestoreId}`);
           const { Blob } = RNFetchBlob.polyfill;
           const { fs } = RNFetchBlob;
           window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;

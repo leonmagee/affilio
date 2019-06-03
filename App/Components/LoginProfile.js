@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableHighlight,
@@ -9,25 +8,11 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-// import LoginButton from './LoginButton';
-// import Footer from './Footer';
 
 const firestore = RNFirebase.firestore();
-
-// const iconColor = '#BBB';
-
-const styles = StyleSheet.create({
-  // titleWrap: {
-  //   // marginTop: 20,
-  //   paddingVertical: 7,
-  //   // paddingHorizontal: 30,
-  //   alignItems: 'center',
-  // },
-});
 
 class LoginProfile extends Component {
   constructor(props) {

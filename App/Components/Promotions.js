@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Dimensions,
   FlatList,
   Modal,
   StyleSheet,
@@ -18,6 +19,9 @@ import { getDocAndId } from '../Utils/utils';
 import { defaults } from '../Styles/defaultStyles';
 import AddPromotion from './AddPromotion';
 import { CloseIcon } from './CloseIcon';
+
+const deviceHeight = Dimensions.get('window').height;
+console.log('my height is????', deviceHeight);
 
 const firestore = RNFirebase.firestore();
 
@@ -78,7 +82,20 @@ class Promotions extends Component {
     this.setState({ modalVisible: visible });
   }
 
+  getItemLayout = (data, index) => ({
+    length: deviceHeight * 0.6,
+    offset: deviceHeight * 0.6 * index,
+    index,
+  });
+
+  scrollToIndex = index => {
+    // let randomIndex = Math.floor(Math.random(Date.now()) * this.props.data.length);
+    this.flatListRef.scrollToIndex({ animated: true, index });
+  };
+
   componentDidMount = () => {
+    // this.flatListRef.scrollToIndex({ animated: true, index: 0.2 });
+    // this.list.scrollToIndex(3);
     const { userType, loggedIn, filter } = this.props;
 
     if (filter === 'new') {
@@ -109,31 +126,31 @@ class Promotions extends Component {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
             promotions,
-            current: 'ex',
+            // current: 'ex',
           });
         });
     } else if (filter === 'featured') {
       this.unsubscribeFromFirestore = firestore
         .collection('promos')
-        .where('exclusive', '==', true)
+        .where('featured', '==', true)
         // .orderBy('createdAt')
         .onSnapshot(snapshot => {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
             promotions,
-            current: 'ex',
+            // current: 'ex',
           });
         });
     } else if (filter === 'expiring') {
       this.unsubscribeFromFirestore = firestore
         .collection('promos')
-        .where('exclusive', '==', true)
+        .orderBy('createdAt', 'asc')
         // .orderBy('createdAt')
         .onSnapshot(snapshot => {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
             promotions,
-            current: 'ex',
+            // current: 'ex',
           });
         });
     }
@@ -167,15 +184,39 @@ class Promotions extends Component {
       );
     }
 
+    // const scrollKey = 0;
+
     return (
       <View style={styles.mainWrap}>
+        {/* <TouchableHighlight onPress={() => this.scrollToIndex(2)}>
+          <Text
+            style={{
+              padding: 20,
+              color: '#fff',
+              fontSize: 20,
+              backgroundColor: 'tomato',
+            }}
+          >
+            Scroll me
+          </Text>
+        </TouchableHighlight> */}
         <FlatList
           data={promotions}
           style={{ backgroundColor: '#ddd' }}
-          renderItem={({ item }) => {
+          ref={ref => {
+            this.flatListRef = ref;
+          }}
+          getItemLayout={this.getItemLayout}
+          keyExtractor={item => item.key}
+          // initialScrollIndex={1}
+          // initialNumToRender={3}
+          renderItem={({ item, index }) => {
+            // renderItem={({ item }, scrollKey) => {
             if (userType && loggedIn) {
               return (
                 <PromotionBusiness
+                  scrollKey={index}
+                  scroll={this.scrollToIndex}
                   id={item.key}
                   title={item.data.title}
                   companyId={item.data.companyId}
@@ -185,12 +226,15 @@ class Promotions extends Component {
                   end={item.data.end}
                   image={item.data.image}
                   firestore={firestore}
-                  filterId={this.filterId}
+                  // filterId={this.filterId}
+                  exclusive={item.data.exclusive}
                 />
               );
             }
             return (
               <Promotion
+                scrollKey={index}
+                scroll={this.scrollToIndex}
                 id={item.key}
                 title={item.data.title}
                 companyId={item.data.companyId}
@@ -200,7 +244,8 @@ class Promotions extends Component {
                 end={item.data.end}
                 image={item.data.image}
                 firestore={firestore}
-                filterId={this.filterId}
+                // filterId={this.filterId}
+                exclusive={item.data.exclusive}
               />
             );
           }}

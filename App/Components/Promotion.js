@@ -30,6 +30,7 @@ class Promotion extends Component {
       busDetails: false,
       userName: '',
     };
+    // console.log('what are my props?', props);
     if (props.currentUser) {
       const userId = props.currentUser.uid;
       const finalUrl = `${baseUrl}?userId=${userId}&promoId=${
@@ -76,9 +77,10 @@ class Promotion extends Component {
       body: JSON.stringify(linkRequest),
     })
       .then(result => {
+        // console.log('rebrandly result?', result);
         result.json().then(newResult => {
           this.setState({ finalUrl: newResult.shortUrl });
-          console.log('short url result?', newResult.shortUrl);
+          // console.log('short url result?', newResult.shortUrl);
         });
       })
       .catch(error => {
@@ -88,22 +90,29 @@ class Promotion extends Component {
 
   shareSocial = () => {
     const { finalUrl } = this.state;
-    Share.share(
-      {
-        // message: 'Share Promotion',
-        url: finalUrl,
-        title: 'PIEC',
-      },
-      {
-        // Android only:
-        dialogTitle: 'Share Promotion',
-        // iOS only:
-        excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
-      }
-    );
+    if (finalUrl) {
+      Share.share(
+        {
+          // message: 'Share Promotion',
+          url: finalUrl,
+          title: 'PIEC',
+        },
+        {
+          // Android only:
+          dialogTitle: 'Share Promotion',
+          // iOS only:
+          excludedActivityTypes: ['com.apple.UIKit.activity.PostToTwitter'],
+        }
+      );
+    }
   };
 
   toggleCard = () => {
+    // this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
+    // this.props.ref.scrollToOffset({ animated: true, offset: 0 });
+
+    const { scroll, scrollKey } = this.props;
+
     const { loggedIn, toggleLoginModal } = this.props;
     if (loggedIn) {
       const { cardOpen } = this.state;
@@ -113,10 +122,13 @@ class Promotion extends Component {
     } else {
       toggleLoginModal(true);
     }
+
+    setTimeout(function() {
+      scroll(scrollKey);
+    }, 100);
   };
 
   urlLink = url => {
-    console.log('here is our url?', url);
     Linking.openURL(url);
   };
 
@@ -294,7 +306,7 @@ class Promotion extends Component {
             </View>
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
-                <Icon name="link-variant" size={22} color={iconColor} />
+                <Icon name="link" size={22} color={iconColor} />
               </View>
               <TouchableHighlight
                 onPress={this.shareSocial}

@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import { defaults } from '../Styles/defaultStyles';
-import LoginButton from './LoginButton';
 import LogOutButton from './LogOutButton';
 import Footer from './Footer';
 
@@ -56,18 +55,12 @@ class Account extends Component {
       );
     }
 
-    let loginLogOut = <LoginButton />;
-
-    if (loggedIn) {
-      loginLogOut = <LogOutButton />;
-    }
-
     return (
       <View style={{ flex: 1 }}>
         <View style={defaults.mainWrap}>
           <Text style={defaults.title}>Account Info</Text>
           {userInfo}
-          {loginLogOut}
+          <LogOutButton />
         </View>
         <Footer navigation={navigation} />
       </View>

@@ -123,7 +123,7 @@ class PromotionBusiness extends Component {
         skipBackup: true,
         path: 'images',
       },
-      maxWidth: 550,
+      maxWidth: 475,
       mediaType: 'photo',
     };
 
@@ -142,10 +142,14 @@ class PromotionBusiness extends Component {
   };
 
   toggleCard = () => {
+    const { scroll, scrollKey } = this.props;
     const { cardOpen } = this.state;
     this.setState({
       cardOpen: !cardOpen,
     });
+    setTimeout(function() {
+      scroll(scrollKey);
+    }, 100);
   };
 
   updateCurrentPromotion = () => {
@@ -356,7 +360,15 @@ class PromotionBusiness extends Component {
 
     let toggleArea = <></>;
     if (cardOpen) {
-      toggleArea = <View style={promos.sharingDetailsWrap}>{shareData}</View>;
+      if (dataArray.length) {
+        toggleArea = <View style={promos.sharingDetailsWrap}>{shareData}</View>;
+      } else {
+        toggleArea = (
+          <View style={promos.noActivityWrap}>
+            <Text style={promos.noActivityText}>No Activity</Text>
+          </View>
+        );
+      }
     }
 
     let startingData = <></>;
@@ -405,13 +417,13 @@ class PromotionBusiness extends Component {
             </View>
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
-                <Icon name="tag" size={22} color={colors.lightGray} />
+                <Icon name="tag" size={22} color={colors.brandPrimary} />
               </View>
               <Text style={promos.promoText}>{promo}</Text>
             </View>
             <View style={promos.sectionWrap}>
               <View style={promos.iconWrap}>
-                <Icon name="link" size={28} color={colors.lightGray} />
+                <Icon name="link" size={28} color={colors.brandPrimary} />
               </View>
               <View style={promos.dateRangeWrap}>
                 <Text style={promos.linkUrl}>{url}</Text>

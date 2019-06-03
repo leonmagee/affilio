@@ -14,7 +14,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-import LoginButton from './LoginButton';
 
 const firestore = RNFirebase.firestore();
 
@@ -71,7 +70,7 @@ class AddPromotion extends Component {
         skipBackup: true,
         path: 'images',
       },
-      maxWidth: 550,
+      maxWidth: 475,
       mediaType: 'photo',
     };
 
@@ -276,7 +275,7 @@ class AddPromotion extends Component {
       );
     }
 
-    let formWrap = <LoginButton />;
+    let formWrap = <></>;
 
     if (loggedIn) {
       if (processing) {

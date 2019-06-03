@@ -372,6 +372,18 @@ export const promos = {
     shadowRadius: 1,
     shadowOpacity: 0.05,
   },
+  noActivityWrap: {
+    marginTop: 5,
+    paddingTop: 15,
+    paddingBottom: 3,
+    borderTopColor: '#eee',
+    borderTopWidth: 1,
+    alignItems: 'center',
+  },
+  noActivityText: {
+    color: '#777',
+    fontFamily: 'Lato-Bold',
+  },
 };
 
 //   <View style={promos.tableItemWrap}>

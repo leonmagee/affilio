@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
-import LoginButton from './LoginButton';
 import Footer from './Footer';
 
 const iconColor = '#BBB';
@@ -55,10 +54,8 @@ class ChangeType extends Component {
   };
 
   render() {
-    const { userType, loggedIn, navigation } = this.props;
+    const { userType, navigation } = this.props;
 
-    // let settings = <LoginButton />;
-    // if (loggedIn) {
     const settings = (
       <>
         <View style={styles.titleWrap}>
@@ -114,7 +111,6 @@ class ChangeType extends Component {
         </View>
       </>
     );
-    // }
 
     return (
       <View style={{ flex: 1 }}>
