@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   // },
   logo: {
     fontFamily: 'Baumans-Regular',
-    color: '#fff',
+    color: colors.brandOrange,
     fontSize: 28,
   },
   // headerDivider: {

@@ -271,6 +271,9 @@ class PromotionBusiness extends Component {
   };
 
   render() {
+    const testDateStart = new Date();
+    const testDate = moment(testDateStart).format('MM-DD-YYYY');
+    // console.log('here is a test date?', testDate);
     const { promo, url, start, end, image } = this.props;
     const {
       promotionTitle,
@@ -468,7 +471,7 @@ class PromotionBusiness extends Component {
                     date={startingDate}
                     mode="date"
                     placeholder="Starting Date"
-                    format="MM-DD-YYYY"
+                    format="MM/DD/YYYY"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     minDate={new Date()}
@@ -486,7 +489,7 @@ class PromotionBusiness extends Component {
                     date={endingDate}
                     mode="date"
                     placeholder="Expiration Date"
-                    format="MM-DD-YYYY"
+                    format="MM/DD/YYYY"
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     minDate={new Date()}

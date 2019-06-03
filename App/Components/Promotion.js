@@ -30,12 +30,12 @@ class Promotion extends Component {
       busDetails: false,
       userName: '',
     };
-    // let finalUrl = false;
     if (props.currentUser) {
       const userId = props.currentUser.uid;
       const finalUrl = `${baseUrl}?userId=${userId}&promoId=${
         props.id
       }&redirectUrl=${props.url}`;
+      // this.setState({ finalUrl });
       this.rebrandlyApi(finalUrl);
     }
 
@@ -116,6 +116,7 @@ class Promotion extends Component {
   };
 
   urlLink = url => {
+    console.log('here is our url?', url);
     Linking.openURL(url);
   };
 

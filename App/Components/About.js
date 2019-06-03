@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
   },
   aboutTextTitle: {
     color: colors.brandPrimary,
-    fontSize: 36,
+    fontSize: 30,
     fontFamily: 'Lato-Black',
     // textAlign: 'center',
   },
   aboutText: {
     color: '#777',
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Lato-Regular',
     marginTop: 15,
   },

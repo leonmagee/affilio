@@ -47,7 +47,9 @@ class AddPromotion extends Component {
   };
 
   setStartingDate = startingDate => {
+    console.log('we have a starting date?', startingDate);
     const startDateSubmit = new Date(startingDate);
+    console.log('we have a submit date?', startDateSubmit);
     this.setState({
       startingDate,
       startDateSubmit,
@@ -330,7 +332,7 @@ class AddPromotion extends Component {
                 date={startingDate}
                 mode="date"
                 placeholder="Starting Date"
-                format="MM-DD-YYYY"
+                format="MM/DD/YYYY"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 minDate={new Date()}
@@ -361,7 +363,7 @@ class AddPromotion extends Component {
                 date={endingDate}
                 mode="date"
                 placeholder="Expiration Date"
-                format="MM-DD-YYYY"
+                format="MM/DD/YYYY"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 minDate={new Date()}

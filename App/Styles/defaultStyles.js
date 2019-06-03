@@ -145,8 +145,8 @@ export const defaults = {
   modalWrapInner: {
     backgroundColor: '#fff',
     flex: 1,
-    marginTop: 27,
-    marginBottom: 15,
+    marginTop: 40,
+    marginBottom: 20,
     marginHorizontal: 13,
     borderRadius: 20,
     shadowOffset: { width: 2, height: 2 },
