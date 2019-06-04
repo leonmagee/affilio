@@ -29,22 +29,7 @@
 			<array>
 				<string>affilio.reactjs.native</string>
 				<string>fb1278154052343256</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
 				<string>com.googleusercontent.apps.673280461397-iftarecrrumjgupp93r8emliqq2qb36e</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>***Something here***</string>
 			</array>
 		</dict>
 	</array>

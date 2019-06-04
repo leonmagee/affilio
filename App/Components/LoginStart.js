@@ -75,6 +75,17 @@ class LoginStart extends Component {
     });
   };
 
+  changeUserType = type => {
+    const { changeUserType, navigation } = this.props;
+    changeUserType(type);
+    if (type) {
+      AsyncStorage.setItem('@UserType', 'business');
+    } else {
+      AsyncStorage.setItem('@UserType', 'user');
+    }
+    navigation.navigate('SignUpStart');
+  };
+
   processLogin = async () => {
     this.setState({ signInFail: false, emailReq: false, passwordReq: false });
     const { email, password } = this.state;
@@ -104,17 +115,6 @@ class LoginStart extends Component {
     }
   };
 
-  changeUserType = type => {
-    const { changeUserType, navigation } = this.props;
-    changeUserType(type);
-    if (type) {
-      AsyncStorage.setItem('@UserType', 'business');
-    } else {
-      AsyncStorage.setItem('@UserType', 'user');
-    }
-    navigation.navigate('SignUpStart');
-  };
-
   facebookLogin = async () => {
     this.setState({
       signInLoading: true,
@@ -137,7 +137,7 @@ class LoginStart extends Component {
         if (data) {
           console.log('we get some data????', data);
           // create a new firebase credential with the token
-          const credential = RNFirebase.auth.FacebookAuthProvider.credential(
+          const credential = await RNFirebase.auth.FacebookAuthProvider.credential(
             data.accessToken
           );
           // login with credential
@@ -145,9 +145,15 @@ class LoginStart extends Component {
             credential
           );
 
-          console.info(JSON.stringify(currentUser.toJSON()));
+          const newCurrentUser = await RNFirebase.auth().currentUser;
 
-          setCurrentUser(currentUser);
+          setCurrentUser(newCurrentUser);
+          console.log('here is my facebook user...', newCurrentUser);
+
+          const { displayName } = newCurrentUser._user;
+
+          createUserProfileDocument(newCurrentUser, { displayName });
+
           this.setState({
             signInLoading: false,
           });
@@ -162,55 +168,55 @@ class LoginStart extends Component {
     }
   };
 
-  facebookLoginOld = () => {
-    this.setState({
-      signInLoading: true,
-    });
-    const { setCurrentUser } = this.props;
+  // facebookLoginOld = () => {
+  //   this.setState({
+  //     signInLoading: true,
+  //   });
+  //   const { setCurrentUser } = this.props;
 
-    return LoginManager.logInWithReadPermissions(['public_profile', 'email'])
-      .then(result => {
-        console.log('this is a result?', result);
-        if (!result.isCancelled) {
-          console.log(
-            `Login success with permissions: ${result.grantedPermissions.toString()}`
-          );
-          // get the access token
-          return AccessToken.getCurrentAccessToken();
-        }
-        this.setState({
-          // hide spinner when canceled
-          signInLoading: false,
-        });
-      })
-      .then(data => {
-        console.log('we get some data????', data);
-        if (data) {
-          // create a new firebase credential with the token
-          const credential = RNFirebase.auth.FacebookAuthProvider.credential(
-            data.accessToken
-          );
-          // login with credential
-          return RNFirebase.auth().signInWithCredential(credential);
-        }
-      })
-      .then(currentUser => {
-        if (currentUser) {
-          console.info(JSON.stringify(currentUser.toJSON()));
-          this.setState({
-            // modalVisible: false,
-            // currentUser,
-            signInLoading: false,
-          });
-          setCurrentUser(currentUser);
+  //   return LoginManager.logInWithReadPermissions(['public_profile', 'email'])
+  //     .then(result => {
+  //       console.log('this is a result?', result);
+  //       if (!result.isCancelled) {
+  //         console.log(
+  //           `Login success with permissions: ${result.grantedPermissions.toString()}`
+  //         );
+  //         // get the access token
+  //         return AccessToken.getCurrentAccessToken();
+  //       }
+  //       this.setState({
+  //         // hide spinner when canceled
+  //         signInLoading: false,
+  //       });
+  //     })
+  //     .then(data => {
+  //       console.log('we get some data????', data);
+  //       if (data) {
+  //         // create a new firebase credential with the token
+  //         const credential = RNFirebase.auth.FacebookAuthProvider.credential(
+  //           data.accessToken
+  //         );
+  //         // login with credential
+  //         return RNFirebase.auth().signInWithCredential(credential);
+  //       }
+  //     })
+  //     .then(currentUser => {
+  //       if (currentUser) {
+  //         console.info(JSON.stringify(currentUser.toJSON()));
+  //         this.setState({
+  //           // modalVisible: false,
+  //           // currentUser,
+  //           signInLoading: false,
+  //         });
+  //         setCurrentUser(currentUser);
 
-          // this.props.toggleLoginModal(false);
-        }
-      })
-      .catch(error => {
-        console.log(`Login fail with error: ${error}`);
-      });
-  };
+  //         // this.props.toggleLoginModal(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(`Login fail with error: ${error}`);
+  //     });
+  // };
 
   googleLogin = async () => {
     this.setState({
