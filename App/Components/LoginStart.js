@@ -15,7 +15,7 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
-import { firebaseError } from '../Utils/utils';
+import { createUserProfileDocument, firebaseError } from '../Utils/utils';
 
 const styles = StyleSheet.create({
   titleWrap: {
@@ -102,23 +102,7 @@ class LoginStart extends Component {
       const signInFail = firebaseError(error);
       this.setState({ signInFail });
     }
-
-    // RNFirebase.auth()
-    //   .signInWithEmailAndPassword(email, password)
-    //   .catch(function(error) {
-    //     console.error('sign in fail!', error);
-    //     // Handle Errors here.
-    //     // const errorCode = error.code;
-    //     // const errorMessage = error.message;
-    //     // ...
-    //   });
   };
-
-  // processSignUp = () => {
-  //   // console.log('login works');
-  //   const { navigation } = this.props;
-  //   navigation.navigate('ChooseType');
-  // };
 
   changeUserType = type => {
     const { changeUserType, navigation } = this.props;
@@ -128,19 +112,62 @@ class LoginStart extends Component {
     } else {
       AsyncStorage.setItem('@UserType', 'user');
     }
-    // navigateToPage(data) {
-    //   this.props.goToMenuPage(data)
-    //   this.props.navigation.navigate('MenuPage', data)
-    // }
-    // const data = { name: 'Create Profile' };
-    // navigation.navigate('ProfileSettings', data);
     navigation.navigate('SignUpStart');
   };
 
-  facebookLogin = () => {
+  facebookLogin = async () => {
     this.setState({
       signInLoading: true,
     });
+    const { setCurrentUser } = this.props;
+
+    try {
+      const result = await LoginManager.logInWithReadPermissions([
+        'public_profile',
+        'email',
+      ]);
+
+      if (!result.isCancelled) {
+        console.log(
+          `Login success with permissions: ${result.grantedPermissions.toString()}`
+        );
+        // get the access token
+        const data = await AccessToken.getCurrentAccessToken();
+
+        if (data) {
+          console.log('we get some data????', data);
+          // create a new firebase credential with the token
+          const credential = RNFirebase.auth.FacebookAuthProvider.credential(
+            data.accessToken
+          );
+          // login with credential
+          const currentUser = await RNFirebase.auth().signInWithCredential(
+            credential
+          );
+
+          console.info(JSON.stringify(currentUser.toJSON()));
+
+          setCurrentUser(currentUser);
+          this.setState({
+            signInLoading: false,
+          });
+        }
+      } else {
+        this.setState({
+          signInLoading: false,
+        });
+      }
+    } catch (error) {
+      console.log(`Login fail with error: ${error}`);
+    }
+  };
+
+  facebookLoginOld = () => {
+    this.setState({
+      signInLoading: true,
+    });
+    const { setCurrentUser } = this.props;
+
     return LoginManager.logInWithReadPermissions(['public_profile', 'email'])
       .then(result => {
         console.log('this is a result?', result);
@@ -175,7 +202,8 @@ class LoginStart extends Component {
             // currentUser,
             signInLoading: false,
           });
-          this.props.setCurrentUser(currentUser);
+          setCurrentUser(currentUser);
+
           // this.props.toggleLoginModal(false);
         }
       })
@@ -188,6 +216,7 @@ class LoginStart extends Component {
     this.setState({
       signInLoading: true,
     });
+    const { setCurrentUser } = this.props;
     try {
       // Add any configuration settings here:
       await GoogleSignin.configure({ prompt: 'select_account' });
@@ -195,10 +224,6 @@ class LoginStart extends Component {
       const data = await GoogleSignin.signIn();
 
       const authProvider = RNFirebase.auth.GoogleAuthProvider;
-
-      // authProvider.setCustomParameters({
-      //   prompt: 'select_account',
-      // });
 
       // create a new firebase credential with the token
       const credential = authProvider.credential(
@@ -212,12 +237,14 @@ class LoginStart extends Component {
       const newCurrentUser = await RNFirebase.auth().currentUser;
 
       this.setState({
-        // modalVisible: false,
-        // currentUser: newCurrentUser,
         signInLoading: false,
       });
       // this.props.toggleLoginModal(false);
-      this.props.setCurrentUser(newCurrentUser);
+      setCurrentUser(newCurrentUser);
+
+      // console.log('xxxxxxxxxxxxx', newCurrentUser);
+      const { displayName } = newCurrentUser._user;
+      createUserProfileDocument(newCurrentUser, { displayName });
 
       // console.info(JSON.stringify(currentUser.toJSON()));
     } catch (e) {

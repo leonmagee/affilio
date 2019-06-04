@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import Promotions from './Promotions';
 import Footer from './Footer';
-import { defaults } from '../Styles/defaultStyles';
+import { promos } from '../Styles/defaultStyles';
 
 class PromotionsNewBusiness extends Component {
   render() {
     const { navigation } = this.props;
     return (
       <View style={{ flex: 1 }}>
-        <View style={defaults.mainWrap}>
+        <View style={promos.mainWrap}>
           <Promotions navigation={navigation} filter="new" />
         </View>
         <Footer navigation={navigation} />

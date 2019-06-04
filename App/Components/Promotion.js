@@ -132,6 +132,13 @@ class Promotion extends Component {
     Linking.openURL(url);
   };
 
+  sendEmail = email => {
+    // Linking.openURL(mailto: email)
+    // Linking.openURL(mailto: ${ email })
+    const emailAddress = `mailto:${email}`;
+    Linking.openURL(emailAddress);
+  };
+
   render() {
     const { title, promo, start, end, image, exclusive } = this.props;
     const { cardOpen, busDetails, userName, finalUrl } = this.state;
@@ -235,7 +242,12 @@ class Promotion extends Component {
           <View style={promos.iconWrap}>
             <Icon name="email" size={20} color={iconColor} />
           </View>
-          <Text style={promos.promoText}>{busDetails.email}</Text>
+          <TouchableHighlight
+            underlayColor="transparent"
+            onPress={() => this.sendEmail(busDetails.email)}
+          >
+            <Text style={promos.promoText}>{busDetails.email}</Text>
+          </TouchableHighlight>
         </View>
       );
     }

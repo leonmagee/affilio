@@ -52,6 +52,7 @@ class App extends Component {
       }
 
       const { currentUser } = RNFirebase.auth();
+      // console.log('CU???', currentUser);
       if (currentUser) {
         userLoggedIn(1);
         const user = await getUserDocument(currentUser.uid);
