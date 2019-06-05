@@ -15,7 +15,11 @@ import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import RNFirebase from 'react-native-firebase';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
-import { createUserProfileDocument, firebaseError } from '../Utils/utils';
+import {
+  getUserDocument,
+  createUserProfileDocument,
+  firebaseError,
+} from '../Utils/utils';
 
 const styles = StyleSheet.create({
   titleWrap: {
@@ -90,7 +94,6 @@ class LoginStart extends Component {
     this.setState({ signInFail: false, emailReq: false, passwordReq: false });
     const { email, password } = this.state;
     const { setCurrentUser } = this.props;
-    console.log('login works', email, password);
     if (email === '') {
       this.setState({ emailReq: true });
     }
@@ -107,8 +110,9 @@ class LoginStart extends Component {
         email,
         password
       );
-      console.log('did sign in work?', signIn);
-      setCurrentUser(signIn.user);
+      const user = await getUserDocument(signIn.user._user.uid);
+      setCurrentUser(user);
+      // setCurrentUser(signIn.user);
     } catch (error) {
       const signInFail = firebaseError(error);
       this.setState({ signInFail });
@@ -128,27 +132,24 @@ class LoginStart extends Component {
       ]);
 
       if (!result.isCancelled) {
-        console.log(
-          `Login success with permissions: ${result.grantedPermissions.toString()}`
-        );
+        // console.log(
+        //   `Login success with permissions: ${result.grantedPermissions.toString()}`
+        // );
         // get the access token
         const data = await AccessToken.getCurrentAccessToken();
 
         if (data) {
-          console.log('we get some data????', data);
           // create a new firebase credential with the token
           const credential = await RNFirebase.auth.FacebookAuthProvider.credential(
             data.accessToken
           );
           // login with credential
-          const currentUser = await RNFirebase.auth().signInWithCredential(
-            credential
-          );
+          await RNFirebase.auth().signInWithCredential(credential);
 
           const newCurrentUser = await RNFirebase.auth().currentUser;
 
           setCurrentUser(newCurrentUser);
-          console.log('here is my facebook user...', newCurrentUser);
+          // console.log('here is my facebook user...', newCurrentUser);
 
           const { displayName } = newCurrentUser._user;
 
@@ -167,56 +168,6 @@ class LoginStart extends Component {
       console.log(`Login fail with error: ${error}`);
     }
   };
-
-  // facebookLoginOld = () => {
-  //   this.setState({
-  //     signInLoading: true,
-  //   });
-  //   const { setCurrentUser } = this.props;
-
-  //   return LoginManager.logInWithReadPermissions(['public_profile', 'email'])
-  //     .then(result => {
-  //       console.log('this is a result?', result);
-  //       if (!result.isCancelled) {
-  //         console.log(
-  //           `Login success with permissions: ${result.grantedPermissions.toString()}`
-  //         );
-  //         // get the access token
-  //         return AccessToken.getCurrentAccessToken();
-  //       }
-  //       this.setState({
-  //         // hide spinner when canceled
-  //         signInLoading: false,
-  //       });
-  //     })
-  //     .then(data => {
-  //       console.log('we get some data????', data);
-  //       if (data) {
-  //         // create a new firebase credential with the token
-  //         const credential = RNFirebase.auth.FacebookAuthProvider.credential(
-  //           data.accessToken
-  //         );
-  //         // login with credential
-  //         return RNFirebase.auth().signInWithCredential(credential);
-  //       }
-  //     })
-  //     .then(currentUser => {
-  //       if (currentUser) {
-  //         console.info(JSON.stringify(currentUser.toJSON()));
-  //         this.setState({
-  //           // modalVisible: false,
-  //           // currentUser,
-  //           signInLoading: false,
-  //         });
-  //         setCurrentUser(currentUser);
-
-  //         // this.props.toggleLoginModal(false);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log(`Login fail with error: ${error}`);
-  //     });
-  // };
 
   googleLogin = async () => {
     this.setState({
@@ -245,18 +196,16 @@ class LoginStart extends Component {
       this.setState({
         signInLoading: false,
       });
-      // this.props.toggleLoginModal(false);
       setCurrentUser(newCurrentUser);
 
-      // console.log('xxxxxxxxxxxxx', newCurrentUser);
+      console.log('google current user', newCurrentUser);
+
       const { displayName } = newCurrentUser._user;
       createUserProfileDocument(newCurrentUser, { displayName });
-
-      // console.info(JSON.stringify(currentUser.toJSON()));
     } catch (e) {
       if (e.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        console.log('sign in was canceled???');
+        console.log('sign in was canceled');
       }
       console.error(e);
     }

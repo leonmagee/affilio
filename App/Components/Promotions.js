@@ -96,14 +96,14 @@ class Promotions extends Component {
   componentDidMount = () => {
     // this.flatListRef.scrollToIndex({ animated: true, index: 0.2 });
     // this.list.scrollToIndex(3);
-    const { userType, loggedIn, filter } = this.props;
+    const { currentUser, userType, loggedIn, filter } = this.props;
 
     if (filter === 'new') {
       if (userType && loggedIn) {
         this.unsubscribeFromFirestore = firestore
           .collection('promos')
           // .where('companyId', '==', currentUser.uid)
-          .orderBy('createdAt', 'desc')
+          .orderBy('createdAt', 'asc')
           .onSnapshot(snapshot => {
             const promotions = snapshot.docs.map(getDocAndId);
             this.setState({ promotions });
@@ -277,7 +277,7 @@ const mapStateToProps = state => ({
   promoFilter: state.promoFilter,
   userType: state.userType,
   loggedIn: state.loggedIn,
-  // currentUser: state.currentUser,
+  currentUser: state.currentUser,
 });
 
 module.exports = connect(mapStateToProps)(Promotions);

@@ -149,118 +149,133 @@ class Promotion extends Component {
 
     let facebookLink = <></>;
     const socialMediaIconSize = 23;
-    if (busDetails.facebook) {
-      facebookLink = (
-        <TouchableHighlight
-          onPress={() => this.urlLink(busDetails.facebook)}
-          underlayColor="transparent"
-        >
-          <Icon
-            style={promos.socialIcon}
-            name="facebook"
-            size={socialMediaIconSize}
-            color={iconColor}
-          />
-        </TouchableHighlight>
-      );
+    if (busDetails) {
+      if (busDetails.facebook) {
+        facebookLink = (
+          <TouchableHighlight
+            onPress={() => this.urlLink(busDetails.facebook)}
+            underlayColor="transparent"
+          >
+            <Icon
+              style={promos.socialIcon}
+              name="facebook"
+              size={socialMediaIconSize}
+              color={iconColor}
+            />
+          </TouchableHighlight>
+        );
+      }
     }
     let twitterLink = <></>;
-    if (busDetails.twitter) {
-      twitterLink = (
-        <TouchableHighlight
-          onPress={() => this.urlLink(busDetails.twitter)}
-          underlayColor="transparent"
-        >
-          <Icon
-            style={promos.socialIcon}
-            name="twitter"
-            size={socialMediaIconSize}
-            color={iconColor}
-          />
-        </TouchableHighlight>
-      );
+    if (busDetails) {
+      if (busDetails.twitter) {
+        twitterLink = (
+          <TouchableHighlight
+            onPress={() => this.urlLink(busDetails.twitter)}
+            underlayColor="transparent"
+          >
+            <Icon
+              style={promos.socialIcon}
+              name="twitter"
+              size={socialMediaIconSize}
+              color={iconColor}
+            />
+          </TouchableHighlight>
+        );
+      }
     }
     let instagramLink = <></>;
-    if (busDetails.instagram) {
-      instagramLink = (
-        <TouchableHighlight
-          onPress={() => this.urlLink(busDetails.instagram)}
-          underlayColor="transparent"
-        >
-          <Icon
-            style={promos.socialIcon}
-            name="instagram"
-            size={socialMediaIconSize}
-            color={iconColor}
-          />
-        </TouchableHighlight>
-      );
+    if (busDetails) {
+      if (busDetails.instagram) {
+        instagramLink = (
+          <TouchableHighlight
+            onPress={() => this.urlLink(busDetails.instagram)}
+            underlayColor="transparent"
+          >
+            <Icon
+              style={promos.socialIcon}
+              name="instagram"
+              size={socialMediaIconSize}
+              color={iconColor}
+            />
+          </TouchableHighlight>
+        );
+      }
     }
 
     let socialMediaLinks = <></>;
-    if (busDetails.facebook || busDetails.twitter || busDetails.instagram) {
-      socialMediaLinks = (
-        <View style={promos.socialMediaWrap}>
-          {facebookLink}
-          {twitterLink}
-          {instagramLink}
-        </View>
-      );
+    if (busDetails) {
+      if (busDetails.facebook || busDetails.twitter || busDetails.instagram) {
+        socialMediaLinks = (
+          <View style={promos.socialMediaWrap}>
+            {facebookLink}
+            {twitterLink}
+            {instagramLink}
+          </View>
+        );
+      }
     }
 
     let userNameLink = <Text style={promos.userNameLink}>{userName}</Text>;
-    if (busDetails.website) {
-      userNameLink = (
-        <TouchableHighlight
-          underlayColor="transparent"
-          onPress={() => this.urlLink(busDetails.website)}
-        >
-          <Text style={promos.userNameLink}>{userName}</Text>
-        </TouchableHighlight>
-      );
+    if (busDetails) {
+      if (busDetails.website) {
+        userNameLink = (
+          <TouchableHighlight
+            underlayColor="transparent"
+            onPress={() => this.urlLink(busDetails.website)}
+          >
+            <Text style={promos.userNameLink}>{userName}</Text>
+          </TouchableHighlight>
+        );
+      }
     }
 
     let addressDetails = <></>;
-
-    if (busDetails.city && busDetails.state && busDetails.zip) {
-      addressDetails = (
-        <View style={promos.sectionWrap}>
-          <View style={promos.iconWrap}>
-            <Icon name="map-marker" size={22} color={iconColor} />
+    if (busDetails) {
+      if (busDetails.city && busDetails.state && busDetails.zip) {
+        addressDetails = (
+          <View style={promos.sectionWrap}>
+            <View style={promos.iconWrap}>
+              <Icon name="map-marker" size={22} color={iconColor} />
+            </View>
+            <Text style={promos.promoText}>
+              {busDetails.city}, {busDetails.state} {busDetails.zip}
+            </Text>
           </View>
-          <Text style={promos.promoText}>
-            {busDetails.city}, {busDetails.state} {busDetails.zip}
-          </Text>
-        </View>
-      );
+        );
+      }
     }
 
     let emailAddress = <></>;
-    if (busDetails.email) {
-      emailAddress = (
-        <View style={promos.sectionWrap}>
-          <View style={promos.iconWrap}>
-            <Icon name="email" size={20} color={iconColor} />
+    if (busDetails) {
+      if (busDetails.email) {
+        emailAddress = (
+          <View style={promos.sectionWrap}>
+            <View style={promos.iconWrap}>
+              <Icon name="email" size={20} color={iconColor} />
+            </View>
+            <TouchableHighlight
+              underlayColor="transparent"
+              onPress={() => this.sendEmail(busDetails.email)}
+            >
+              <Text style={promos.promoText}>{busDetails.email}</Text>
+            </TouchableHighlight>
           </View>
-          <TouchableHighlight
-            underlayColor="transparent"
-            onPress={() => this.sendEmail(busDetails.email)}
-          >
-            <Text style={promos.promoText}>{busDetails.email}</Text>
-          </TouchableHighlight>
-        </View>
-      );
+        );
+      }
     }
 
     let logo = <></>;
-    if (busDetails.image) {
-      logo = (
-        <Image style={promos.promoLogo} source={{ uri: busDetails.image }} />
-      );
+    if (busDetails) {
+      if (busDetails.image) {
+        logo = (
+          <Image style={promos.promoLogo} source={{ uri: busDetails.image }} />
+        );
+      }
     }
 
     let toggleArea = <></>;
-    if (cardOpen) {
+    if (cardOpen && busDetails) {
       toggleArea = (
         <View style={promos.busDetailsWrap}>
           <View style={promos.promoLogoWrap}>

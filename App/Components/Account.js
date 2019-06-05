@@ -41,16 +41,18 @@ class Account extends Component {
   };
 
   render() {
-    const { loggedIn, navigation } = this.props;
+    const { navigation } = this.props;
     const { currentUser } = this.state;
     let userInfo = <></>;
+    let helloText = <></>;
+    if (currentUser.displayName) {
+      helloText = `Hello, ${currentUser.displayName}!`;
+    }
     if (currentUser) {
       console.log('here is the current user', currentUser);
       userInfo = (
         <View style={styles.userInfoWrap}>
-          <Text style={styles.userInfoText}>
-            Hello, {currentUser.displayName}!
-          </Text>
+          <Text style={styles.userInfoText}>{helloText}</Text>
         </View>
       );
     }
@@ -58,7 +60,7 @@ class Account extends Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={defaults.mainWrap}>
-          <Text style={defaults.title}>Account Info</Text>
+          <Text style={defaults.title}>Manage Account</Text>
           {userInfo}
           <LogOutButton />
         </View>
