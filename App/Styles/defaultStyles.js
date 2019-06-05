@@ -1,4 +1,12 @@
+import DeviceInfo from 'react-native-device-info';
 import { colors } from './variables';
+
+console.log('xxx', DeviceInfo);
+
+let horizontalPadding = 20;
+if (DeviceInfo.isTablet()) {
+  horizontalPadding = 120;
+}
 
 export const defaults = {
   mainWrap: {
@@ -19,7 +27,7 @@ export const defaults = {
   },
   formWrap: {
     marginHorizontal: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: horizontalPadding,
   },
   inputGroup: {
     flexDirection: 'row',

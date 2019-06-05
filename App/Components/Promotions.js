@@ -202,7 +202,7 @@ class Promotions extends Component {
         </TouchableHighlight> */}
         <FlatList
           data={promotions}
-          style={{ backgroundColor: '#ddd' }}
+          style={{ backgroundColor: '#ddd', paddingHorizontal: 100 }}
           ref={ref => {
             this.flatListRef = ref;
           }}

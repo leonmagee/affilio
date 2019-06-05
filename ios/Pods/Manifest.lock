@@ -160,6 +160,8 @@ PODS:
     - React/Core
   - RNCAsyncStorage (1.4.0):
     - React
+  - RNDeviceInfo (2.1.0):
+    - React
   - RNFirebase (5.3.1):
     - Firebase/Core
     - React
@@ -188,6 +190,7 @@ DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFirebase (from `../node_modules/react-native-firebase/iOS`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleSignin (from `../node_modules/react-native-google-signin`)
@@ -233,6 +236,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/iOS"
   RNGestureHandler:
@@ -274,12 +279,13 @@ SPEC CHECKSUMS:
   react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
   RNCAsyncStorage: 0c3ef98facf3fecf455b518d6f52e10fc964c523
+  RNDeviceInfo: 2b4f76adc479657bf37bfc927bbfb027b17515d4
   RNFirebase: f20e5e4ceaa632aebb1a29a9a91022ae0469c633
   RNGestureHandler: aea90f0ad8e35fec23438db6fc3ad79be58bb734
   RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
   RNShare: 4f206fa36e384e95a0cbf79f2a92490647e93127
   yoga: 2e571f113e8cbeb0eb752aeebc86c1bfe7a8200c
 
-PODFILE CHECKSUM: 29958dd595bfb458d70889818890999262017e0e
+PODFILE CHECKSUM: f99f730e41336ab732598afab7b6221e9a01b82c
 
 COCOAPODS: 1.6.1
