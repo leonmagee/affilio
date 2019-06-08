@@ -21,7 +21,12 @@ import AddPromotion from './AddPromotion';
 import { CloseIcon } from './CloseIcon';
 
 const deviceHeight = Dimensions.get('window').height;
-console.log('my height is????', deviceHeight);
+const deviceWidth = Dimensions.get('window').width;
+
+let promoPadding = 0;
+if (deviceWidth > 700) {
+  promoPadding = 100;
+}
 
 const firestore = RNFirebase.firestore();
 
@@ -202,7 +207,7 @@ class Promotions extends Component {
         </TouchableHighlight> */}
         <FlatList
           data={promotions}
-          style={{ backgroundColor: '#ddd', paddingHorizontal: 100 }}
+          style={{ backgroundColor: '#ddd', paddingHorizontal: promoPadding }}
           ref={ref => {
             this.flatListRef = ref;
           }}

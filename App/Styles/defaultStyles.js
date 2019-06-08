@@ -1,11 +1,13 @@
-import DeviceInfo from 'react-native-device-info';
+import { Dimensions } from 'react-native';
 import { colors } from './variables';
 
-console.log('xxx', DeviceInfo);
-
+const deviceWidth = Dimensions.get('window').width;
+console.log('my width?', deviceWidth);
 let horizontalPadding = 20;
-if (DeviceInfo.isTablet()) {
+let modalPadding = 13;
+if (deviceWidth > 700) {
   horizontalPadding = 120;
+  modalPadding = 70;
 }
 
 export const defaults = {
@@ -147,7 +149,7 @@ export const defaults = {
     flex: 1,
     marginTop: 40,
     marginBottom: 20,
-    marginHorizontal: 13,
+    marginHorizontal: modalPadding,
     borderRadius: 20,
     shadowOffset: { width: 2, height: 2 },
     shadowColor: '#000',

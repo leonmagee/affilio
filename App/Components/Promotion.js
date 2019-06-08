@@ -93,8 +93,8 @@ class Promotion extends Component {
     if (finalUrl) {
       Share.share(
         {
-          // message: 'Share Promotion',
-          url: finalUrl,
+          message: finalUrl,
+          // url: finalUrl,
           title: 'PIEC',
         },
         {

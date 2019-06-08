@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     color: colors.brandPrimary,
     fontSize: 30,
     fontFamily: 'Lato-Black',
-    // textAlign: 'center',
   },
   aboutText: {
     color: '#777',
