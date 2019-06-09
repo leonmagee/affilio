@@ -30,62 +30,25 @@ class Promotion extends Component {
       busDetails: false,
       userName: '',
     };
-    // console.log('what are my props?', props);
-    if (props.currentUser) {
-      const userId = props.currentUser.uid;
-      const finalUrl = `${baseUrl}?userId=${userId}&promoId=${
-        props.id
-      }&redirectUrl=${props.url}`;
-      // this.setState({ finalUrl });
-      this.rebrandlyApi(finalUrl);
+  }
+
+  componentDidMount = () => {
+    const { companyId, currentUser, id, firestore, url } = this.props;
+    if (currentUser) {
+      const userId = currentUser.uid;
+      const finalUrl = `${baseUrl}?userId=${userId}&promoId=${id}&redirectUrl=${url}`;
+      this.setState({ finalUrl });
     }
 
-    const userDetailsRef = props.firestore.doc(`users/${props.companyId}`);
+    const userDetailsRef = firestore.doc(`users/${companyId}`);
     userDetailsRef.get().then(result => {
       this.setState({ userName: result._data.displayName });
     });
 
-    const businessDetailsRef = props.firestore.doc(
-      `businesses/${props.companyId}`
-    );
+    const businessDetailsRef = firestore.doc(`businesses/${companyId}`);
     businessDetailsRef.get().then(result => {
       this.setState({ busDetails: result._data });
     });
-  }
-
-  rebrandlyApi = url => {
-    const linkRequest = {
-      destination: url,
-      domain: { fullName: 'promo.mypiec.com' },
-      // , slashtag: "A_NEW_SLASHTAG"
-      // , title: "Rebrandly YouTube channel"
-    };
-
-    const YOUR_API_KEY = '456feafa5b4c40079ba09a6459695ca5';
-
-    const requestHeaders = {
-      'Content-Type': 'application/json',
-      apikey: YOUR_API_KEY,
-      // workspace: YOUR_WORKSPACE_ID,
-    };
-
-    const rbUrl = 'https://api.rebrandly.com/v1/links';
-
-    fetch(rbUrl, {
-      method: 'POST',
-      headers: requestHeaders,
-      body: JSON.stringify(linkRequest),
-    })
-      .then(result => {
-        // console.log('rebrandly result?', result);
-        result.json().then(newResult => {
-          this.setState({ finalUrl: newResult.shortUrl });
-          // console.log('short url result?', newResult.shortUrl);
-        });
-      })
-      .catch(error => {
-        console.error('you have an error?', error);
-      });
   };
 
   shareSocial = () => {
@@ -300,7 +263,6 @@ class Promotion extends Component {
     }
 
     let shareExlusiveIcon = <></>;
-    let shareLinkArea = <></>;
     if (exclusive) {
       shareExlusiveIcon = (
         <Icon name="star" size={28} color={colors.brandOrange} />
@@ -314,19 +276,6 @@ class Promotion extends Component {
         >
           <Icon name="share" size={28} color={iconColor} />
         </TouchableHighlight>
-      );
-      shareLinkArea = (
-        <View style={promos.sectionWrap}>
-          <View style={promos.iconWrap}>
-            <Icon name="link" size={22} color={iconColor} />
-          </View>
-          <TouchableHighlight
-            onPress={this.shareSocial}
-            underlayColor="transparent"
-          >
-            <Text style={promos.promoLinkText}>{finalUrl}</Text>
-          </TouchableHighlight>
-        </View>
       );
     }
 
@@ -354,7 +303,6 @@ class Promotion extends Component {
               </View>
               <Text style={promos.promoText}>{promo}</Text>
             </View>
-            {shareLinkArea}
             {toggleArea}
           </View>
         </View>

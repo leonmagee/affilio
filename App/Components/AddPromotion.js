@@ -75,11 +75,10 @@ class AddPromotion extends Component {
     };
 
     ImagePicker.showImagePicker(options, response => {
-      // console.log('Response = ', response);
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.error) {
-        console.error('ImagePicker Error: ', response.error);
+        // console.error('ImagePicker Error: ', response.error);
       } else {
         this.setState({
           imageSource: response.uri,
@@ -89,9 +88,6 @@ class AddPromotion extends Component {
   };
 
   addNewPromotion = () => {
-    /**
-     * @todo validation? required fields? field types?
-     */
     this.setState({
       promotionTitleReq: false,
       promotionDetailsReq: false,
@@ -108,6 +104,8 @@ class AddPromotion extends Component {
       imageSource,
       promoUrl,
     } = this.state;
+
+    const { navigation } = this.props;
 
     if (promotionTitle === '') {
       this.setState({ promotionTitleReq: true });
@@ -155,52 +153,58 @@ class AddPromotion extends Component {
       imageSource &&
       userId
     ) {
-      const promotion = {
-        title: promotionTitle,
-        promotion: promotionDetails,
-        start: startDateSubmit,
-        end: endDateSubmit,
-        url: promoUrl,
-        createdAt: new Date(),
-        companyId: userId,
-      };
-      firestore
-        .collection('promos')
-        .add(promotion)
-        .then(result => {
-          const firestoreId = result.id;
-          const postRef = firestore.doc(`promos/${firestoreId}`);
+      // const firestoreId = result.id;
+      // const firestoreId = Date.now();
+      const currentDate = Date.now();
+      // const postRef = firestore.doc(`promos/${firestoreId}`);
 
-          const { Blob } = RNFetchBlob.polyfill;
-          const { fs } = RNFetchBlob;
-          window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-          window.Blob = Blob;
-          const imageRef = RNFirebase.storage()
-            .ref(userId)
-            .child(`image-${firestoreId}.jpg`);
-          const mime = 'image/jpeg';
+      const { Blob } = RNFetchBlob.polyfill;
+      const { fs } = RNFetchBlob;
+      window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+      window.Blob = Blob;
+      const imageRef = RNFirebase.storage()
+        .ref(userId)
+        .child(`image-${currentDate}.jpg`);
+      const mime = 'image/jpeg';
 
-          const filePath = imageSource.replace('file:', '');
-          let uploadBlob = false;
-          fs.readFile(filePath, 'base64')
-            .then(data =>
-              // console.log('step 1');
-              Blob.build(data, { type: `${mime};BASE64` })
-            )
-            .then(blob => {
-              // console.log('step 2');
-              uploadBlob = blob;
-              return imageRef.put(blob._ref, { contentType: mime });
-            })
-            .then(() => {
-              // console.log('step 3');
-              uploadBlob.close();
-              return imageRef.getDownloadURL();
-            })
-            .then(firebaseUrl => {
-              console.log('step 3 - upload worked', firebaseUrl);
+      const filePath = imageSource.replace('file:', '');
+      let uploadBlob = false;
+      fs.readFile(filePath, 'base64')
+        .then(data =>
+          // console.log('step 1');
+          Blob.build(data, { type: `${mime};BASE64` })
+        )
+        .then(blob => {
+          // console.log('step 2');
+          uploadBlob = blob;
+          return imageRef.put(blob._ref, { contentType: mime });
+        })
+        .then(() => {
+          // console.log('step 3');
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then(firebaseUrl => {
+          console.log('step 3 - upload worked', firebaseUrl);
 
-              postRef.update({ image: firebaseUrl });
+          const promotion = {
+            title: promotionTitle,
+            promotion: promotionDetails,
+            start: startDateSubmit,
+            end: endDateSubmit,
+            url: promoUrl,
+            createdAt: currentDate,
+            companyId: userId,
+            image: firebaseUrl,
+          };
+
+          firestore
+            .collection('promos')
+            .add(promotion)
+            .then(result => {
+              console.log('new promo created?', result);
+
+              // postRef.update({ image: firebaseUrl });
 
               // finalize by restting state
               // this should redirect instead - use nav method?
@@ -214,36 +218,12 @@ class AddPromotion extends Component {
                 processing: false,
               });
 
-              // const baseUrl =
-              //   'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
-
-              // const finalUrl = `${baseUrl}?userId=${userId}&promoId=${firestoreId}&redirectUrl=${
-              //   props.url
-              // }`;
-
-              // const rebrandApiUrl = `https://us-central1-affilio.cloudfunctions.net/createRebrandly?promoId=${firestoreId}&finalUrl=${finalUrl}`;
-
-              // fetch(rebrandApiUrl)
-              //   .then(res => {
-              //     console.log('here is the new api response?', res);
-              //   })
-              //   .catch(error => {
-              //     console.error('new api does not work?', error);
-              //   });
-
               modalToggle();
-              this.props.navigation.navigate('New');
-
-              // const { navigation } = this.props;
-              // navigation.navigate('Promotions');
-            })
-            .catch(error => {
-              console.error(error);
+              navigation.navigate('New'); // try doing home instead
             });
-
-          // image should show activity indicator first?
-          // the images should be in directories per each user?
-          // validation for missing fields - all will be required for now - except for image...
+        })
+        .catch(error => {
+          console.error(error);
         });
     } else {
       console.log("didn't pass validation...");

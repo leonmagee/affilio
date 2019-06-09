@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
 import { getUserDocument } from './App/Utils/utils';
 import Router from './App/Components/Router';
-import BusinessRouter from './App/Components/BusinessRouter';
 import LoginRouter from './App/Components/LoginRouter';
 import { colors } from './App/Styles/variables';
 import { defaults } from './App/Styles/defaultStyles';
@@ -52,7 +51,6 @@ class App extends Component {
       }
 
       const { currentUser } = RNFirebase.auth();
-      // console.log('CU???', currentUser);
       if (currentUser) {
         userLoggedIn(1);
         const user = await getUserDocument(currentUser.uid);
@@ -100,11 +98,7 @@ class App extends Component {
 
       let RouterComponent;
       if (loggedIn) {
-        if (userType === 0) {
-          RouterComponent = Router;
-        } else {
-          RouterComponent = BusinessRouter;
-        }
+        RouterComponent = Router;
       } else {
         RouterComponent = LoginRouter;
       }

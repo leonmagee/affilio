@@ -26,6 +26,7 @@ const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
 class PromotionBusiness extends Component {
   constructor(props) {
+    console.log('CONSTRUCTOR IS HAPPENING!');
     super(props);
     const startingDate = props.start
       ? moment(props.start.toDate()).format('MM-DD-YYYY')
@@ -42,6 +43,7 @@ class PromotionBusiness extends Component {
       startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
+      // imageSource: false,
       imageUpdated: false,
       processing: false,
       showSpinner: true, // just in update modal
@@ -54,9 +56,14 @@ class PromotionBusiness extends Component {
   }
 
   componentDidMount = () => {
-    const { firestore } = this.props;
+    console.log('COMPONENT DID MOUNT!');
+    const { firestore, image } = this.props;
+    this.setState({
+      imageSource: image,
+    });
+
     const { id } = this.state;
-    const userData = {};
+    // const userData = {};
     firestore
       .collection('clicks')
       .where('promo', '==', id)
@@ -111,10 +118,6 @@ class PromotionBusiness extends Component {
       endDateSubmit,
     });
   };
-
-  // urlLink = url => {
-  //   Linking.openURL(url);
-  // };
 
   imageSelect = () => {
     const options = {
@@ -179,9 +182,9 @@ class PromotionBusiness extends Component {
     if (promoUrl === '') {
       this.setState({ promoUrlReq: true });
     }
-    if (!imageSource) {
-      this.setState({ imageSourceReq: true });
-    }
+    // if (!imageSource) {
+    //   this.setState({ imageSourceReq: true });
+    // }
     if (
       promotionTitle === '' ||
       promotionDetails === '' ||
@@ -247,7 +250,6 @@ class PromotionBusiness extends Component {
                   processing: false,
                   imageUpdated: false,
                 });
-                // this.viewSingle();
               });
           })
           .catch(error => {
@@ -276,7 +278,7 @@ class PromotionBusiness extends Component {
 
   render() {
     const testDateStart = new Date();
-    const testDate = moment(testDateStart).format('MM-DD-YYYY');
+    // const testDate = moment(testDateStart).format('MM-DD-YYYY');
     // console.log('here is a test date?', testDate);
     const { promo, url, start, end, image } = this.props;
     const {
@@ -296,6 +298,13 @@ class PromotionBusiness extends Component {
       clicks,
       userData,
     } = this.state;
+    let tempImageSource;
+    if (imageSource !== undefined) {
+      tempImageSource = imageSource;
+    } else {
+      tempImageSource = image;
+    }
+    console.log('RENDER TIME!!!!', image, imageSource);
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
@@ -331,9 +340,13 @@ class PromotionBusiness extends Component {
 
     if (dataArray.length) {
       const clickData = dataArray.map((item, key) => {
-        let name = '- - -';
+        let name;
         if (userData[item.user]) {
-          name = userData[item.user].displayName;
+          if (userData[item.user].displayName) {
+            name = userData[item.user].displayName;
+          } else {
+            return;
+          }
         }
         return (
           <View style={promos.tableItemWrap} key={key}>
@@ -387,6 +400,22 @@ class PromotionBusiness extends Component {
         <View style={defaults.indicatorWrapModal}>
           <ActivityIndicator size="large" color={colors.activity} />
         </View>
+      );
+    }
+
+    let imageArea = <></>;
+    if (imageSource) {
+      imageArea = (
+        <Image
+          onLoadEnd={() => {
+            this.setState({
+              showSpinner: false,
+            });
+          }}
+          style={defaults.imagePreview}
+          source={{ uri: tempImageSource }}
+          // source={imageUrl}
+        />
       );
     }
 
@@ -541,15 +570,7 @@ class PromotionBusiness extends Component {
                 </View>
                 <View style={defaults.imagePreviewWrap}>
                   {modalSpinner}
-                  <Image
-                    onLoadEnd={() => {
-                      this.setState({
-                        showSpinner: false,
-                      });
-                    }}
-                    style={defaults.imagePreview}
-                    source={{ uri: imageSource }}
-                  />
+                  {imageArea}
                 </View>
                 {processIndicator}
               </View>

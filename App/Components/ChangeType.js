@@ -44,12 +44,16 @@ const styles = StyleSheet.create({
 
 class ChangeType extends Component {
   changeUserType = type => {
-    const { changeUserType } = this.props;
+    console.log('changine type?', type);
+    const { changeUserType, navigation } = this.props;
     changeUserType(type);
+
     if (type) {
       AsyncStorage.setItem('@UserType', 'business');
+      navigation.navigate('Business');
     } else {
       AsyncStorage.setItem('@UserType', 'user');
+      navigation.navigate('User');
     }
   };
 

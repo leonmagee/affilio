@@ -2,7 +2,6 @@ import { Dimensions } from 'react-native';
 import { colors } from './variables';
 
 const deviceWidth = Dimensions.get('window').width;
-console.log('my width?', deviceWidth);
 let horizontalPadding = 20;
 let modalPadding = 13;
 if (deviceWidth > 700) {

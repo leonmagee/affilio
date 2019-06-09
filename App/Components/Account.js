@@ -49,7 +49,6 @@ class Account extends Component {
       helloText = `Hello, ${currentUser.displayName}!`;
     }
     if (currentUser) {
-      console.log('here is the current user', currentUser);
       userInfo = (
         <View style={styles.userInfoWrap}>
           <Text style={styles.userInfoText}>{helloText}</Text>
@@ -71,7 +70,6 @@ class Account extends Component {
 }
 
 const mapStateToProps = state => ({
-  // userType: state.userType,
   currentUser: state.currentUser,
   loggedIn: state.loggedIn,
 });
