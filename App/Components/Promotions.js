@@ -93,31 +93,20 @@ class Promotions extends Component {
   };
 
   componentDidMount = () => {
-    const { userType, loggedIn, filter } = this.props;
+    const { filter } = this.props;
 
     if (filter === 'new') {
-      if (userType && loggedIn) {
-        this.unsubscribeFromFirestore = firestore
-          .collection('promos')
-          .orderBy('createdAt', 'asc')
-          .onSnapshot(snapshot => {
-            const promotions = snapshot.docs.map(getDocAndId);
-            this.setState({ promotions });
-          });
-      } else {
-        this.unsubscribeFromFirestore = firestore
-          .collection('promos')
-          .orderBy('createdAt', 'desc')
-          .onSnapshot(snapshot => {
-            const promotions = snapshot.docs.map(getDocAndId);
-            this.setState({ promotions });
-          });
-      }
+      this.unsubscribeFromFirestore = firestore
+        .collection('promos')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snapshot => {
+          const promotions = snapshot.docs.map(getDocAndId);
+          this.setState({ promotions });
+        });
     } else if (filter === 'exclusive') {
       this.unsubscribeFromFirestore = firestore
         .collection('promos')
         .where('exclusive', '==', true)
-        // .orderBy('createdAt')
         .onSnapshot(snapshot => {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
@@ -128,7 +117,6 @@ class Promotions extends Component {
       this.unsubscribeFromFirestore = firestore
         .collection('promos')
         .where('featured', '==', true)
-        // .orderBy('createdAt')
         .onSnapshot(snapshot => {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
@@ -139,7 +127,6 @@ class Promotions extends Component {
       this.unsubscribeFromFirestore = firestore
         .collection('promos')
         .orderBy('createdAt', 'asc')
-        // .orderBy('createdAt')
         .onSnapshot(snapshot => {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
@@ -155,11 +142,16 @@ class Promotions extends Component {
 
   render() {
     const { promotions, modalVisible } = this.state;
-    const { userType, loggedIn, navigation } = this.props;
+    const { currentUser, loggedIn, navigation, userType } = this.props;
 
     let addNewPromo = <></>;
 
+    let promotionsData = promotions;
+
     if (userType) {
+      promotionsData = promotions.filter(
+        promo => promo.data.companyId === currentUser.uid
+      );
       addNewPromo = (
         <TouchableHighlight
           onPress={() => this.setModalVisible(!modalVisible)}
@@ -179,7 +171,7 @@ class Promotions extends Component {
     return (
       <View style={promos.mainWrap}>
         <FlatList
-          data={promotions}
+          data={promotionsData}
           style={{ backgroundColor: '#ddd', paddingHorizontal: promoPadding }}
           ref={ref => {
             this.flatListRef = ref;

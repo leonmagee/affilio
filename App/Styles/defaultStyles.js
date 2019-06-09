@@ -43,7 +43,6 @@ export const defaults = {
     borderColor: 'rgba(0,0,0,0.25)',
     borderWidth: 1,
     color: '#676867',
-    // flex: 1,
   },
   required: {
     backgroundColor: colors.required,
@@ -57,7 +56,6 @@ export const defaults = {
     color: '#fff',
     fontSize: 15,
     marginBottom: 20,
-    // textAlign: 'center',
   },
   textArea: {
     height: 100,

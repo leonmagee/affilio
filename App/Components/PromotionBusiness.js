@@ -25,7 +25,6 @@ const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
 class PromotionBusiness extends Component {
   constructor(props) {
-    console.log('CONSTRUCTOR IS HAPPENING!');
     super(props);
     const startingDate = props.start
       ? moment(props.start.toDate()).format('MM-DD-YYYY')
@@ -297,7 +296,6 @@ class PromotionBusiness extends Component {
     } else {
       tempImageSource = image;
     }
-    console.log('RENDER TIME!!!!', image, imageSource);
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
