@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 
 class ChangeType extends Component {
   changeUserType = type => {
-    console.log('changine type?', type);
     const { changeUserType, navigation } = this.props;
     changeUserType(type);
 

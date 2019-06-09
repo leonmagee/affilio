@@ -31,9 +31,6 @@ if (deviceWidth > 700) {
 const firestore = RNFirebase.firestore();
 
 const styles = StyleSheet.create({
-  // mainWrap: {
-  //   flex: 1,
-  // },
   navWrap: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
@@ -52,7 +49,6 @@ const styles = StyleSheet.create({
     color: colors.brandPrimary,
   },
   addNewPromoWrap: {
-    // backgroundColor: 'tomato',
     position: 'absolute',
     top: 20,
     left: 20,
@@ -78,7 +74,6 @@ class Promotions extends Component {
     super();
     this.state = {
       promotions: [],
-      // current: 'all',
       modalVisible: false,
     };
   }
@@ -94,20 +89,16 @@ class Promotions extends Component {
   });
 
   scrollToIndex = index => {
-    // let randomIndex = Math.floor(Math.random(Date.now()) * this.props.data.length);
     this.flatListRef.scrollToIndex({ animated: true, index });
   };
 
   componentDidMount = () => {
-    // this.flatListRef.scrollToIndex({ animated: true, index: 0.2 });
-    // this.list.scrollToIndex(3);
-    const { currentUser, userType, loggedIn, filter } = this.props;
+    const { userType, loggedIn, filter } = this.props;
 
     if (filter === 'new') {
       if (userType && loggedIn) {
         this.unsubscribeFromFirestore = firestore
           .collection('promos')
-          // .where('companyId', '==', currentUser.uid)
           .orderBy('createdAt', 'asc')
           .onSnapshot(snapshot => {
             const promotions = snapshot.docs.map(getDocAndId);
@@ -131,7 +122,6 @@ class Promotions extends Component {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
             promotions,
-            // current: 'ex',
           });
         });
     } else if (filter === 'featured') {
@@ -143,7 +133,6 @@ class Promotions extends Component {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
             promotions,
-            // current: 'ex',
           });
         });
     } else if (filter === 'expiring') {
@@ -155,7 +144,6 @@ class Promotions extends Component {
           const promotions = snapshot.docs.map(getDocAndId);
           this.setState({
             promotions,
-            // current: 'ex',
           });
         });
     }
@@ -174,7 +162,6 @@ class Promotions extends Component {
     if (userType) {
       addNewPromo = (
         <TouchableHighlight
-          // onPress={this.addPromo}
           onPress={() => this.setModalVisible(!modalVisible)}
           style={styles.addNewPromoWrap}
           underlayColor="#fff"
@@ -189,22 +176,8 @@ class Promotions extends Component {
       );
     }
 
-    // const scrollKey = 0;
-
     return (
       <View style={promos.mainWrap}>
-        {/* <TouchableHighlight onPress={() => this.scrollToIndex(2)}>
-          <Text
-            style={{
-              padding: 20,
-              color: '#fff',
-              fontSize: 20,
-              backgroundColor: 'tomato',
-            }}
-          >
-            Scroll me
-          </Text>
-        </TouchableHighlight> */}
         <FlatList
           data={promotions}
           style={{ backgroundColor: '#ddd', paddingHorizontal: promoPadding }}
@@ -213,10 +186,7 @@ class Promotions extends Component {
           }}
           getItemLayout={this.getItemLayout}
           keyExtractor={item => item.key}
-          // initialScrollIndex={1}
-          // initialNumToRender={3}
           renderItem={({ item, index }) => {
-            // renderItem={({ item }, scrollKey) => {
             if (userType && loggedIn) {
               return (
                 <PromotionBusiness

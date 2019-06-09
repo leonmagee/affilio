@@ -29,7 +29,6 @@ class LogOutButton extends Component {
   };
 
   render() {
-    const { toggleLoginModal } = this.props;
     return (
       <TouchableHighlight
         onPress={this.firebaseSignOut}
@@ -44,14 +43,10 @@ class LogOutButton extends Component {
 }
 
 const mapStateToProps = state => ({
-  // loginModal: state.loginModal,
   loggedIn: state.loggedIn,
 });
 
 const mapActionsToProps = dispatch => ({
-  // toggleLoginModal(open) {
-  //   dispatch({ type: 'TOGGLE_LOG_IN', payload: open });
-  // },
   setCurrentUser(user) {
     dispatch({ type: 'CURRENT_USER', payload: user });
   },

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View } from 'react-native';
 import {
   createAppContainer,
   createDrawerNavigator,
@@ -16,39 +16,6 @@ import About from './About';
 import Footer from './Footer';
 import ChangeType from './ChangeType';
 import { colors } from '../Styles/variables';
-
-// class SwitchTester extends Component {
-//   routeToUser = () => {
-//     const { navigation } = this.props;
-//     navigation.navigate('User');
-//   };
-
-//   routeToBusiness = () => {
-//     const { navigation } = this.props;
-//     navigation.navigate('Business');
-//   };
-
-//   render() {
-//     return (
-//       <View
-//         style={{
-//           flex: 1,
-//           backgroundColor: '#fff',
-//           padding: 10,
-//           alignItems: 'center',
-//         }}
-//       >
-//         <Text>Switch???</Text>
-//         <TouchableHighlight onPress={this.routeToUser}>
-//           <Text>Users</Text>
-//         </TouchableHighlight>
-//         <TouchableHighlight onPress={this.routeToBusiness}>
-//           <Text>Business</Text>
-//         </TouchableHighlight>
-//       </View>
-//     );
-//   }
-// }
 
 class PromotionsWrap extends Component {
   static router = PromotionsRouter.router;
@@ -89,15 +56,6 @@ const DrawerNavigator = createDrawerNavigator(
         ),
       },
     },
-    // Profile: {
-    //   screen: Profile,
-    //   navigationOptions: {
-    //     drawerLabel: 'Profile',
-    //     drawerIcon: ({ tintColor }) => (
-    //       <Icon name="account" size={26} color={tintColor} />
-    //     ),
-    //   },
-    // },
     Account: {
       screen: Account,
       navigationOptions: {
@@ -218,8 +176,6 @@ const switchNav = createSwitchNavigator(
     initialRouteName: 'Home',
   }
 );
-
-// export default createAppContainer(DrawerNavigator);
 
 const mapStateToProps = state => ({
   userType: state.userType,

@@ -112,7 +112,6 @@ class LoginStart extends Component {
       );
       const user = await getUserDocument(signIn.user._user.uid);
       setCurrentUser(user);
-      // setCurrentUser(signIn.user);
     } catch (error) {
       const signInFail = firebaseError(error);
       this.setState({ signInFail });
@@ -132,24 +131,17 @@ class LoginStart extends Component {
       ]);
 
       if (!result.isCancelled) {
-        // console.log(
-        //   `Login success with permissions: ${result.grantedPermissions.toString()}`
-        // );
-        // get the access token
         const data = await AccessToken.getCurrentAccessToken();
 
         if (data) {
-          // create a new firebase credential with the token
           const credential = await RNFirebase.auth.FacebookAuthProvider.credential(
             data.accessToken
           );
-          // login with credential
           await RNFirebase.auth().signInWithCredential(credential);
 
           const newCurrentUser = await RNFirebase.auth().currentUser;
 
           setCurrentUser(newCurrentUser);
-          // console.log('here is my facebook user...', newCurrentUser);
 
           const { displayName } = newCurrentUser._user;
 
@@ -198,13 +190,10 @@ class LoginStart extends Component {
       });
       setCurrentUser(newCurrentUser);
 
-      console.log('google current user', newCurrentUser);
-
       const { displayName } = newCurrentUser._user;
       createUserProfileDocument(newCurrentUser, { displayName });
     } catch (e) {
       if (e.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
         console.log('sign in was canceled');
       }
       console.error(e);

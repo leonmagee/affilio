@@ -13,9 +13,6 @@ import { connect } from 'react-redux';
 import { CheckBox } from 'react-native-elements';
 import RNFirebase from 'react-native-firebase';
 import { CloseIcon } from './CloseIcon';
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import { GoogleSignin, statusCodes } from 'react-native-google-signin';
-// import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { defaults } from '../Styles/defaultStyles';
 import { colors } from '../Styles/variables';
 import { createUserProfileDocument, firebaseError } from '../Utils/utils';
@@ -50,11 +47,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 15,
     paddingVertical: 15,
-  },
-  checkBoxWrap: {
-    // borderTopWidth: 1,
-    // borderColor: '#eee',
-    // marginTop: 25,
   },
   checkBoxStyle: {
     backgroundColor: 'transparent',
@@ -163,30 +155,18 @@ class SignUpStart extends Component {
       this.setState({ createAccountFail });
       return;
     }
-    // console.log('login works', displayName, email, password);
     try {
       const { user } = await RNFirebase.auth().createUserWithEmailAndPassword(
         email,
         password
       );
-      /**
-       * These should be the same... it will be easier to only pass the
-       * use document to redux - I'm just not sure how else I'm using
-       * the current user...
-       */
-      setCurrentUser(user); // this needs to make account page work
+      setCurrentUser(user);
       createUserProfileDocument(user, { displayName });
     } catch (error) {
       const createAccountFail = firebaseError(error);
       this.setState({ createAccountFail });
     }
   };
-
-  // processSignUp = () => {
-  //   // console.log('login works');
-  //   const { navigation } = this.props;
-  //   navigation.navigate('ProfileSettings');
-  // };
 
   render() {
     const { signInLoading, termsAgree, businessAgree } = this.state;
@@ -239,7 +219,7 @@ class SignUpStart extends Component {
       );
     }
     const checkboxSection = (
-      <View style={styles.checkBoxWrap}>
+      <>
         <CheckBox
           title="I agree to terms and conditions and privacy policy."
           checkedColor={colors.brandPrimary}
@@ -251,7 +231,7 @@ class SignUpStart extends Component {
           onPress={() => this.setState({ termsAgree: !termsAgree })}
         />
         {busCheckBox}
-      </View>
+      </>
     );
     return (
       <View style={defaults.mainWrap}>
@@ -281,7 +261,6 @@ class SignUpStart extends Component {
           <View style={defaults.inputGroup}>
             <TextInput
               name="password"
-              // style={defaults.textInput}
               style={[
                 defaults.textInput,
                 { flex: 1, marginRight: 10 },

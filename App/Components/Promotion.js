@@ -10,13 +10,10 @@ import {
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
-// import RNShare, { ShareSheet, Button } from 'react-native-share';
 import { colors } from '../Styles/variables';
 import { promos } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
-
-// const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry?userId=123&companyName=CopaVida&redirectUrl=https://espn.com';
 
 const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
 
@@ -56,8 +53,8 @@ class Promotion extends Component {
     if (finalUrl) {
       Share.share(
         {
-          message: finalUrl,
-          // url: finalUrl,
+          // message: finalUrl,
+          url: finalUrl,
           title: 'PIEC',
         },
         {
@@ -71,12 +68,7 @@ class Promotion extends Component {
   };
 
   toggleCard = () => {
-    // this.flatListRef.scrollToOffset({ animated: true, offset: 0 });
-    // this.props.ref.scrollToOffset({ animated: true, offset: 0 });
-
-    const { scroll, scrollKey } = this.props;
-
-    const { loggedIn, toggleLoginModal } = this.props;
+    const { scroll, scrollKey, loggedIn, toggleLoginModal } = this.props;
     if (loggedIn) {
       const { cardOpen } = this.state;
       this.setState({
@@ -96,15 +88,13 @@ class Promotion extends Component {
   };
 
   sendEmail = email => {
-    // Linking.openURL(mailto: email)
-    // Linking.openURL(mailto: ${ email })
     const emailAddress = `mailto:${email}`;
     Linking.openURL(emailAddress);
   };
 
   render() {
     const { title, promo, start, end, image, exclusive } = this.props;
-    const { cardOpen, busDetails, userName, finalUrl } = this.state;
+    const { cardOpen, busDetails, userName } = this.state;
     const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
@@ -289,7 +279,6 @@ class Promotion extends Component {
                 <Text style={promos.promotionTitle}>{title}</Text>
                 <View style={promos.iconGroup}>{shareExlusiveIcon}</View>
               </View>
-
               <View style={promos.sectionWrap}>
                 {startingData}
                 <View style={promos.dateRangeWrap}>

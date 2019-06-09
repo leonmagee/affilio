@@ -18,8 +18,6 @@ export const getUserDocument = async uid => {
 export const createUserProfileDocument = async (user, additionalData) => {
   if (!user) return;
 
-  // console.log('user object?', user);
-
   // Get a reference to the place in the database where a user profile might be.
   const userRef = firestore.doc(`users/${user.uid}`);
 

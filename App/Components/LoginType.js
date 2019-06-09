@@ -41,12 +41,6 @@ class LoginType extends Component {
     } else {
       AsyncStorage.setItem('@UserType', 'user');
     }
-    // navigateToPage(data) {
-    //   this.props.goToMenuPage(data)
-    //   this.props.navigation.navigate('MenuPage', data)
-    // }
-    // const data = { name: 'Create Profile' };
-    // navigation.navigate('ProfileSettings', data);
     navigation.navigate('SignUpStart');
   };
 

@@ -1,5 +1,4 @@
 import { createMaterialTopTabNavigator } from 'react-navigation';
-// import PromotionsFeatured from './PromotionsFeatured';
 import PromotionsNew from './PromotionsNew';
 import PromotionsExclusive from './PromotionsExclusive';
 import PromotionsExpiring from './PromotionsExpiring';
@@ -7,7 +6,6 @@ import { colors } from '../Styles/variables';
 
 const SlideNavigator = createMaterialTopTabNavigator(
   {
-    // Featured: PromotionsFeatured,
     New: PromotionsNew,
     Exclusive: PromotionsExclusive,
     Expiring: PromotionsExpiring,

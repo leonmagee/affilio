@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Image,
-  // Linking,
   Modal,
   ScrollView,
   Text,
@@ -43,7 +42,6 @@ class PromotionBusiness extends Component {
       startDateSubmit: props.start,
       endDateSubmit: props.end,
       imageSource: props.image,
-      // imageSource: false,
       imageUpdated: false,
       processing: false,
       showSpinner: true, // just in update modal
@@ -56,14 +54,12 @@ class PromotionBusiness extends Component {
   }
 
   componentDidMount = () => {
-    console.log('COMPONENT DID MOUNT!');
     const { firestore, image } = this.props;
     this.setState({
       imageSource: image,
     });
 
     const { id } = this.state;
-    // const userData = {};
     firestore
       .collection('clicks')
       .where('promo', '==', id)
@@ -277,9 +273,6 @@ class PromotionBusiness extends Component {
   };
 
   render() {
-    const testDateStart = new Date();
-    // const testDate = moment(testDateStart).format('MM-DD-YYYY');
-    // console.log('here is a test date?', testDate);
     const { promo, url, start, end, image } = this.props;
     const {
       promotionTitle,
@@ -305,7 +298,7 @@ class PromotionBusiness extends Component {
       tempImageSource = image;
     }
     console.log('RENDER TIME!!!!', image, imageSource);
-    const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : ''; // ('MMMM Do YYYY')
+    const startDate = start ? moment(start.toDate()).format('MM/DD/YYYY') : '';
     const endDate = end ? moment(end.toDate()).format('MM/DD/YYYY') : '';
     const imageUrl = image ? { uri: image } : placeholderUrl;
 
@@ -334,7 +327,7 @@ class PromotionBusiness extends Component {
     let shareData = <></>;
 
     const dataArray = [];
-    Object.keys(newObj).forEach(function(key, index) {
+    Object.keys(newObj).forEach(function(key) {
       dataArray.push({ user: key, value: newObj[key] });
     });
 
@@ -366,10 +359,6 @@ class PromotionBusiness extends Component {
         </View>
       );
     }
-
-    // snapshot.docs.map(click => {
-    //   console.log('click item', click.id, click.data());
-    // });
 
     let toggleArea = <></>;
     if (cardOpen) {
@@ -414,7 +403,6 @@ class PromotionBusiness extends Component {
           }}
           style={defaults.imagePreview}
           source={{ uri: tempImageSource }}
-          // source={imageUrl}
         />
       );
     }

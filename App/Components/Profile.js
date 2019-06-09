@@ -63,7 +63,6 @@ class Profile extends Component {
       .then(result => {
         const data = result.data();
         this.setState({ ...data, triggerActivity: false });
-        console.log(this.state);
       });
   }
 
@@ -80,9 +79,9 @@ class Profile extends Component {
 
     ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        // console.log('User cancelled image picker');
       } else if (response.error) {
-        console.error('ImagePicker Error: ', response.error);
+        // console.error('ImagePicker Error: ', response.error);
       } else {
         this.setState({
           image: response.uri,
@@ -147,17 +146,12 @@ class Profile extends Component {
           const filePath = image.replace('file:', '');
           let uploadBlob = false;
           fs.readFile(filePath, 'base64')
-            .then(data =>
-              // console.log('step 1');
-              Blob.build(data, { type: `${mime};BASE64` })
-            )
+            .then(data => Blob.build(data, { type: `${mime};BASE64` }))
             .then(blob => {
-              // console.log('step 2');
               uploadBlob = blob;
               return imageRef.put(blob._ref, { contentType: mime });
             })
             .then(() => {
-              // console.log('step 3');
               uploadBlob.close();
               return imageRef.getDownloadURL();
             })
@@ -166,7 +160,7 @@ class Profile extends Component {
               postRef.update({ image: firebaseUrl });
               this.setState({
                 triggerActivity: false,
-                imageSource: firebaseUrl,
+                // imageSource: firebaseUrl,
               });
             })
             .catch(error => {
@@ -183,8 +177,6 @@ class Profile extends Component {
     this.setState({ triggerActivity: false });
   };
 
-  // this.afs.collection('[your collection]').doc('[your ID]').set([your document]);
-
   render() {
     const { userType, navigation } = this.props;
     const {
@@ -193,8 +185,6 @@ class Profile extends Component {
       city,
       state,
       zip,
-      // country,
-      // phone,
       email,
       website,
       facebook,

@@ -42,8 +42,6 @@ class LoginProfile extends Component {
   };
 
   updateBusinessInfo = () => {
-    // const url = 'https://levon.io';
-    // Linking.openURL(url);
     const {
       address,
       address2,
@@ -58,7 +56,6 @@ class LoginProfile extends Component {
       twitter,
       instagram,
     } = this.state;
-    // console.log('profile updates???', name, address, city, state, zip, phone);
     const { currentUser } = this.props;
     const busDetails = {
       address,
@@ -75,10 +72,6 @@ class LoginProfile extends Component {
       instagram,
     };
     const busDetailsSave = JSON.stringify(busDetails);
-    // console.log(busDetailsSave);
-    /**
-     * validation function - make sure items aren't empty?
-     */
     if (address && city && state && zip && phone) {
       AsyncStorage.setItem('@BusinessDetails', busDetailsSave);
     }
@@ -87,17 +80,15 @@ class LoginProfile extends Component {
       .doc(currentUser.uid)
       .set(busDetails)
       .then(result => {
-        console.log(result);
+        // console.log(result);
       })
       .catch(error => {
         console.error('errors?', error);
       });
   };
 
-  // this.afs.collection('[your collection]').doc('[your ID]').set([your document]);
-
   render() {
-    const { userType, loggedIn, navigation } = this.props;
+    const { userType } = this.props;
     const {
       address,
       address2,

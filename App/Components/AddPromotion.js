@@ -46,9 +46,7 @@ class AddPromotion extends Component {
   };
 
   setStartingDate = startingDate => {
-    console.log('we have a starting date?', startingDate);
     const startDateSubmit = new Date(startingDate);
-    console.log('we have a submit date?', startDateSubmit);
     this.setState({
       startingDate,
       startDateSubmit,
@@ -170,17 +168,12 @@ class AddPromotion extends Component {
       const filePath = imageSource.replace('file:', '');
       let uploadBlob = false;
       fs.readFile(filePath, 'base64')
-        .then(data =>
-          // console.log('step 1');
-          Blob.build(data, { type: `${mime};BASE64` })
-        )
+        .then(data => Blob.build(data, { type: `${mime};BASE64` }))
         .then(blob => {
-          // console.log('step 2');
           uploadBlob = blob;
           return imageRef.put(blob._ref, { contentType: mime });
         })
         .then(() => {
-          // console.log('step 3');
           uploadBlob.close();
           return imageRef.getDownloadURL();
         })
@@ -202,12 +195,6 @@ class AddPromotion extends Component {
             .collection('promos')
             .add(promotion)
             .then(result => {
-              console.log('new promo created?', result);
-
-              // postRef.update({ image: firebaseUrl });
-
-              // finalize by restting state
-              // this should redirect instead - use nav method?
               this.setState({
                 promotionTitle: '',
                 promotionDetails: '',
@@ -219,7 +206,7 @@ class AddPromotion extends Component {
               });
 
               modalToggle();
-              navigation.navigate('New'); // try doing home instead
+              navigation.navigate('New');
             });
         })
         .catch(error => {
@@ -302,7 +289,6 @@ class AddPromotion extends Component {
             />
             <View style={defaults.datePickerWrap}>
               <DatePicker
-                // style={[defaults.datePicker, { marginRight: 10 }]}
                 style={[
                   defaults.datePicker,
                   { marginRight: 10 },
