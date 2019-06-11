@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
@@ -36,6 +37,7 @@ class PromotionBusiness extends Component {
       promotionTitle: props.title,
       promotionDetails: props.promo,
       promoUrl: props.url,
+      exclusive: props.exclusive,
       startingDate,
       endingDate: moment(props.end.toDate()).format('MM-DD-YYYY'),
       startDateSubmit: props.start,
@@ -166,6 +168,7 @@ class PromotionBusiness extends Component {
       promoUrl,
       imageSource,
       imageUpdated,
+      exclusive,
     } = this.state;
 
     if (promotionTitle === '') {
@@ -180,7 +183,17 @@ class PromotionBusiness extends Component {
     // if (!imageSource) {
     //   this.setState({ imageSourceReq: true });
     // }
-    if (
+    if (exclusive) {
+      if (
+        promotionTitle === '' ||
+        promotionDetails === '' ||
+        !startDateSubmit ||
+        !endDateSubmit ||
+        !imageSource
+      ) {
+        return;
+      }
+    } else if (
       promotionTitle === '' ||
       promotionDetails === '' ||
       promoUrl === '' ||
@@ -238,6 +251,7 @@ class PromotionBusiness extends Component {
                 end: endDateSubmit,
                 updatedAt: new Date(),
                 image: firebaseUrl,
+                exclusive,
               })
               .then(() => {
                 this.setState({
@@ -259,6 +273,7 @@ class PromotionBusiness extends Component {
             start: startDateSubmit,
             end: endDateSubmit,
             updatedAt: new Date(),
+            exclusive,
           })
           .then(() => {
             this.setState({
@@ -280,6 +295,7 @@ class PromotionBusiness extends Component {
       modalVisible,
       promotionDetails,
       promoUrl,
+      exclusive,
       imageSource,
       processing,
       cardOpen,
@@ -405,6 +421,46 @@ class PromotionBusiness extends Component {
       );
     }
 
+    let urlField = <></>;
+    if (!exclusive) {
+      urlField = (
+        <TextInput
+          style={[defaults.textInput, promoUrlReq && defaults.required]}
+          value={promoUrl}
+          autoCapitalize="none"
+          onChangeText={e => {
+            this.updateTextInput(e, 'promoUrl');
+          }}
+          placeholder="Promotion URL"
+        />
+      );
+    }
+
+    let linkExclusiveArea;
+    if (exclusive) {
+      linkExclusiveArea = (
+        <View style={promos.sectionWrap}>
+          <View style={promos.iconWrap}>
+            <Icon name="star" size={28} color={colors.brandOrange} />
+          </View>
+          <View style={promos.dateRangeWrap}>
+            <Text style={promos.promoText}>Exclusive Promotion</Text>
+          </View>
+        </View>
+      );
+    } else {
+      linkExclusiveArea = (
+        <View style={promos.sectionWrap}>
+          <View style={promos.iconWrap}>
+            <Icon name="link" size={28} color={colors.brandPrimary} />
+          </View>
+          <View style={promos.dateRangeWrap}>
+            <Text style={promos.linkUrl}>{url}</Text>
+          </View>
+        </View>
+      );
+    }
+
     return (
       <TouchableHighlight underlayColor="transparent" onPress={this.toggleCard}>
         <View style={promos.promotionWrap}>
@@ -436,14 +492,7 @@ class PromotionBusiness extends Component {
               </View>
               <Text style={promos.promoText}>{promo}</Text>
             </View>
-            <View style={promos.sectionWrap}>
-              <View style={promos.iconWrap}>
-                <Icon name="link" size={28} color={colors.brandPrimary} />
-              </View>
-              <View style={promos.dateRangeWrap}>
-                <Text style={promos.linkUrl}>{url}</Text>
-              </View>
-            </View>
+            {linkExclusiveArea}
             {toggleArea}
           </View>
 
@@ -483,15 +532,19 @@ class PromotionBusiness extends Component {
                   }}
                   placeholder="Promotion Details"
                 />
-                <TextInput
-                  style={[defaults.textInput, promoUrlReq && defaults.required]}
-                  value={promoUrl}
-                  autoCapitalize="none"
-                  onChangeText={e => {
-                    this.updateTextInput(e, 'promoUrl');
-                  }}
-                  placeholder="Promotion URL"
-                />
+                <View style={defaults.checkBoxWrap}>
+                  <CheckBox
+                    title="Exclusive Promotion"
+                    checkedColor={colors.brandPrimary}
+                    size={35}
+                    uncheckedColor="#bbb"
+                    containerStyle={defaults.checkBoxStylePromo}
+                    textStyle={defaults.checkBoxLabelPromo}
+                    checked={exclusive}
+                    onPress={() => this.setState({ exclusive: !exclusive })}
+                  />
+                </View>
+                {urlField}
                 <View style={defaults.datePickerWrap}>
                   <DatePicker
                     style={[defaults.datePicker, { marginRight: 10 }]}

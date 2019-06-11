@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 import RNFirebase from 'react-native-firebase';
 import DatePicker from 'react-native-datepicker';
 import ImagePicker from 'react-native-image-picker';
@@ -36,6 +37,7 @@ class AddPromotion extends Component {
       imageSource: false,
       imageSourceReq: false,
       processing: false,
+      exclusive: false,
     };
   }
 
@@ -101,6 +103,7 @@ class AddPromotion extends Component {
       endDateSubmit,
       imageSource,
       promoUrl,
+      exclusive,
     } = this.state;
 
     const { navigation } = this.props;
@@ -124,7 +127,17 @@ class AddPromotion extends Component {
       this.setState({ imageSourceReq: true });
     }
 
-    if (
+    if (exclusive) {
+      if (
+        promotionTitle === '' ||
+        promotionDetails === '' ||
+        !startDateSubmit ||
+        !endDateSubmit ||
+        !imageSource
+      ) {
+        return;
+      }
+    } else if (
       promotionTitle === '' ||
       promotionDetails === '' ||
       promoUrl === '' ||
@@ -189,6 +202,7 @@ class AddPromotion extends Component {
             createdAt: currentDate,
             companyId: userId,
             image: firebaseUrl,
+            exclusive,
           };
 
           firestore
@@ -232,6 +246,7 @@ class AddPromotion extends Component {
       endingDate,
       endingDateReq,
       processing,
+      exclusive,
     } = this.state;
     const { loggedIn } = this.props;
 
@@ -239,6 +254,20 @@ class AddPromotion extends Component {
     if (imageSource) {
       imagePreview = (
         <Image style={defaults.imagePreview} source={{ uri: imageSource }} />
+      );
+    }
+    let urlField = <></>;
+    if (!exclusive) {
+      urlField = (
+        <TextInput
+          style={[defaults.textInput, promoUrlReq && defaults.required]}
+          value={promoUrl}
+          autoCapitalize="none"
+          onChangeText={e => {
+            this.updateTextInput(e, 'promoUrl');
+          }}
+          placeholder="Promotion URL"
+        />
       );
     }
 
@@ -278,15 +307,19 @@ class AddPromotion extends Component {
               }}
               placeholder="Promotion Details"
             />
-            <TextInput
-              style={[defaults.textInput, promoUrlReq && defaults.required]}
-              value={promoUrl}
-              autoCapitalize="none"
-              onChangeText={e => {
-                this.updateTextInput(e, 'promoUrl');
-              }}
-              placeholder="Promotion URL"
-            />
+            <View style={defaults.checkBoxWrap}>
+              <CheckBox
+                title="Exclusive Promotion"
+                checkedColor={colors.brandPrimary}
+                size={35}
+                uncheckedColor="#bbb"
+                containerStyle={defaults.checkBoxStylePromo}
+                textStyle={defaults.checkBoxLabelPromo}
+                checked={exclusive}
+                onPress={() => this.setState({ exclusive: !exclusive })}
+              />
+            </View>
+            {urlField}
             <View style={defaults.datePickerWrap}>
               <DatePicker
                 style={[

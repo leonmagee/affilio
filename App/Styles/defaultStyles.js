@@ -194,7 +194,36 @@ export const defaults = {
   },
   termsText: {
     color: '#777',
-    fontSize: 18,
+    fontSize: 13,
+    paddingBottom: 15,
+  },
+  checkBoxWrap: {
+    // backgroundColor: 'tomato',
+  },
+  checkBoxStyle: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    paddingLeft: 0,
+    paddingTop: 13,
+    paddingBottom: 15,
+    borderTopWidth: 1,
+    borderColor: '#eee',
+  },
+  checkBoxStylePromo: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    paddingLeft: 0,
+    marginTop: -15,
+    // paddingTop: -40,
+    // paddingBottom: 15,
+    // borderTopWidth: 1,
+    // borderColor: '#eee',
+  },
+  checkBoxLabel: {
+    color: '#333',
+  },
+  checkBoxLabelPromo: {
+    color: '#555',
   },
 };
 
