@@ -15,7 +15,9 @@ import { promos } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
-const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
+// const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
+const baseUrl =
+  'https://us-central1-piec-1192e.cloudfunctions.net/addDataEntry';
 
 class Promotion extends Component {
   constructor(props) {

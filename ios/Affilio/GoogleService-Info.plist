@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>673280461397-iftarecrrumjgupp93r8emliqq2qb36e.apps.googleusercontent.com</string>
+	<string>82804845178-6vge7i2jmj03m9r6qqnmsbjoc1n2hmer.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.673280461397-iftarecrrumjgupp93r8emliqq2qb36e</string>
+	<string>com.googleusercontent.apps.82804845178-6vge7i2jmj03m9r6qqnmsbjoc1n2hmer</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAdAWkHr7gO5HPuitePjnTcTa6H0S1y-Ow</string>
+	<string>AIzaSyDsGP7mT-gH9zjyaEMvXzQ0arAO3nlWTds</string>
 	<key>GCM_SENDER_ID</key>
-	<string>673280461397</string>
+	<string>82804845178</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>affilio.reactjs.native</string>
+	<string>piec.piec</string>
 	<key>PROJECT_ID</key>
-	<string>affilio</string>
+	<string>piec-1192e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>affilio.appspot.com</string>
+	<string>piec-1192e.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:673280461397:ios:3273a95356c74a0c</string>
+	<string>1:82804845178:ios:debd0302df7c38c1</string>
 	<key>DATABASE_URL</key>
-	<string>https://affilio.firebaseio.com</string>
+	<string>https://piec-1192e.firebaseio.com</string>
 </dict>
 </plist>

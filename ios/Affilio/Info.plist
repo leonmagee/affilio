@@ -27,9 +27,9 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>affilio.reactjs.native</string>
+				<string>piec.piec</string>
 				<string>fb1278154052343256</string>
-				<string>com.googleusercontent.apps.673280461397-iftarecrrumjgupp93r8emliqq2qb36e</string>
+				<string>com.googleusercontent.apps.82804845178-6vge7i2jmj03m9r6qqnmsbjoc1n2hmer</string>
 			</array>
 		</dict>
 	</array>

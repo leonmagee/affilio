@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -76,6 +77,7 @@ class Promotions extends Component {
       promotions: [],
       modalVisible: false,
     };
+    this._isMounted = false;
   }
 
   setModalVisible(visible) {
@@ -92,8 +94,24 @@ class Promotions extends Component {
     this.flatListRef.scrollToIndex({ animated: true, index });
   };
 
-  componentDidMount = () => {
-    const { filter } = this.props;
+  componentWillUnmount = () => {
+    this._isMounted = false;
+  };
+
+  componentDidMount = async () => {
+    this._isMounted = true;
+    const { filter, navigation, userType } = this.props;
+    if (this._isMounted) {
+      if (userType) {
+        // maybe user uid instead of 'skip' so it happens each
+        // time for new user???
+        const value = await AsyncStorage.getItem('@ProfileSkip');
+        if (value !== 'skipd') {
+          await AsyncStorage.setItem('@ProfileSkip', 'skipd');
+          navigation.navigate('Profile');
+        }
+      }
+    }
 
     if (filter === 'new') {
       this.unsubscribeFromFirestore = firestore

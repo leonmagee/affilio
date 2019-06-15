@@ -315,13 +315,8 @@ class LoginStart extends Component {
   }
 }
 
-// module.exports = LoginStart;
-
 const mapStateToProps = state => ({
-  // userType: state.userType,
-  // loginModal: state.loginModal,
   loggedIn: state.loggedIn,
-  // currentUser: state.currentUser,
 });
 
 const mapActionsToProps = dispatch => ({
@@ -331,15 +326,6 @@ const mapActionsToProps = dispatch => ({
   changeUserType(type) {
     dispatch({ type: 'USER_TYPE', payload: type });
   },
-  setCurrentUser(user) {
-    const newUser = dispatch({ type: 'CURRENT_USER', payload: user });
-  },
-  // setBusinessDetails(details) {
-  //   dispatch({ type: 'BUSINESS_DETAILS', payload: details });
-  // },
-  // toggleLoginModal(open) {
-  //   dispatch({ type: 'TOGGLE_LOG_IN', payload: open });
-  // },
 });
 
 module.exports = connect(

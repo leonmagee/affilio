@@ -177,6 +177,11 @@ class Profile extends Component {
     this.setState({ triggerActivity: false });
   };
 
+  navigateHome = () => {
+    const { navigation } = this.props;
+    return navigation.navigate('Home');
+  };
+
   render() {
     const { userType, navigation } = this.props;
     const {
@@ -342,18 +347,25 @@ class Profile extends Component {
                   onPress={this.imageSelect}
                   underlayColor={colors.lightGray}
                 >
-                  <Text style={defaults.buttonText}>Logo/Profile</Text>
+                  <Text style={defaults.buttonText}>Logo</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
-                  style={[
-                    defaults.buttonStyle,
-                    defaults.blueButton,
-                    { marginLeft: 10 },
-                  ]}
+                  style={[defaults.buttonStyle, defaults.blueButton]}
                   onPress={this.updateBusinessInfo}
                   underlayColor={colors.brandPrimary}
                 >
                   <Text style={defaults.buttonText}>Update</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={[
+                    defaults.buttonStyle,
+                    defaults.redButton,
+                    { marginLeft: 10 },
+                  ]}
+                  onPress={this.navigateHome}
+                  underlayColor={colors.brandSecond}
+                >
+                  <Text style={defaults.buttonText}>Skip</Text>
                 </TouchableHighlight>
               </View>
               {imagePreview}
