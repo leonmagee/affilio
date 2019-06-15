@@ -173,6 +173,10 @@ class Profile extends Component {
       .catch(error => {
         console.error('errors? xxx', error);
         this.setState({ triggerActivity: false });
+      })
+      .then(() => {
+        // nav home
+        this.navigateHome();
       });
     this.setState({ triggerActivity: false });
   };

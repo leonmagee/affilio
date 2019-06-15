@@ -65,15 +65,15 @@ const DrawerNavigator = createDrawerNavigator(
         ),
       },
     },
-    Type: {
-      screen: ChangeType,
-      navigationOptions: {
-        drawerLabel: 'Type',
-        drawerIcon: ({ tintColor }) => (
-          <Icon name="account-check" size={26} color={tintColor} />
-        ),
-      },
-    },
+    // Type: {
+    //   screen: ChangeType,
+    //   navigationOptions: {
+    //     drawerLabel: 'Type',
+    //     drawerIcon: ({ tintColor }) => (
+    //       <Icon name="account-check" size={26} color={tintColor} />
+    //     ),
+    //   },
+    // },
     About: {
       screen: About,
       navigationOptions: {
@@ -130,15 +130,15 @@ const DrawerNavigatorBus = createDrawerNavigator(
         ),
       },
     },
-    Type: {
-      screen: ChangeType,
-      navigationOptions: {
-        drawerLabel: 'Type',
-        drawerIcon: ({ tintColor }) => (
-          <Icon name="account-check" size={26} color={tintColor} />
-        ),
-      },
-    },
+    // Type: {
+    //   screen: ChangeType,
+    //   navigationOptions: {
+    //     drawerLabel: 'Type',
+    //     drawerIcon: ({ tintColor }) => (
+    //       <Icon name="account-check" size={26} color={tintColor} />
+    //     ),
+    //   },
+    // },
     About: {
       screen: About,
       navigationOptions: {

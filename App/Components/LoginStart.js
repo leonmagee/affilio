@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
@@ -82,18 +82,18 @@ class LoginStart extends Component {
   changeUserType = type => {
     const { changeUserType, navigation } = this.props;
     changeUserType(type);
-    if (type) {
-      AsyncStorage.setItem('@UserType', 'business');
-    } else {
-      AsyncStorage.setItem('@UserType', 'user');
-    }
+    // if (type) {
+    //   AsyncStorage.setItem('@UserType', 'business');
+    // } else {
+    //   AsyncStorage.setItem('@UserType', 'user');
+    // }
     navigation.navigate('SignUpStart');
   };
 
   processLogin = async () => {
     this.setState({ signInFail: false, emailReq: false, passwordReq: false });
     const { email, password } = this.state;
-    const { setCurrentUser } = this.props;
+    const { changeUserType, setCurrentUser } = this.props;
     if (email === '') {
       this.setState({ emailReq: true });
     }
@@ -111,6 +111,15 @@ class LoginStart extends Component {
         password
       );
       const user = await getUserDocument(signIn.user._user.uid);
+      // console.log('user with new data???', user);
+      // if (user.isBusiness) {
+      //   console.log('yes it works?', user.isBusiness, user);
+      //   changeUserType(1);
+      // }
+      // else {
+      //   console.log('no it doesnt', user.isBusiness, user);
+      //   // changeUserType(1);
+      // }
       setCurrentUser(user);
     } catch (error) {
       const signInFail = firebaseError(error);
@@ -325,6 +334,9 @@ const mapActionsToProps = dispatch => ({
   },
   changeUserType(type) {
     dispatch({ type: 'USER_TYPE', payload: type });
+  },
+  setCurrentUser(user) {
+    dispatch({ type: 'CURRENT_USER', payload: user });
   },
 });
 
