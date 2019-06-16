@@ -12,6 +12,7 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNFirebase from 'react-native-firebase';
+import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import { colors } from '../Styles/variables';
 import { defaults } from '../Styles/defaultStyles';
@@ -98,6 +99,7 @@ class Profile extends Component {
 
   updateBusinessInfo = () => {
     this.setState({ triggerActivity: true });
+
     const {
       address,
       details,
@@ -126,6 +128,9 @@ class Profile extends Component {
       image,
     };
     setBusinessDetails(busDetails);
+
+    const userString = `user-${currentUser.uid}`;
+    AsyncStorage.setItem('@BusDocSet', userString);
 
     firestore
       .collection('businesses')

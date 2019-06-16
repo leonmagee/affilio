@@ -137,6 +137,10 @@ export const defaults = {
     flex: 1,
     justifyContent: 'center',
   },
+  processingWrapSmall: {
+    justifyContent: 'center',
+    padding: 10,
+  },
   hiddenItem: {
     padding: 5,
     opacity: 0,

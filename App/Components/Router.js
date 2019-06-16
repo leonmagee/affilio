@@ -14,7 +14,7 @@ import Profile from './Profile';
 import Account from './Account';
 import About from './About';
 import Footer from './Footer';
-import ChangeType from './ChangeType';
+// import ChangeType from './ChangeType';
 import { colors } from '../Styles/variables';
 
 class PromotionsWrap extends Component {
@@ -65,15 +65,6 @@ const DrawerNavigator = createDrawerNavigator(
         ),
       },
     },
-    // Type: {
-    //   screen: ChangeType,
-    //   navigationOptions: {
-    //     drawerLabel: 'Type',
-    //     drawerIcon: ({ tintColor }) => (
-    //       <Icon name="account-check" size={26} color={tintColor} />
-    //     ),
-    //   },
-    // },
     About: {
       screen: About,
       navigationOptions: {
@@ -130,15 +121,6 @@ const DrawerNavigatorBus = createDrawerNavigator(
         ),
       },
     },
-    // Type: {
-    //   screen: ChangeType,
-    //   navigationOptions: {
-    //     drawerLabel: 'Type',
-    //     drawerIcon: ({ tintColor }) => (
-    //       <Icon name="account-check" size={26} color={tintColor} />
-    //     ),
-    //   },
-    // },
     About: {
       screen: About,
       navigationOptions: {

@@ -15,7 +15,6 @@ import { promos } from '../Styles/defaultStyles';
 
 const placeholderUrl = require('../Assets/Images/placeholder.jpg');
 
-// const baseUrl = 'https://us-central1-affilio.cloudfunctions.net/addDataEntry';
 const baseUrl =
   'https://us-central1-piec-1192e.cloudfunctions.net/addDataEntry';
 
@@ -79,15 +78,16 @@ class Promotion extends Component {
   };
 
   toggleCard = () => {
-    const { scroll, scrollKey, loggedIn, toggleLoginModal } = this.props;
+    const { scroll, scrollKey, loggedIn } = this.props;
     if (loggedIn) {
       const { cardOpen } = this.state;
       this.setState({
         cardOpen: !cardOpen,
       });
-    } else {
-      toggleLoginModal(true);
     }
+    // else {
+    //   toggleLoginModal(true);
+    // }
 
     setTimeout(function() {
       scroll(scrollKey);
@@ -316,13 +316,13 @@ const mapStateToProps = state => ({
   currentUser: state.currentUser,
 });
 
-const mapActionsToProps = dispatch => ({
-  toggleLoginModal(open) {
-    dispatch({ type: 'TOGGLE_LOG_IN', payload: open });
-  },
-});
+// const mapActionsToProps = dispatch => ({
+//   toggleLoginModal(open) {
+//     dispatch({ type: 'TOGGLE_LOG_IN', payload: open });
+//   },
+// });
 
 module.exports = connect(
-  mapStateToProps,
-  mapActionsToProps
+  mapStateToProps
+  // mapActionsToProps
 )(Promotion);

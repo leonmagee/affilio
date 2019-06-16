@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-// import AsyncStorage from '@react-native-community/async-storage';
 import RNFirebase from 'react-native-firebase';
 import { getUserDocument } from './App/Utils/utils';
 import Router from './App/Components/Router';
@@ -43,18 +42,6 @@ class App extends Component {
   async componentDidMount() {
     const { changeUserType, setCurrentUser, userLoggedIn } = this.props;
     try {
-      /**
-       * user type will have nothing to do with async storage - this will
-       * be set when you login...
-       * only users with email / password can be business users.
-       */
-      // const value = await AsyncStorage.getItem('@UserType');
-      // if (value === 'business') {
-      //   changeUserType(1);
-      // } else {
-      //   changeUserType(0);
-      // }
-
       const { currentUser } = RNFirebase.auth();
       if (currentUser) {
         userLoggedIn(1);
@@ -82,7 +69,6 @@ class App extends Component {
 
     this.unsubscribeFromAuth = RNFirebase.auth().onAuthStateChanged(user => {
       if (user) {
-        // console.log('authy state change user?', user);
         getUserDocument(user._user.uid).then(result => {
           if (result.isBusiness) {
             changeUserType(1);
@@ -96,13 +82,12 @@ class App extends Component {
   }
 
   componentWillUnmount = () => {
-    // this._isMounted = false;
     this.unsubscribeFromAuth();
   };
 
   render() {
     const { backgroundColor, loading } = this.state;
-    const { loggedIn, userType } = this.props;
+    const { loggedIn } = this.props;
 
     let mainContent = (
       <View style={defaults.processingWrap}>

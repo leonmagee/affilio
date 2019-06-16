@@ -91,9 +91,14 @@ class LoginStart extends Component {
   };
 
   processLogin = async () => {
-    this.setState({ signInFail: false, emailReq: false, passwordReq: false });
+    this.setState({
+      signInFail: false,
+      emailReq: false,
+      passwordReq: false,
+      signInLoading: true,
+    });
     const { email, password } = this.state;
-    const { changeUserType, setCurrentUser } = this.props;
+    const { setCurrentUser } = this.props;
     if (email === '') {
       this.setState({ emailReq: true });
     }
@@ -112,9 +117,6 @@ class LoginStart extends Component {
       );
       const user = await getUserDocument(signIn.user._user.uid);
       setCurrentUser(user);
-      // if (user.isBusiness) {
-      //   changeUserType(1);
-      // }
     } catch (error) {
       const signInFail = firebaseError(error);
       this.setState({ signInFail });
@@ -221,7 +223,7 @@ class LoginStart extends Component {
     let loginActivity = <></>;
     if (signInLoading) {
       loginActivity = (
-        <View style={defaults.processingWrap}>
+        <View style={defaults.processingWrapSmall}>
           <ActivityIndicator size="large" color={colors.activity} />
         </View>
       );

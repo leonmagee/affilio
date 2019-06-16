@@ -143,10 +143,12 @@ class PromotionBusiness extends Component {
 
   toggleCard = () => {
     const { scroll, scrollKey } = this.props;
-    const { cardOpen } = this.state;
-    this.setState({
-      cardOpen: !cardOpen,
-    });
+    const { cardOpen, exclusive } = this.state;
+    if (!exclusive) {
+      this.setState({
+        cardOpen: !cardOpen,
+      });
+    }
     setTimeout(function() {
       scroll(scrollKey);
     }, 100);

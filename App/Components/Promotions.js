@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import RNFirebase from 'react-native-firebase';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-community/async-storage';
 import { colors } from '../Styles/variables';
 import Promotion from './Promotion';
 import PromotionBusiness from './PromotionBusiness';
@@ -94,7 +95,21 @@ class Promotions extends Component {
   };
 
   componentDidMount = async () => {
-    const { filter } = this.props;
+    const { currentUser, filter, navigation, userType } = this.props;
+
+    if (userType && currentUser) {
+      const userString = `user-${currentUser.uid}`;
+      console.log('user string?', userString);
+      AsyncStorage.getItem('@BusDocSet')
+        .then(result => {
+          if (result !== userString) {
+            navigation.navigate('Profile');
+          }
+        })
+        .catch(error => {
+          console.log('no promise return>???', error);
+        });
+    }
 
     if (filter === 'new') {
       this.unsubscribeFromFirestore = firestore
@@ -247,6 +262,7 @@ const mapStateToProps = state => ({
   userType: state.userType,
   loggedIn: state.loggedIn,
   currentUser: state.currentUser,
+  // busProfile: state.busProfile,
 });
 
 module.exports = connect(mapStateToProps)(Promotions);

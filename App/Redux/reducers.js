@@ -8,7 +8,7 @@ import { userTypeReducer } from './userTypeReducer';
 import { loginModalReducer } from './loginModalReducer';
 import { currentUserReducer } from './currentUserReducer';
 import { businessDetailsReducer } from './businessDetailsReducer';
-
+// import { busProfileReducer } from './busProfileReducer';
 /**
  * Combine Reducers
  */
@@ -18,4 +18,5 @@ export const reducer = combineReducers({
   userType: userTypeReducer,
   currentUser: currentUserReducer,
   businessDetails: businessDetailsReducer,
+  // busProfile: busProfileReducer,
 });
