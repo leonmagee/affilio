@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import { defaults } from '../Styles/defaultStyles';
 import LogOutButton from './LogOutButton';
@@ -30,15 +30,15 @@ class Account extends Component {
     };
   }
 
-  changeUserType = type => {
-    const { changeUserType } = this.props;
-    changeUserType(type);
-    if (type) {
-      AsyncStorage.setItem('@UserType', 'business');
-    } else {
-      AsyncStorage.setItem('@UserType', 'user');
-    }
-  };
+  // changeUserType = type => {
+  //   const { changeUserType } = this.props;
+  //   changeUserType(type);
+  //   // if (type) {
+  //   //   AsyncStorage.setItem('@UserType', 'business');
+  //   // } else {
+  //   //   AsyncStorage.setItem('@UserType', 'user');
+  //   // }
+  // };
 
   render() {
     const { navigation } = this.props;
@@ -74,13 +74,13 @@ const mapStateToProps = state => ({
   loggedIn: state.loggedIn,
 });
 
-const mapActionsToProps = dispatch => ({
-  changeUserType(type) {
-    dispatch({ type: 'USER_TYPE', payload: type });
-  },
-});
+// const mapActionsToProps = dispatch => ({
+//   changeUserType(type) {
+//     dispatch({ type: 'USER_TYPE', payload: type });
+//   },
+// });
 
 module.exports = connect(
-  mapStateToProps,
-  mapActionsToProps
+  mapStateToProps
+  // mapActionsToProps
 )(Account);

@@ -258,7 +258,7 @@ export const promos = {
     justifyContent: 'space-between',
   },
   promotionTitle: {
-    fontSize: 24,
+    fontSize: 21,
     color: '#111',
     fontFamily: 'Lato-Bold',
   },

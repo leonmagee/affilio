@@ -117,7 +117,10 @@ class SignUpStart extends Component {
         password
       );
       setCurrentUser(user);
-      createUserProfileDocument(user, { displayName });
+      createUserProfileDocument(user, {
+        displayName,
+        isBusiness: userType,
+      });
     } catch (error) {
       const createAccountFail = firebaseError(error);
       this.setState({ createAccountFail });

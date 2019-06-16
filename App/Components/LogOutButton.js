@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
 class LogOutButton extends Component {
   firebaseSignOut = () => {
     RNFirebase.auth().signOut();
-    const { setCurrentUser } = this.props;
+    const { changeUserType, setCurrentUser } = this.props;
+    changeUserType(0);
     setCurrentUser(false);
   };
 
@@ -49,6 +50,9 @@ const mapStateToProps = state => ({
 const mapActionsToProps = dispatch => ({
   setCurrentUser(user) {
     dispatch({ type: 'CURRENT_USER', payload: user });
+  },
+  changeUserType(type) {
+    dispatch({ type: 'USER_TYPE', payload: type });
   },
 });
 

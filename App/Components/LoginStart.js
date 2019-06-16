@@ -111,16 +111,10 @@ class LoginStart extends Component {
         password
       );
       const user = await getUserDocument(signIn.user._user.uid);
-      // console.log('user with new data???', user);
+      setCurrentUser(user);
       // if (user.isBusiness) {
-      //   console.log('yes it works?', user.isBusiness, user);
       //   changeUserType(1);
       // }
-      // else {
-      //   console.log('no it doesnt', user.isBusiness, user);
-      //   // changeUserType(1);
-      // }
-      setCurrentUser(user);
     } catch (error) {
       const signInFail = firebaseError(error);
       this.setState({ signInFail });
@@ -154,7 +148,10 @@ class LoginStart extends Component {
 
           const { displayName } = newCurrentUser._user;
 
-          createUserProfileDocument(newCurrentUser, { displayName });
+          createUserProfileDocument(newCurrentUser, {
+            displayName,
+            isBusiness: false,
+          });
 
           this.setState({
             signInLoading: false,
@@ -200,7 +197,10 @@ class LoginStart extends Component {
       setCurrentUser(newCurrentUser);
 
       const { displayName } = newCurrentUser._user;
-      createUserProfileDocument(newCurrentUser, { displayName });
+      createUserProfileDocument(newCurrentUser, {
+        displayName,
+        isBusiness: false,
+      });
     } catch (e) {
       if (e.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('sign in was canceled');

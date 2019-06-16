@@ -44,7 +44,7 @@ class App extends Component {
     const { changeUserType, setCurrentUser, userLoggedIn } = this.props;
     try {
       /**
-       * @todo user type will have nothing to do with async storage - this will
+       * user type will have nothing to do with async storage - this will
        * be set when you login...
        * only users with email / password can be business users.
        */
@@ -61,7 +61,6 @@ class App extends Component {
         const user = await getUserDocument(currentUser.uid);
         setCurrentUser(user);
 
-        console.log('here is the current user info...', user);
         if (user.isBusiness) {
           changeUserType(1);
         }
@@ -83,7 +82,13 @@ class App extends Component {
 
     this.unsubscribeFromAuth = RNFirebase.auth().onAuthStateChanged(user => {
       if (user) {
-        userLoggedIn(1);
+        // console.log('authy state change user?', user);
+        getUserDocument(user._user.uid).then(result => {
+          if (result.isBusiness) {
+            changeUserType(1);
+          }
+          userLoggedIn(1);
+        });
       } else {
         userLoggedIn(0);
       }

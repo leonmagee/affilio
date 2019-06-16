@@ -28,8 +28,6 @@ class Promotion extends Component {
       finalUrl: false,
       busDetails: false,
       userName: '',
-      // userDetailsRef: false,
-      // busDetailsRef: false,
     };
   }
 
@@ -42,31 +40,24 @@ class Promotion extends Component {
     }
 
     const userDetailsRef = firestore.doc(`users/${companyId}`);
-    userDetailsRef.get().then(result => {
-      this.setState({
-        userName: result._data.displayName,
-        // userDetailsRef: result,
+    userDetailsRef
+      .get()
+      .then(result => {
+        this.setState({
+          userName: result._data.displayName,
+        });
+      })
+      .catch(error => {
+        console.log('promise rejected', error);
       });
-    });
 
     const businessDetailsRef = firestore.doc(`businesses/${companyId}`);
     businessDetailsRef.get().then(result => {
       this.setState({
         busDetails: result._data,
-        // busDetailsRef: result
       });
     });
   };
-
-  // componentWillUnmount = () => {
-  //   const { userDetailsRef, busDetailsRef } = this.state;
-  //   if (userDetailsRef) {
-  //     userDetailsRef();
-  //   }
-  //   if (userDetailsRef) {
-  //     busDetailsRef();
-  //   }
-  // };
 
   shareSocial = () => {
     const { finalUrl } = this.state;
