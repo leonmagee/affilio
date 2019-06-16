@@ -201,9 +201,6 @@ export const defaults = {
     fontSize: 13,
     paddingBottom: 15,
   },
-  checkBoxWrap: {
-    // backgroundColor: 'tomato',
-  },
   checkBoxStyle: {
     backgroundColor: 'transparent',
     borderWidth: 0,
@@ -218,10 +215,6 @@ export const defaults = {
     borderWidth: 0,
     paddingLeft: 0,
     marginTop: -15,
-    // paddingTop: -40,
-    // paddingBottom: 15,
-    // borderTopWidth: 1,
-    // borderColor: '#eee',
   },
   checkBoxLabel: {
     color: '#333',

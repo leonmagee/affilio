@@ -7,7 +7,6 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-// import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
@@ -82,11 +81,6 @@ class LoginStart extends Component {
   changeUserType = type => {
     const { changeUserType, navigation } = this.props;
     changeUserType(type);
-    // if (type) {
-    //   AsyncStorage.setItem('@UserType', 'business');
-    // } else {
-    //   AsyncStorage.setItem('@UserType', 'user');
-    // }
     navigation.navigate('SignUpStart');
   };
 
