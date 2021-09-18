@@ -195,7 +195,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Bolts
     - BoringSSL-GRPC
     - FBSDKCoreKit
@@ -282,4 +282,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 29958dd595bfb458d70889818890999262017e0e
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.10.1
